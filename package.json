@@ -4,6 +4,8 @@
   "description": "Setting up environment for 6.148 project.",
   "main": "app.js",
   "scripts": {
+    "build": "grunt",
+    "start": "nodemon app.js",
     "test": "test"
   },
   "author": "Gabrielle C. Rivera",
