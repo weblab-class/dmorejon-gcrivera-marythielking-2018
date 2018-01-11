@@ -13,22 +13,36 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/EnvironmentTest
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
-const testModel = mongoose.model('Test', mongoose.Schema({
-  url: String
-}));
-
-const test = new testModel({ url: 'google.com'});
-
-(async () => {
-  try {
-    await test.save()
-    console.log('Success!');
-  } catch(err) {
-    console.error({ msg: err });
-  }
-})();
+// Mongodb test
+// const testModel = mongoose.model('Test', mongoose.Schema({
+//   url: String
+// }));
+//
+// const test = new testModel({ url: 'google.com'});
+//
+// (async () => {
+//   try {
+//     await test.save()
+//     console.log('Success!');
+//   } catch(err) {
+//     console.error({ msg: err });
+//   }
+// })();
 
 const app = express();
+
+// Serve static assets from the public folder in project root
+app.use(express.static('public'));
+
+// Auto direct to homepage
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public/index.html'));
+});
+
+// Open app on specified port (default 3000)
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Listening on port 3000");
+});
 
 // Export our app (so that tests and bin can find it)
 module.exports = app;

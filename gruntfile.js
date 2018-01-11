@@ -1,23 +1,38 @@
 module.exports = function(grunt) {
 
-  // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    // uglify: {
-    //   options: {
-    //     banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-    //   },
-      // build: {
-      //   src: 'src/<%= pkg.name %>.js',
-      //   dest: 'build/<%= pkg.name %>.min.js'
-      // }
-    // }
+
+    jshint: {
+      all: ['gruntfile.js', 'app.js', 'react/**/*.js*'],
+      options: {
+        'esversion': 6,
+      }
+    },
+
+    watch: {
+      browserify: {
+        files: ['react/**/*.js*'],
+        tasks: ['browserify']
+      }
+    },
+
+    browserify: {
+      dist: {
+        options: {
+           transform: [['babelify', {presets: ['es2015', 'react']}]]
+        },
+        src: ['react/**/*.js*'],
+        dest: 'public/js/bundle.js',
+      }
+    }
+
   });
 
-  // Load the plugin that provides the "uglify" task.
-  // grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-jsxhint');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-browserify');
 
-  // Default task(s).
-  grunt.registerTask('default', []);
+  grunt.registerTask('default', ['jshint', 'browserify']);
 
 };
