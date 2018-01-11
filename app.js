@@ -1,29 +1,34 @@
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-// var webpackDevHelper = require('./hotReload.js');
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+// const webpackDevHelper = require('./hotReload.js');
 
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/EnvironmentTest', {
   useMongoClient: true,
 });
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
-var testModel = mongoose.model('Test', mongoose.Schema({
+const testModel = mongoose.model('Test', mongoose.Schema({
   url: String
 }));
 
-var test = new testModel({ url: 'google.com'});
-test.save(function(err) {
-  if (err) console.error({ msg: err });
-  else console.log('Success!');
-});
+const test = new testModel({ url: 'google.com'});
 
-var app = express();
+(async () => {
+  try {
+    await test.save()
+    console.log('Success!');
+  } catch(err) {
+    console.error({ msg: err });
+  }
+})();
+
+const app = express();
 
 // Export our app (so that tests and bin can find it)
 module.exports = app;
