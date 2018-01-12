@@ -4,7 +4,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     jshint: {
-      all: ['gruntfile.js', 'app.js', 'react/**/*.js*'],
+      all: ['app.js', 'gruntfile.js', 'react/**/*.js*'],
       options: {
         'esversion': 6,
       }

@@ -14,20 +14,22 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 // Mongodb test
-// const testModel = mongoose.model('Test', mongoose.Schema({
-//   url: String
-// }));
-//
-// const test = new testModel({ url: 'google.com'});
-//
-// (async () => {
-//   try {
-//     await test.save()
-//     console.log('Success!');
-//   } catch(err) {
-//     console.error({ msg: err });
-//   }
-// })();
+const testModel = mongoose.model('Test', mongoose.Schema({
+  url: String
+}));
+
+const test = new testModel({ url: 'google.com'});
+
+/* jshint ignore:start */
+(async () => {
+  try {
+    await test.save();
+    console.log('Success!');
+  } catch(err) {
+    console.error({ msg: err });
+  }
+})();
+/* jshint ignore:end */
 
 const app = express();
 
