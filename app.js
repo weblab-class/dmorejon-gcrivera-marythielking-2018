@@ -7,7 +7,7 @@ const session = require('express-session');
 
 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/EnvironmentTest', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/greenspace', {
   useMongoClient: true,
 });
 const db = mongoose.connection;
