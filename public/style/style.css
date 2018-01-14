@@ -5,6 +5,7 @@ body {
 
 #header {
   width: 100%;
+  height: 80px;
   background-color: #dbdbdb;
   display: flex;
   justify-content: space-between;
@@ -36,4 +37,9 @@ body {
 .header-btn-content {
   font-size: 20px;
   font-weight: bold;
+}
+
+#leaflet-map {
+  height: calc(100vh - 80px);
+  width: 100%;
 }
