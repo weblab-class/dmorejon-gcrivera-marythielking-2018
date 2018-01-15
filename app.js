@@ -16,24 +16,6 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/greenspace', {
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
-// Mongodb test
-const testModel = mongoose.model('Test', mongoose.Schema({
-  url: String
-}));
-
-const test = new testModel({ url: 'google.com'});
-
-/* jshint ignore:start */
-(async () => {
-  try {
-    await test.save();
-    console.log('Success!');
-  } catch(err) {
-    console.error({ msg: err });
-  }
-})();
-/* jshint ignore:end */
-
 const app = express();
 
 // Serve static assets from the public folder in project root

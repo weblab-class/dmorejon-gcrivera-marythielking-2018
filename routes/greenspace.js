@@ -15,10 +15,10 @@ const router = express.Router();
     // greenspace: greenspace object (see schema)
 router.post('/', async (req, res) => {
   try {
-    await greenspace.createGreenspace(req.name, req.location);
+    await greenspace.createGreenspace(req.body.name, req.body.location);
     utils.sendSuccessResponse(res);
   } catch(e) {
-    utils.sendErrorResponse(res, 400, err.msg);
+    utils.sendErrorResponse(res, 400, e.msg);
   }
 });
 
@@ -27,7 +27,12 @@ router.post('/', async (req, res) => {
     // success: true if green space deleted from database; false otherwise
     // err: on error, an error message
 router.delete('/:greenspaceid', async (req, res) => {
-
+  try {
+    await greenspace.deleteGreenspace(req.params.greenspaceid);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, 400, e.msg);
+  }
 });
 
 // PUT /greenspace/name/:greenspaceid
@@ -37,7 +42,12 @@ router.delete('/:greenspaceid', async (req, res) => {
     // success: true if green space name changed in database; false otherwise
     // err: on error, an error message
 router.put('/name/:greenspaceid', async (req, res) => {
-
+  try {
+    await greenspace.changeGreenspaceName(req.params.greenspaceid, req.body.name);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, 400, e.msg);
+  }
 });
 
 // PUT /greenspace/location/:greenspaceid
@@ -47,7 +57,12 @@ router.put('/name/:greenspaceid', async (req, res) => {
     // success: true if green space location changed in database; false otherwise
     // err: on error, an error message
 router.put('/location/:greenspaceid', async (req, res) => {
-
+  try {
+    await greenspace.changeGreenspaceName(req.params.greenspaceid, req.body.location);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, 400, e.msg);
+  }
 });
 
 module.exports = router;
