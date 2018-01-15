@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 
 const greenspaceModel = mongoose.model('Greenspace', mongoose.Schema({
   location: [{type: Number, required: true, unique: true}],
-  name: {type: String, required: true},
-  events: [{type: String}],
-  reviews: [{type: String}]
+  name: {type: String, required: true}
 }));
 
 const greenspace = ((greenspaceModel) => {
@@ -53,4 +51,4 @@ const greenspace = ((greenspaceModel) => {
 
 })(greenspaceModel);
 
-exports.greenspace = greenspace;
+module.exports = greenspace;

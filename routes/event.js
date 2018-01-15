@@ -1,5 +1,6 @@
 const express = require('express');
 const utils = require('../utils');
+const event = require('../models/event');
 
 const router = express.Router();
 
@@ -9,7 +10,12 @@ const router = express.Router();
     // err: on error, an error message
     // event: event object (see above schema)
 router.get('/:eventid', async (req, res) => {
-
+  try {
+    event.getEvent(req.params.eventid);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, 404, e.msg);
+  }
 });
 
 // GET /event/greenspace/:greenspaceid
@@ -18,7 +24,12 @@ router.get('/:eventid', async (req, res) => {
     // err: on error, an error message
     // events: list of event objects (see above schema)
 router.get('/greenspace/:greenspaceid', async (req, res) => {
-
+  try {
+    event.getEventsByGreenspace(req.params.greenspaceid);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, 404, e.msg);
+  }
 });
 
 // GET /event/user/
@@ -27,7 +38,12 @@ router.get('/greenspace/:greenspaceid', async (req, res) => {
     // err: on error, an error message
     // events: list of event objects (see above schema)
 router.get('/user', async (req, res) => {
-
+  try {
+    event.getEventsByUser(req.user.fbid);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, 404, e.msg);
+  }
 });
 
 // POST /event

@@ -1,6 +1,6 @@
 const express = require('express');
 const utils = require('../utils');
-const greenspace = require('../models/greenspace').greenspace;
+const greenspace = require('../models/greenspace');
 
 const router = express.Router();
 
