@@ -2,6 +2,12 @@ const utils = (() => {
 
   let _utils = {};
 
+  const asyncMiddleware = fn =>
+  (req, res) => {
+    Promise.resolve(fn(req, res, next))
+      .catch(next);
+  };
+
   /*
     Send an error code with success:false and error message
     as provided in the arguments to the response argument provided.
