@@ -13,9 +13,35 @@ const greenspace = ((greenspaceModel) => {
   that.createGreenspace = async (name, location) => {
     const newGreenspace = new greenspaceModel({location: location, name: name});
     try {
-      return await greenspaceModel.save(newGreenspace);
+      return await newGreenspace.save();
     } catch(e) {
-      return e;
+      throw e;
+    }
+  }
+
+  that.deleteGreenspace = async (id) => {
+    try {
+        await greenspaceModel.findOne({_id: id});
+        await greenspaceModel.remove({_id: id});
+        return;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  that.changeGreenspaceName = async (id, name) => {
+    try {
+      await greenspaceModel.findOneAndUpdate({_id: id}, {name: name});
+    } catch(e) {
+      throw e;
+    }
+  }
+
+  that.changeGreenspaceLocation = async (id, location) => {
+    try {
+      await greenspaceModel.findOneAndUpdate({_id: id}, {location: location});
+    } catch(e) {
+      throw e;
     }
   }
 
@@ -24,5 +50,4 @@ const greenspace = ((greenspaceModel) => {
 
 })(greenspaceModel);
 
-exports.greenspaceModel = greenspaceModel;
 exports.greenspace = greenspace;

@@ -5,7 +5,7 @@ var eventModel = mongoose.model('Event', mongoose.Schema({
   description: {type: String},
   starttime: {type: String, required: true},
   endtime: {type: String, required: true},
-  location: {type: String, required: true},
+  greenspace: {type: String, required: true},
   host: {type: String, required: true},
   participants: [{type: String}]
 }));
