@@ -1,5 +1,6 @@
 const express = require('express');
 const utils = require('../utils');
+const greenspace = require('../models/greenspace').greenspace;
 
 const router = express.Router();
 
@@ -13,7 +14,12 @@ const router = express.Router();
     // err: on error, an error message
     // greenspace: greenspace object (see schema)
 router.post('/', async (req, res) => {
-
+  try {
+    await greenspace.createGreenspace(req.name, req.location);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, 400, err.msg);
+  }
 });
 
 // DELETE /greenspace/:greenspaceid
