@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 export default class LeafletMap extends Component {
+  constructor(props){
+    super(props);
+    this.onMapClick = this.onMapClick.bind(this);
+  }
 
   componentDidMount() {
     var map = this.map = L.map(ReactDOM.findDOMNode(this), {
@@ -11,10 +15,16 @@ export default class LeafletMap extends Component {
     });
     var layer = new L.StamenTileLayer("terrain");
     map.addLayer(layer);
+    map.on('click', this.onMapClick)
   }
 
   componentWillUnmount() {
     this.map = null;
+  }
+
+  onMapClick(event) {
+    console.log(event);
+    var marker = L.marker(event.latlng).addTo(this.map);
   }
 
   render(){

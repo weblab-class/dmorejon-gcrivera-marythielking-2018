@@ -7,7 +7,7 @@ export default class LogIn extends Component {
       return (
         <div>
           <LeafletMap />
-          <PopUp>LogIn</PopUp>
+          <PopUp>LogIn Here</PopUp>
         </div>
       );
     }
