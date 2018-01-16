@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
     await user.getUser(req.user.fbid);
     utils.sendSuccessResponse(res);
   } catch(e) {
-    utils.sendErrorResponse(res, 400, e.msg);
+    utils.sendErrorResponse(res, e.code, e.msg);
   }
 });
 
@@ -50,7 +50,7 @@ router.put('/', async (req, res) => {
     await user.updateUser(req.user.fbid, req.body.username, req.body.email);
     utils.sendSuccessResponse(res);
   } catch(e) {
-    utils.sendErrorResponse(res, 400, e.msg);
+    utils.sendErrorResponse(res, e.code, e.msg);
   }
 });
 
