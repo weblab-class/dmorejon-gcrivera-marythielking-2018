@@ -3,13 +3,6 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    jshint: {
-      all: ['app.js', 'gruntfile.js', 'react/**/*.js*'],
-      options: {
-        'esversion': 6,
-      }
-    },
-
     watch: {
       browserify: {
         files: ['react/**/*.js*'],
@@ -29,10 +22,9 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.loadNpmTasks('grunt-jsxhint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-browserify');
 
-  grunt.registerTask('default', ['jshint', 'browserify']);
+  grunt.registerTask('default', ['browserify']);
 
 };
