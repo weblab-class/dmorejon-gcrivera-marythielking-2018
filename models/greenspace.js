@@ -8,6 +8,8 @@ const greenspaceModel = mongoose.model('Greenspace', mongoose.Schema({
 const greenspace = ((greenspaceModel) => {
   let that = {};
 
+  // TODO: figure out how to make sure greenspaces are unique, talk to mary
+  //        about location data
   that.createGreenspace = async (name, location) => {
     const newGreenspace = new greenspaceModel({location: location, name: name});
     try {

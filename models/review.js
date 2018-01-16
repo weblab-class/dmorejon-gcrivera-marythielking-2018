@@ -12,31 +12,26 @@ const review = ((reviewModel) => {
   let that = {};
 
   that.createReview = async (greenspace, rating, body, time, user) => {
-
     const newReview = new reviewModel({greenspace: greenspace, rating: rating,
                                         body: body, time: time, user: user});
     try {
-
-      const query = await reviewModel.findOne({user:user, greenspace:greenspace});
+      const query = await reviewModel.findOne({user: user, greenspace: greenspace});
       if (query === null) {
         return await newReview.save();
       } else {
-        throw {msg: 'User has already written review.'};
+        throw {msg: 'User has already written review.', code: 400};
       }
-
     } catch(e) {
       throw e;
     }
   }
 
   that.deleteReview = async (greenspace, user) => {
-    try{
-
-      const oldReview = await reviewModel.findOneAndRemove({user:user, greenspace:greenspace});
+    try {
+      const oldReview = await reviewModel.findOneAndRemove({user: user, greenspace: greenspace});
       if (oldReview === null) {
-        throw {msg: 'Review does not exist for this user'};
+        throw {msg: 'Review does not exist for this user', code: 404};
       }
-
     } catch(e) {
       throw e;
     }
@@ -44,7 +39,11 @@ const review = ((reviewModel) => {
 
   that.getReviewByGreenspace = async (greenspace) => {
     try {
-      return await reviewModel.find({greenspace:greenspace});
+      const reviews = await reviewModel.find({greenspace: greenspace});
+      if (reviews.length == 0) {
+        throw {msg: 'There are no reviews for this green space.', code: 404};
+      }
+      return reviews;
     } catch(e) {
       throw e;
     }
@@ -52,7 +51,11 @@ const review = ((reviewModel) => {
 
   that.getReviewByUser = async (user) => {
     try {
-      return await reviewModel.find({user:user});
+      const reviews = await reviewModel.find({user: user});
+      if (reviews.length == 0) {
+        throw {msg: 'There are no reviews for this user.', code: 404};
+      }
+      return reviews;
     } catch(e) {
       throw e;
     }
@@ -63,5 +66,4 @@ const review = ((reviewModel) => {
   return that;
 })(reviewModel);
 
-exports.reviewModel = reviewModel;
-exports.review = review;
+module.exports = review;
