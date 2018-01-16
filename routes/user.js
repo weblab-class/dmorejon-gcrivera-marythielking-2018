@@ -30,7 +30,7 @@ router.get('/logout', function(req, res) {
     // user: user object (see above schema)
 router.get('/', async (req, res) => {
   try {
-    await user.getUser(req.user);
+    await user.getUser(req.user.fbid);
     utils.sendSuccessResponse(res);
   } catch(e) {
     utils.sendErrorResponse(res, 400, e.msg);
@@ -47,7 +47,7 @@ router.get('/', async (req, res) => {
     // user: user object (see above schema)
 router.put('/', async (req, res) => {
   try{
-    await user.updateUser(req.user, req.body.username, req.body.email);
+    await user.updateUser(req.user.fbid, req.body.username, req.body.email);
     utils.sendSuccessResponse(res);
   } catch(e) {
     utils.sendErrorResponse(res, 400, e.msg);
