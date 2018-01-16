@@ -61,3 +61,18 @@ body {
   opacity: 0.8;
   padding: 10px 15px;
 }
+
+#popup {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 800px;
+  height: 400px;
+  background-color: #dbdbdb;
+  opacity: 0.8;
+  padding: 10px 15px;
+}
