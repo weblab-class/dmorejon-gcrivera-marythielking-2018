@@ -14,7 +14,7 @@ router.get('/:eventid', async (req, res) => {
     const eventObj = await event.getEvent(req.params.eventid);
     utils.sendSuccessResponse(res, eventObj);
   } catch(e) {
-    utils.sendErrorResponse(res, 404, e.msg);
+    utils.sendErrorResponse(res, e.code, e.msg);
   }
 });
 
@@ -28,7 +28,7 @@ router.get('/greenspace/:greenspaceid', async (req, res) => {
     const events = await event.getEventsByGreenspace(req.params.greenspaceid);
     utils.sendSuccessResponse(res, events);
   } catch(e) {
-    utils.sendErrorResponse(res, 404, e.msg);
+    utils.sendErrorResponse(res, e.code, e.msg);
   }
 });
 
@@ -42,7 +42,7 @@ router.get('/user', async (req, res) => {
     const events = await event.getEventsByUser(req.user.fbid);
     utils.sendSuccessResponse(res, events);
   } catch(e) {
-    utils.sendErrorResponse(res, 404, e.msg);
+    utils.sendErrorResponse(res, e.code, e.msg);
   }
 });
 
@@ -63,7 +63,7 @@ router.post('/', async (req, res) => {
     const newEvent = await event.createEvent(req.body, req.user.fbid);
     utils.sendSuccessResponse(res, newEvent);
   } catch(e) {
-    utils.sendErrorResponse(res, 400, e.msg);
+    utils.sendErrorResponse(res, e.code, e.msg);
   }
 });
 
@@ -81,7 +81,7 @@ router.put('/:eventid', async (req, res) => {
                                                 req.user.fbid);
     utils.sendSuccessResponse(res, edditedEvent);
   } catch(e) {
-    utils.sendErrorResponse(res, 400, e.msg);
+    utils.sendErrorResponse(res, e.code, e.msg);
   }
 });
 
@@ -95,7 +95,7 @@ router.put('/join/:eventid', async (req, res) => {
     const edditedEvent = await event.joinEvent(req.params.eventid, req.user.fbid);
     utils.sendSuccessResponse(res, edditedEvent);
   } catch(e) {
-    utils.sendErrorResponse(res, 400, e.msg);
+    utils.sendErrorResponse(res, e.code, e.msg);
   }
 });
 
@@ -111,7 +111,7 @@ router.put('/leave/:eventid', async (req, res) => {
     const edditedEvent = await event.leaveEvent(req.params.eventid, req.user.fbid, req.body.target);
     utils.sendSuccessResponse(res, edditedEvent);
   } catch(e) {
-    utils.sendErrorResponse(res, 400, e.msg);
+    utils.sendErrorResponse(res, e.code, e.msg);
   }
 });
 
@@ -123,7 +123,7 @@ router.delete('/:eventid', async (req, res) => {
   try {
     await event.deleteEvent(req.params.eventid, req.user.fbid);
   } catch(e) {
-    utils.sendErrorResponse(res, 400, e.msg);
+    utils.sendErrorResponse(res, e.code, e.msg);
   }
 });
 
