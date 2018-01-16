@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 
-export default class Sidebar extends Component {
+class Sidebar extends Component {
     render(){
       return (
         <div id="sidebar">
-          Hello World
+          {this.props.children}
         </div>
       )
     }
 }
+
+Sidebar.propTypes = {
+  children : React.PropTypes.any.isRequired
+};
+
+export default Sidebar;
