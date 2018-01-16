@@ -20,7 +20,9 @@ const greenspace = ((greenspaceModel) => {
   that.deleteGreenspace = async (id) => {
     try {
         const oldGreenspace = await greenspaceModel.findOneAndRemove({_id: id});
-        if (oldGreenspace === null) {throw {msg: 'Greenspace does not exist.'}}
+        if (oldGreenspace === null) {
+          throw {msg: 'Greenspace does not exist.', code: 404}
+        }
         return;
     } catch (e) {
       throw e;
@@ -30,7 +32,9 @@ const greenspace = ((greenspaceModel) => {
   that.changeGreenspaceName = async (id, name) => {
     try {
       const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {name: name});
-      if (oldGreenspace === null) {throw {msg: 'Greenspace does not exist.'}}
+      if (oldGreenspace === null) {
+        throw {msg: 'Greenspace does not exist.', code: 404}
+      }
       return;
     } catch(e) {
       throw e;
@@ -40,7 +44,9 @@ const greenspace = ((greenspaceModel) => {
   that.changeGreenspaceLocation = async (id, location) => {
     try {
       const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {location: location});
-      if (oldGreenspace === null) {throw {msg: 'Greenspace does not exist.'}}
+      if (oldGreenspace === null) {
+        throw {msg: 'Greenspace does not exist.', code: 404}
+      }
     } catch(e) {
       throw e;
     }

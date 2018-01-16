@@ -8,6 +8,7 @@ const utils = (() => {
     The caller of this function should return after calling
   */
   _utils.sendErrorResponse = (res, errorCode, error) => {
+    if (errorCode == undefined) {errorCode = 500}
     res.status(errorCode).json({
       success: false,
       err: error
