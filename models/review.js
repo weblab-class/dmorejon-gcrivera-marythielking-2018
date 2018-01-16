@@ -36,7 +36,7 @@ const review = ((reviewModel) => {
       if (oldReview === null) {
         throw {msg: 'Review does not exist for this user'};
       }
-      
+
     } catch(e) {
       throw e;
     }
@@ -44,7 +44,7 @@ const review = ((reviewModel) => {
 
   that.getReviewByGreenspace = async (greenspace) => {
     try {
-      return await reviewModel.find(greenspace:greenspace);
+      return await reviewModel.find({greenspace:greenspace});
     } catch(e) {
       throw e;
     }
@@ -52,7 +52,7 @@ const review = ((reviewModel) => {
 
   that.getReviewByUser = async (user) => {
     try {
-      return await reviewModel.find(user:user);
+      return await reviewModel.find({user:user});
     } catch(e) {
       throw e;
     }
