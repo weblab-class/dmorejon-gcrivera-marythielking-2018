@@ -15,7 +15,7 @@ const user = (userModel) => {
         const oldUser =  await userModel.findOneAndUpdate({user: user}, {username: username, email: email},
                                               {new: false});
         if (oldUser == null) {
-          throw {_message: 'User not found, cannot update', code: 404};
+          throw {message: 'User not found, cannot update', errorCode: 404};
         }
       } catch(e) {
         throw e;
@@ -26,7 +26,7 @@ const user = (userModel) => {
       try {
         const userData = await userModel.findOne({user: user})
         if (userData == null) {
-          throw {_message: 'User not found.', code: 404};
+          throw {message: 'User not found.', errorCode: 404};
         }
       } catch(e) {
         throw e;
