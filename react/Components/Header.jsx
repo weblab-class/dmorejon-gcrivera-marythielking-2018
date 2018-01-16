@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router';
+import FontAwesome from 'react-fontawesome';
 
-export default class Header extends Component {
+class Header extends Component {
     render(){
       return (
         <div id="header">
-          <div id="header-logo">greenspace</div>
-          <div id="header-btns">
+          <Link to="/"><div id="header-logo">greenspace</div></Link>
+          <Link to="/login">
             <div className="header-btn">
-              <div className="header-btn-content">Map</div>
+                <FontAwesome name="sign-in" size="2x" />
             </div>
-            <div className="header-btn">
-              <div className="header-btn-content">User</div>
-            </div>
-          </div>
+          </Link>
         </div>
       )
     }
 }
+
+export default withRouter(Header);

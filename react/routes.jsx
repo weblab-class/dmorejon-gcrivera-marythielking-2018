@@ -2,6 +2,7 @@ import React from 'react';
 import App from './App.jsx';
 import Homepage from './Pages/Homepage.jsx';
 import LogIn from './Pages/LogIn.jsx';
+import MapView from './Pages/MapView.jsx';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 export default (
@@ -10,6 +11,8 @@ export default (
       <IndexRoute component={Homepage} />
       <Route path="login"
         component={LogIn} />
+      <Route path="map"
+        component={MapView} />
     </Route>
   </Router>
 );

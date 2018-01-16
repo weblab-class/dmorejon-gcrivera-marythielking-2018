@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import onClickOutside from 'react-onclickoutside';
 
 class PopUp extends Component {
+  handleClickOutside(event) {
+    this.props.router.push(`/map`);
+  }
 
   render(){
     return (
@@ -12,7 +18,7 @@ class PopUp extends Component {
 }
 
 PopUp.propTypes = {
-  children : React.PropTypes.any.isRequired
+  children : PropTypes.any.isRequired
 };
 
-export default PopUp;
+export default withRouter(onClickOutside(PopUp));
