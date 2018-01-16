@@ -14,7 +14,7 @@ body {
 #header-logo {
   font-family: "Roboto Condensed", sans-serif;
   font-size: 50px;
-  color: #7cca7d;
+  color: #9bcc84;
   padding: 10px;
 }
 
@@ -39,7 +39,25 @@ body {
   font-weight: bold;
 }
 
-#leaflet-map {
+#content {
+  position: relative;
   height: calc(100vh - 80px);
+}
+
+#leaflet-map {
+  height: 100%;
   width: 100%;
+  z-index: 5;
+}
+
+#sidebar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+  height: 100%;
+  width: 300px;
+  background-color: #dbdbdb;
+  opacity: 0.8;
+  padding: 10px 15px;
 }
