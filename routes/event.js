@@ -11,8 +11,8 @@ const router = express.Router();
     // event: event object (see above schema)
 router.get('/:eventid', async (req, res) => {
   try {
-    event.getEvent(req.params.eventid);
-    utils.sendSuccessResponse(res);
+    const eventObj = await event.getEvent(req.params.eventid);
+    utils.sendSuccessResponse(res, eventObj);
   } catch(e) {
     utils.sendErrorResponse(res, 404, e.msg);
   }
@@ -25,8 +25,8 @@ router.get('/:eventid', async (req, res) => {
     // events: list of event objects (see above schema)
 router.get('/greenspace/:greenspaceid', async (req, res) => {
   try {
-    event.getEventsByGreenspace(req.params.greenspaceid);
-    utils.sendSuccessResponse(res);
+    const events = await event.getEventsByGreenspace(req.params.greenspaceid);
+    utils.sendSuccessResponse(res, events);
   } catch(e) {
     utils.sendErrorResponse(res, 404, e.msg);
   }
@@ -39,8 +39,8 @@ router.get('/greenspace/:greenspaceid', async (req, res) => {
     // events: list of event objects (see above schema)
 router.get('/user', async (req, res) => {
   try {
-    event.getEventsByUser(req.user.fbid);
-    utils.sendSuccessResponse(res);
+    const events = await event.getEventsByUser(req.user.fbid);
+    utils.sendSuccessResponse(res, events);
   } catch(e) {
     utils.sendErrorResponse(res, 404, e.msg);
   }
@@ -59,7 +59,12 @@ router.get('/user', async (req, res) => {
     // err: on error, an error message
     // event: event object (see above schema)
 router.post('/', async (req, res) => {
-
+  try {
+    const newEvent = await event.createEvent(req.body, req.user.fbid);
+    utils.sendSuccessResponse(res, newEvent);
+  } catch(e) {
+    utils.sendErrorResponse(res, 400, e.msg);
+  }
 });
 
 // PUT /event/:eventid
@@ -68,8 +73,16 @@ router.post('/', async (req, res) => {
   // Response Body:
     // success: true if event changed in database; false otherwise
     // err: on error, an error message
+    // event: event object (see above schema)
 router.put('/:eventid', async (req, res) => {
-
+  try {
+    const edittedEvent = await event.editEvent(req.params.eventid,
+                                                req.body,
+                                                req.user.fbid);
+    utils.sendSuccessResponse(res, edditedEvent);
+  } catch(e) {
+    utils.sendErrorResponse(res, 400, e.msg);
+  }
 });
 
 // PUT /event/join/:eventid
@@ -78,7 +91,12 @@ router.put('/:eventid', async (req, res) => {
     // err: on error, an error message
     // event: event object (see schema)
 router.put('/join/:eventid', async (req, res) => {
-
+  try {
+    const edditedEvent = await event.joinEvent(req.params.eventid, req.user.fbid);
+    utils.sendSuccessResponse(res, edditedEvent);
+  } catch(e) {
+    utils.sendErrorResponse(res, 400, e.msg);
+  }
 });
 
 // PUT /event/leave/:eventid
@@ -89,7 +107,12 @@ router.put('/join/:eventid', async (req, res) => {
     // err: on error, an error message
     // event: event object (see above schema)
 router.put('/leave/:eventid', async (req, res) => {
-
+  try {
+    const edditedEvent = await event.leaveEvent(req.params.eventid, req.user.fbid, req.body.target);
+    utils.sendSuccessResponse(res, edditedEvent);
+  } catch(e) {
+    utils.sendErrorResponse(res, 400, e.msg);
+  }
 });
 
 // DELETE /event/:eventid
@@ -97,7 +120,11 @@ router.put('/leave/:eventid', async (req, res) => {
     // success: true if event deleted from database; false otherwise
     // err: on error, an error message
 router.delete('/:eventid', async (req, res) => {
-
+  try {
+    await event.deleteEvent(req.params.eventid, req.user.fbid);
+  } catch(e) {
+    utils.sendErrorResponse(res, 400, e.msg);
+  }
 });
 
 module.exports = router;
