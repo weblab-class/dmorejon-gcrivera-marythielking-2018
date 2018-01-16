@@ -1,14 +1,14 @@
 {
-  "name": "environment-setup",
+  "name": "greenspace",
   "version": "1.0.0",
-  "description": "Setting up environment for 6.148 project.",
+  "description": "6.148 project where users select green spaces in their area and make events.",
   "main": "app.js",
   "scripts": {
     "db": "sudo mongod",
     "build": "grunt",
     "start": "nodemon app.js"
   },
-  "author": "Gabrielle C. Rivera",
+  "author": "Gabrielle C. Rivera, David Morejon, Mary G. Thielking",
   "license": "ISC",
   "dependencies": {
     "assert": "^1.4.1",
@@ -27,6 +27,8 @@
     "moment": "^2.16.0",
     "mongoose": "^4.6.8",
     "nodemailer": "^2.6.4",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
     "path": "^0.12.7",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",

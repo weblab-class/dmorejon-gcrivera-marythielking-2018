@@ -3,38 +3,34 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-// const webpackDevHelper = require('./hotReload.js');
 
+const greenspace = require('./routes/greenspace');
+const review = require('./routes/review');
+const event = require('./routes/event');
+const user = require('./routes/user');
 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/EnvironmentTest', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/greenspace', {
   useMongoClient: true,
 });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
-// Mongodb test
-const testModel = mongoose.model('Test', mongoose.Schema({
-  url: String
-}));
-
-const test = new testModel({ url: 'google.com'});
-
-/* jshint ignore:start */
-(async () => {
-  try {
-    await test.save();
-    console.log('Success!');
-  } catch(err) {
-    console.error({ msg: err });
-  }
-})();
-/* jshint ignore:end */
-
 const app = express();
 
 // Serve static assets from the public folder in project root
 app.use(express.static('public'));
+
+// Set up some middleware to use.
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// Set up our routes.
+app.use('/greenspace', greenspace);
+app.use('/review', review);
+app.use('/event', event);
+app.use('/user', user);
 
 // Auto direct to homepage
 app.get('*', (req, res) => {
