@@ -12,10 +12,10 @@ const user = (userModel) => {
 
     that.updateUser = async (user, username, email) => {
       try {
-        oldUser =  await userModel.findOneAndUpdate({user:user}, {user:user, username:username, email:email},
-                                              {new:false});
+        const oldUser =  await userModel.findOneAndUpdate({user: user}, {username: username, email: email},
+                                              {new: false});
         if (oldUser == null) {
-          throw {msg: 'User not found, cannot update'};
+          throw {msg: 'User not found, cannot update', code: 404};
         }
       } catch(e) {
         throw e;
@@ -24,7 +24,10 @@ const user = (userModel) => {
 
     that.getUser = async (user) => {
       try {
-        return await userModel.findOne({user:user})
+        const userData = await userModel.findOne({user: user})
+        if (userData == null) {
+          throw {msg: 'User not found.', code: 404};
+        }
       } catch(e) {
         throw e;
       }

@@ -74,7 +74,7 @@ const event = ((eventModel) => {
         throw {msg: 'Event does not exist.', code: 404}
       }
       if (editableEvent.host == userid) {
-        return await eventModel.findOneAndUpdate({_id: eventid}, eventData);
+        return await eventModel.findOneAndUpdate({_id: eventid}, eventData, {new: true});
       } else {
         throw {msg: 'User does not have permission to edit this event.', code: 403};
       }
@@ -85,7 +85,7 @@ const event = ((eventModel) => {
 
   that.joinEvent = async (eventid, userid) => {
     try {
-      const edditedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$push: {participants: userid}});
+      const edditedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$push: {participants: userid}}, {new: true});
       if (edditedEvent === null) {throw {msg: 'Event does not exist.', code: 404}}
       return edditedEvent;
     } catch(e) {
@@ -98,7 +98,7 @@ const event = ((eventModel) => {
       const eventData = await eventModel.findOne({_id: eventid});
       if (eventData === null) {throw {msg: 'Event does not exist.', code: 404}}
       if (userid == targetid || userid == eventData.host) {
-        return await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {participants: targetid}});
+        return await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {participants: targetid}}, {new: true});
       } else {
         throw {msg: 'User does not have permission to remove specified user from event.', code: 403};
       }
