@@ -29,7 +29,12 @@ router.get('/logout', function(req, res) {
     // err: on error, an error message
     // user: user object (see above schema)
 router.get('/', async (req, res) => {
-//
+  try {
+    await user.getUser(req.user);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, 400, e.msg);
+  }
 });
 
 // PUT /user
@@ -41,7 +46,12 @@ router.get('/', async (req, res) => {
     // err: on error, an error message
     // user: user object (see above schema)
 router.put('/', async (req, res) => {
-//
+  try{
+    await user.updateUser(req.user, req.body.username, req.body.email);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, 400, e.msg);
+  }
 });
 
 module.exports = router;
