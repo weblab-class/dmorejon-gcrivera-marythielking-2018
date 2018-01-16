@@ -9,7 +9,7 @@ passport.use(new fbp.Strategy({
   callbackURL: '/auth/facebook/callback'
 }, function(accessToken, BrefreshToken, profile, done) {
 //check if user in database.
-//if not, put user in ;)
+//if not, put user in 
 //name: profile.displayName,
 //fbid: profile.id
 }));
