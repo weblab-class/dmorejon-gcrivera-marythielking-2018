@@ -14,7 +14,7 @@ router.get('/greenspace/:greenspaceid', async (req, res) => {
     await review.getReviewByGreenspace(req.body.greenspace);
     utils.sendSuccessResponse(res);
   } catch(e) {
-    utils.sendErrorResponse(res, e.code, e.msg);
+    utils.sendErrorResponse(res, e.code, e._message);
   }
 
 });
@@ -29,7 +29,7 @@ router.get('/user', async (req, res) => {
     await review.getReviewByUser(req.user.fbid);
     utils.sendSuccessResponse(res);
   } catch(e) {
-    utils.sendErrorResponse(res, e.code, e.msg);
+    utils.sendErrorResponse(res, e.code, e._message);
   }
 
 });
@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
                                 req.body.time, req.user.fbid);
     utils.sendSuccessResponse(res);
   } catch(e) {
-    utils.sendErrorResponse(res, e.code, e.msg);
+    utils.sendErrorResponse(res, e.code, e._message);
   }
 });
 
@@ -66,7 +66,7 @@ router.delete('/', async (req,rest) => {
    await review.deleteReview(req.body.greenspace, req.user.fbid);
    utils.sendSuccessResponse(res);
  } catch(e) {
-   utils.sendErrorResponse(res, e.code, e.msg);
+   utils.sendErrorResponse(res, e.code, e._message);
  }
 });
 
