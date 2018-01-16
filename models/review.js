@@ -19,7 +19,7 @@ const review = ((reviewModel) => {
       if (query === null) {
         return await newReview.save();
       } else {
-        throw {msg: 'User has already written review.', code: 400};
+        throw {_message: 'User has already written review.', code: 400};
       }
     } catch(e) {
       throw e;
@@ -30,7 +30,7 @@ const review = ((reviewModel) => {
     try {
       const oldReview = await reviewModel.findOneAndRemove({user: user, greenspace: greenspace});
       if (oldReview === null) {
-        throw {msg: 'Review does not exist for this user', code: 404};
+        throw {_message: 'Review does not exist for this user', code: 404};
       }
     } catch(e) {
       throw e;
@@ -41,7 +41,7 @@ const review = ((reviewModel) => {
     try {
       const reviews = await reviewModel.find({greenspace: greenspace});
       if (reviews.length == 0) {
-        throw {msg: 'There are no reviews for this green space.', code: 404};
+        throw {_message: 'There are no reviews for this green space.', code: 404};
       }
       return reviews;
     } catch(e) {
@@ -53,7 +53,7 @@ const review = ((reviewModel) => {
     try {
       const reviews = await reviewModel.find({user: user});
       if (reviews.length == 0) {
-        throw {msg: 'There are no reviews for this user.', code: 404};
+        throw {_message: 'There are no reviews for this user.', code: 404};
       }
       return reviews;
     } catch(e) {
