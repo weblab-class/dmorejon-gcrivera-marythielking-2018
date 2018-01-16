@@ -49,6 +49,7 @@ const greenspace = ((greenspaceModel) => {
       if (oldGreenspace === null) {
         throw {msg: 'Greenspace does not exist.', code: 404}
       }
+      return;
     } catch(e) {
       throw e;
     }
