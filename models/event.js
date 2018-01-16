@@ -16,7 +16,9 @@ const event = ((eventModel) => {
   that.getEvent = async (id) => {
     try {
       const newEvent = await eventModel.findOne({_id: id});
-      if (newEvent === null) {throw {msg: 'Event does not exist.'}}
+      if (newEvent === null) {
+        throw {msg: 'Event does not exist.', code: 404}
+      }
       return newEvent;
     } catch(e) {
       throw e;
@@ -26,7 +28,9 @@ const event = ((eventModel) => {
   that.getEventsByGreenspace = async (greenspaceid) => {
     try {
       const events = await eventModel.find({greenspace: greenspaceid});
-      if (events.length == 0) {throw {msg: 'There are no events for this greenspace.'}}
+      if (events.length == 0) {
+        throw {msg: 'There are no events for this greenspace.', code: 404}
+      }
       return events;
     } catch(e) {
       throw e;
@@ -36,7 +40,9 @@ const event = ((eventModel) => {
   that.getEventsByUser = async (userid) => {
     try {
       const events = await eventModel.find({participants: userid});
-      if (events.length == 0) {throw {msg: 'There are no events for this user.'}}
+      if (events.length == 0) {
+        throw {msg: 'There are no events for this user.', code: 404}
+      }
       return events;
     } catch(e) {
       throw e;
@@ -64,11 +70,13 @@ const event = ((eventModel) => {
   that.editEvent = async (eventid, eventData, userid) => {
     try {
       const editableEvent = await eventModel.findOne({_id: eventid});
-      if (editableEvent === null) {throw {msg: 'Event does not exist.'}}
+      if (editableEvent === null) {
+        throw {msg: 'Event does not exist.', code: 404}
+      }
       if (editableEvent.host == userid) {
         return await eventModel.findOneAndUpdate({_id: eventid}, eventData);
       } else {
-        throw {msg: 'User does not have permission to edit this event.'};
+        throw {msg: 'User does not have permission to edit this event.', code: 403};
       }
     } catch(e) {
       throw e;
@@ -78,7 +86,7 @@ const event = ((eventModel) => {
   that.joinEvent = async (eventid, userid) => {
     try {
       const edditedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$push: {participants: userid}});
-      if (edditedEvent === null) {throw {msg: 'Event does not exist.'}}
+      if (edditedEvent === null) {throw {msg: 'Event does not exist.', code: 404}}
       return edditedEvent;
     } catch(e) {
       throw e;
@@ -88,11 +96,11 @@ const event = ((eventModel) => {
   that.leaveEvent = async (eventid, userid, targetid) => {
     try {
       const eventData = await eventModel.findOne({_id: eventid});
-      if (eventData === null) {throw {msg: 'Event does not exist.'}}
+      if (eventData === null) {throw {msg: 'Event does not exist.', code: 404}}
       if (userid == targetid || userid == eventData.host) {
         return await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {participants: targetid}});
       } else {
-        throw {msg: 'User does not have permission to remove specified user from event.'};
+        throw {msg: 'User does not have permission to remove specified user from event.', code: 403};
       }
     } catch(e) {
       throw e;
@@ -102,9 +110,9 @@ const event = ((eventModel) => {
   that.deleteEvent = async (eventid, userid) => {
     try {
       const eventData = await eventModel.findOne({_id: eventid});
-      if (eventData === null) {throw {msg: 'Event does not exist.'}}
+      if (eventData === null) {throw {msg: 'Event does not exist.', code: 404}}
       if (eventData.host != userid) {
-        throw {msg: 'User does not have permission to delete event.'};
+        throw {msg: 'User does not have permission to delete event.', code: 403};
       }
       await eventModel.findOneAndRemove({_id: eventid});
       return;
