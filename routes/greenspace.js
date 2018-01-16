@@ -15,8 +15,8 @@ const router = express.Router();
     // greenspace: greenspace object (see schema)
 router.post('/', async (req, res) => {
   try {
-    await greenspace.createGreenspace(req.body.name, req.body.location);
-    utils.sendSuccessResponse(res);
+    const newGreenspace = await greenspace.createGreenspace(req.body.name, req.body.location);
+    utils.sendSuccessResponse(res, newGreenspace);
   } catch(e) {
     utils.sendErrorResponse(res, 400, e.msg);
   }
