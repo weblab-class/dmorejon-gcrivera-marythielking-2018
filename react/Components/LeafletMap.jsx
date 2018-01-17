@@ -56,9 +56,11 @@ class LeafletMap extends Component {
     if (marker) {
       const { lat: m_lat, lng: m_lng } = marker.getLatLng();
       if (e_lat === m_lat && e_lng === m_lng) {
-        this.props.router.push(`/map/create/${e_lat},${e_lng}`);
+        this.props.router.push(`/map/${e_lat},${e_lng}/create`);
       } else {
-        console.log('marker state clicked');
+        marker.remove(this.map);
+        this.setState({ marker: null });
+        this.props.router.push(`/map/${e_lat},${e_lng}`);
       }
     } else {
       this.props.router.push(`/map/${e_lat},${e_lng}`);
