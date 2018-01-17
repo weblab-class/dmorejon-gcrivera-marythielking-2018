@@ -4,24 +4,7 @@ const utils = require('../utils');
 
 const router = express.Router();
 
-// authentication routes
-router.get('/auth/facebook', passport.authenticate('facebook'));
 
-router.get(
-  '/auth/facebook/callback',
-  passport.authenticate(
-    'facebook',
-    { failureRedirect: '/' }
-  ),
-  function(req, res) {
-    res.redirect('/');
-  }
-);
-
-router.get('/logout', function(req, res) {
-  req.logout();
-  res.redirect('/');
-});
 
 // GET /user
   // Response body:

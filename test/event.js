@@ -1,11 +1,9 @@
 const chai = require('chai');
 const mongoose = require('mongoose');
-const request = require('superagent');
+const request = require('supertest');
 const app = require('../app');
 
 const assert = chai.assert;
-const creationUser1 = request.agent();
-const creationUser2 = request.agent();
 
 // Reset our mongoose collections so that the tests can run successfully.
 for (let i in mongoose.connection.collections) {
@@ -14,28 +12,16 @@ for (let i in mongoose.connection.collections) {
 
 const greenspaceID = mongoose.Types.ObjectId("112222222222");
 const emptyGreenspaceID = mongoose.Types.ObjectId("112222222223");
-const userID1 = {fbid: "247833829183"};
-const userID2 = {fbid: "247833829192"};
+const userID1 = "247833829183";
+const userID2 = "247833829192";
 const badID = mongoose.Types.ObjectId("222222222222");
 let snowballFightID;
-
 
 describe('Event API', () => {
 
   before((done) => {
-    creationUser1
-      .get('http://localhost:3000/user/auth/facebook')
-      .end((err, res) => {
-        if (err) done(err);
-        else {
-          done();
-        }
-      });
-  });
-
-  before((done) => {
-    creationUser1
-      .post('http://localhost:3000/event')
+    request(app)
+      .post('/event')
       .send({name: 'Snowball Fight', greenspace: greenspaceID, starttime: Date.now(),
               endtime: Date.now() + 180000, participants: [userID1, userID2]})
       .end((err, res) => {
@@ -48,7 +34,7 @@ describe('Event API', () => {
   });
 
   before((done) => {
-    creationUser1
+    request(app)
       .post('/event')
       .send({name: 'Penguin Party', greenspace: greenspaceID, starttime: Date.now() + 1800000,
               endtime: Date.now() + 1803000, participants: [userID1, userID2],
@@ -65,7 +51,7 @@ describe('Event API', () => {
   describe('GET /event', () => {
 
     it('Get data for a valid event', (done) => {
-      creationUser1
+      request(app)
         .get('/event/' + snowballFightID)
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -82,7 +68,7 @@ describe('Event API', () => {
     });
 
     it('Get data for an invalid event', (done) => {
-      creationUser1
+      request(app)
         .get('/event/' + badID)
         .expect(404)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -97,7 +83,7 @@ describe('Event API', () => {
     });
 
     it('Get events for valid greenspace and check sorting', (done) => {
-      creationUser1
+      request(app)
         .get('/event/greenspace/' + greenspaceID)
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -116,7 +102,7 @@ describe('Event API', () => {
     });
 
     it('Get events for greenspace with no events', (done) => {
-      creationUser1
+      request(app)
         .get('/event/greenspace/' + emptyGreenspaceID)
         .expect(404)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -131,7 +117,7 @@ describe('Event API', () => {
     });
 
     it('Get events for invalid greenspace', (done) => {
-      creationUser1
+      request(app)
         .get('/event/greenspace/1')
         .expect(400)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -146,7 +132,7 @@ describe('Event API', () => {
     });
 
     it('Get events for valid user and check sorting', (done) => {
-      creationUser1
+      request(app)
         .get('/event/user/')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -165,7 +151,7 @@ describe('Event API', () => {
     });
 
     it('Get events for user with no events', (done) => {
-      creationUser2
+      request(app)
         .get('/event/user/')
         .expect(404)
         .expect('Content-Type', 'application/json; charset=utf-8')

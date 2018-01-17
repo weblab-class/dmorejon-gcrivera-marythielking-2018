@@ -69,12 +69,13 @@ const event = ((eventModel) => {
                                       description: eventData.description,
                                       greenspace: eventData.greenspace,
                                       starttime: eventData.starttime,
-                                      endttime: eventData.endtime,
+                                      endtime: eventData.endtime,
                                       participants: eventData.participants,
                                       host: host});
     try {
       return await newEvent.save();
     } catch(e) {
+      console.log(e.message)
       throw e;
     }
   }
