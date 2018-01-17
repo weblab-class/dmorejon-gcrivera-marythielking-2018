@@ -18,14 +18,52 @@ class LeafletMap extends Component {
       center: [42.3580, -71.0942],
       zoom: 16,
       minZoom: 2,
+      zoomControl: false,
     });
     var layer = new L.StamenTileLayer("terrain");
     map.addLayer(layer);
+    var zoomControl = this.zoomControl = new L.control.zoom({ position: 'bottomleft' }).addTo(map);
     map.on('click', this.onMapClick)
+
+    if (this.props.viewOnly) {
+      map.dragging.disable();
+      map.touchZoom.disable();
+      map.doubleClickZoom.disable();
+      map.scrollWheelZoom.disable();
+      map.boxZoom.disable();
+      map.keyboard.disable();
+      if (map.tap) { map.tap.disable(); }
+      map.zoomControl = false;
+      this.zoomControl.remove();
+    }
 
     // dummy marker pre-backend
     const newMarker = L.marker([42.35665702548128, -71.1]).addTo(map);
     newMarker.on('click', this.onMarkerClick);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.viewOnly !== this.props.viewOnly) {
+      if (newProps.viewOnly) {
+        this.map.dragging.disable();
+        this.map.touchZoom.disable();
+        this.map.doubleClickZoom.disable();
+        this.map.scrollWheelZoom.disable();
+        this.map.boxZoom.disable();
+        this.map.keyboard.disable();
+        if (this.map.tap) { this.map.tap.disable(); }
+        this.zoomControl.remove();
+      } else {
+        this.map.dragging.enable();
+        this.map.touchZoom.enable();
+        this.map.doubleClickZoom.enable();
+        this.map.scrollWheelZoom.enable();
+        this.map.boxZoom.enable();
+        this.map.keyboard.enable();
+        if (this.map.tap) { this.map.tap.enable() }
+        this.zoomControl.addTo(this.map);
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -33,6 +71,7 @@ class LeafletMap extends Component {
   }
 
   onMapClick(event) {
+    if (this.props.viewOnly) { return; }
     const {
       marker
     } = this.state;
@@ -48,6 +87,7 @@ class LeafletMap extends Component {
   }
 
   onMarkerClick(event) {
+    if (this.props.viewOnly) { return; }
     const {
       marker
     } = this.state;
@@ -76,10 +116,12 @@ class LeafletMap extends Component {
 
 LeafletMap.propTypes = {
   display: PropTypes.bool,
+  viewOnly: PropTypes.bool,
 }
 
 LeafletMap.defaultProps = {
   display: true,
+  viewOnly: false,
 }
 
 export default withRouter(LeafletMap);

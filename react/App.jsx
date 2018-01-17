@@ -11,9 +11,12 @@ class App extends Component {
     this.state = {
       showMap: true,
       currentUser: null,
+      mapViewOnly: false,
     };
 
     this.loginUser = this.loginUser.bind(this);
+    this.createGreenspace = this.createGreenspace.bind(this);
+    this.setMapViewOnly = this.setMapViewOnly.bind(this);
   }
 
   loginUser(username, email) {
@@ -26,10 +29,17 @@ class App extends Component {
     this.props.router.push(`/map`);
   }
 
+  setMapViewOnly(viewOnly) {
+    if (viewOnly !== this.state.mapViewOnly) {
+      this.setState({ mapViewOnly: viewOnly });
+    }
+  }
+
   render(){
     const {
       showMap,
       currentUser,
+      mapViewOnly,
     } = this.state;
 
     return (
@@ -38,10 +48,12 @@ class App extends Component {
         <div id="content">
           <LeafletMap
             display={showMap}
+            viewOnly={mapViewOnly}
           />
           {React.cloneElement(this.props.children, {
             loginUser: this.loginUser,
             createGreenspace: this.createGreenspace,
+            setMapViewOnly: this.setMapViewOnly,
           })}
         </div>
       </div>
