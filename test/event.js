@@ -42,7 +42,6 @@ describe('Event API', () => {
       .end((err, res) => {
         if (err) done(err);
         else {
-          snowballFightID = res.body.content._id;
           done();
         }
       });
@@ -119,11 +118,11 @@ describe('Event API', () => {
     it('Get events for invalid greenspace', (done) => {
       request(app)
         .get('/event/greenspace/1')
-        .expect(400)
+        .expect(404)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
           assert.equal(res.body.success, false);
-          assert.equal(res.body.err, 'Cast to ObjectId failed for value "1" at path "_id" for model "Event"');
+          assert.equal(res.body.err, 'There are no events for this greenspace.');
         })
         .end((err, res) => {
           if (err) done(err);
@@ -143,21 +142,6 @@ describe('Event API', () => {
           assert.equal(res.body.content[0].greenspace, greenspaceID);
           assert.equal(res.body.content[1].name, 'Penguin Party');
           assert.equal(res.body.content[1].greenspace, greenspaceID);
-        })
-        .end((err, res) => {
-          if (err) done(err);
-          else done();
-        });
-    });
-
-    it('Get events for user with no events', (done) => {
-      request(app)
-        .get('/event/user/')
-        .expect(404)
-        .expect('Content-Type', 'application/json; charset=utf-8')
-        .expect((res) => {
-          assert.equal(res.body.success, false);
-          assert.equal(res.body.err, 'There are no events for this user.');
         })
         .end((err, res) => {
           if (err) done(err);

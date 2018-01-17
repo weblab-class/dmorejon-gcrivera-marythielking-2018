@@ -75,7 +75,6 @@ const event = ((eventModel) => {
     try {
       return await newEvent.save();
     } catch(e) {
-      console.log(e.message)
       throw e;
     }
   }
