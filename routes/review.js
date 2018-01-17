@@ -11,8 +11,8 @@ const router = express.Router();
     // rating: float, average rating for green space
 router.get('/greenspace/:greenspaceid', async (req, res) => {
   try{
-    await review.getReviewByGreenspace(req.body.greenspace);
-    utils.sendSuccessResponse(res);
+    const reviews = await review.getReviewByGreenspace(req.body.greenspace);
+    utils.sendSuccessResponse(res, reviews);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
   }
@@ -26,8 +26,8 @@ router.get('/greenspace/:greenspaceid', async (req, res) => {
     // reviews: list of review objects (see above schema)
 router.get('/user', async (req, res) => {
   try{
-    await review.getReviewByUser(req.user.fbid);
-    utils.sendSuccessResponse(res);
+    const reviews = await review.getReviewByUser(req.user.fbid);
+    utils.sendSuccessResponse(res, reviews);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
   }
@@ -46,9 +46,10 @@ router.get('/user', async (req, res) => {
     // review: review object (see schema)
 router.post('/', async (req, res) => {
   try {
-    await review.createReview(req.body.greenspace, req.body.rating, req.body.body,
+    const newReview = await review.createReview(req.body.greenspace,
+                                req.body.rating, req.body.body,
                                 req.body.time, req.user.fbid);
-    utils.sendSuccessResponse(res);
+    utils.sendSuccessResponse(res, newReview);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
   }

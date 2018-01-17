@@ -43,7 +43,10 @@ const review = ((reviewModel) => {
       if (reviews.length == 0) {
         throw {message: 'There are no reviews for this green space.', errorCode: 404};
       }
-      return reviews;
+      const ratingSum = reviews.reduce((sum, currReview) => {
+        return sum + currReview.rating;
+      });
+      return {reviews: reviews, rating: ratingSum/reviews.length};
     } catch(e) {
       throw e;
     }
