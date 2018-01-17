@@ -15,13 +15,17 @@ class LeafletMap extends Component {
 
   componentDidMount() {
     var map = this.map = L.map(ReactDOM.findDOMNode(this), {
-      center: [42.3601, -71.0942],
+      center: [42.3580, -71.0942],
       zoom: 16,
       minZoom: 2,
     });
     var layer = new L.StamenTileLayer("terrain");
     map.addLayer(layer);
     map.on('click', this.onMapClick)
+
+    // dummy marker pre-backend
+    const newMarker = L.marker([42.35665702548128, -71.1]).addTo(map);
+    newMarker.on('click', this.onMarkerClick);
   }
 
   componentWillUnmount() {
@@ -36,14 +40,8 @@ class LeafletMap extends Component {
     if (!marker) {
       const newMarker = L.marker(event.latlng).addTo(this.map);
       newMarker.on('click', this.onMarkerClick);
-
-      // var latlng = event.latlng;
-      // this.props.router.push(`/map/create/${latlng.lat},${latlng.lng}`);
-      // console.log(newMarker);
       this.setState({ marker: newMarker });
-    }
-
-    else {
+    } else {
       marker.remove(this.map);
       this.setState({ marker: null });
     }
@@ -55,12 +53,17 @@ class LeafletMap extends Component {
     } = this.state;
 
     const { lat: e_lat, lng: e_lng } = event.latlng;
-    const { lat: m_lat, lng: m_lng } = marker.getLatLng();
-
-    if (e_lat === m_lat && e_lng === m_lng) {
-      this.props.router.push(`/map/create/${e_lat},${e_lng}`)
+    if (marker) {
+      const { lat: m_lat, lng: m_lng } = marker.getLatLng();
+      if (e_lat === m_lat && e_lng === m_lng) {
+        this.props.router.push(`/map/${e_lat},${e_lng}/create`);
+      } else {
+        marker.remove(this.map);
+        this.setState({ marker: null });
+        this.props.router.push(`/map/${e_lat},${e_lng}`);
+      }
     } else {
-      console.log('marker clicked');
+      this.props.router.push(`/map/${e_lat},${e_lng}`);
     }
   }
 
