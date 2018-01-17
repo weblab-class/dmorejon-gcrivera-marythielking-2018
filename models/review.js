@@ -5,7 +5,7 @@ const reviewModel = mongoose.model('Review', mongoose.Schema({
   user: {type: String, required: true},
   body: {type: String, required: true},
   rating: {type: Number, required: true},
-  time: {type: String, required: true}
+  time: {type: Date, required: true}
 }));
 
 const review = ((reviewModel) => {
@@ -16,7 +16,7 @@ const review = ((reviewModel) => {
                                         body: body, time: time, user: user});
     try {
       const query = await reviewModel.findOne({user: user, greenspace: greenspace});
-      if (query === null) {
+      if (!query) {
         return await newReview.save();
       } else {
         throw {message: 'User has already written review.', errorCode: 400};
@@ -29,7 +29,7 @@ const review = ((reviewModel) => {
   that.deleteReview = async (greenspace, user) => {
     try {
       const oldReview = await reviewModel.findOneAndRemove({user: user, greenspace: greenspace});
-      if (oldReview === null) {
+      if (!oldReview) {
         throw {message: 'Review does not exist for this user', errorCode: 404};
       }
     } catch(e) {
@@ -39,11 +39,21 @@ const review = ((reviewModel) => {
 
   that.getReviewByGreenspace = async (greenspace) => {
     try {
-      const reviews = await reviewModel.find({greenspace: greenspace});
+      let reviews = await reviewModel.find({greenspace: greenspace});
       if (reviews.length == 0) {
         throw {message: 'There are no reviews for this green space.', errorCode: 404};
       }
-      return reviews;
+      reviews = reviews.sort((a, b) => {
+        if (a.time.getTime() > b.time.getTime()) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+      const ratingSum = reviews.reduce((sum, currReview) => {
+        return sum + currReview.rating;
+      });
+      return {reviews: reviews, rating: ratingSum/reviews.length};
     } catch(e) {
       throw e;
     }
@@ -55,7 +65,13 @@ const review = ((reviewModel) => {
       if (reviews.length == 0) {
         throw {message: 'There are no reviews for this user.', errorCode: 404};
       }
-      return reviews;
+      return reviews.sort((a, b) => {
+        if (a.time.getTime() > b.time.getTime()) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
     } catch(e) {
       throw e;
     }

@@ -1,17 +1,47 @@
 const mongoose = require('mongoose');
 
 const greenspaceModel = mongoose.model('Greenspace', mongoose.Schema({
-  location: {type: [{type: Number, required: true}], required: true, unique: true},
+  location: {type: [{type: Number, required: true}], required: true},
+  _arraySignature: { type: String, unique: true },
   name: {type: String, required: true}
 }));
 
 const greenspace = ((greenspaceModel) => {
   let that = {};
 
-  // TODO: figure out how to make sure greenspaces are unique, talk to mary
-  //        about location data
+  that.getGreenspace = async (id) => {
+    try {
+      const greenspaceData = await greenspaceModel.findOne({_id: id});
+      if (!greenspaceData) {
+        throw {message: 'Greenspace does not exist.', errorCode: 404};
+      }
+      return greenspaceData;
+    } catch(e) {
+      throw e;
+    }
+  }
+
+  that.getGreenspaces = async (minLong, maxLong, minLat, maxLat) => {
+    try {
+      const greenspaces = await greenspaceModel.find({'location.0': {$gte: minLong, $lte: maxLong},
+                                                      'location.1' :{$gte: minLat, $lte: maxLat}});
+      if (greenspaces.length == 0) {
+        throw {message: 'No Greenspaces found.', errorCode: 404};
+      }
+      return greenspaces;
+    } catch(e) {
+      throw e;
+    }
+  }
+
   that.createGreenspace = async (name, location) => {
-    const newGreenspace = new greenspaceModel({location: location, name: name});
+    if (!location) {
+      throw {message: 'Greenspace validation failed: location: Path `location` is required.', errorCode: 400};
+    }
+    const _arraySignature = location.join('.');
+    const newGreenspace = new greenspaceModel({location: location,
+                                                name: name,
+                                                _arraySignature: _arraySignature});
     try {
       return await newGreenspace.save();
     } catch(e) {
@@ -22,7 +52,7 @@ const greenspace = ((greenspaceModel) => {
   that.deleteGreenspace = async (id) => {
     try {
         const oldGreenspace = await greenspaceModel.findOneAndRemove({_id: id});
-        if (oldGreenspace === null) {
+        if (!oldGreenspace) {
           throw {message: 'Greenspace does not exist.', errorCode: 404}
         }
         return;
@@ -34,7 +64,7 @@ const greenspace = ((greenspaceModel) => {
   that.changeGreenspaceName = async (id, name) => {
     try {
       const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {name: name});
-      if (oldGreenspace === null) {
+      if (!oldGreenspace) {
         throw {message: 'Greenspace does not exist.', errorCode: 404}
       }
       return;
@@ -46,7 +76,7 @@ const greenspace = ((greenspaceModel) => {
   that.changeGreenspaceLocation = async (id, location) => {
     try {
       const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {location: location});
-      if (oldGreenspace === null) {
+      if (!oldGreenspace) {
         throw {message: 'Greenspace does not exist.', errorCode: 404}
       }
       return;

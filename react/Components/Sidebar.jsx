@@ -10,7 +10,7 @@ class Sidebar extends Component {
 
   render(){
     return (
-      <div id="sidebar">
+      <div className="sidebar" id={this.props.id}>
         {this.props.children}
       </div>
     )
@@ -18,7 +18,8 @@ class Sidebar extends Component {
 }
 
 Sidebar.propTypes = {
-  children : PropTypes.any.isRequired
+  children : PropTypes.any.isRequired,
+  id : PropTypes.string,
 };
 
 export default withRouter(onClickOutside(Sidebar));

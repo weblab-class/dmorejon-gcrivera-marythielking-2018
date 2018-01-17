@@ -10,7 +10,7 @@ class PopUp extends Component {
 
   render(){
     return (
-      <div id="popup">
+      <div className="popup" id={this.props.id}>
         {this.props.children}
       </div>
     )
@@ -18,7 +18,8 @@ class PopUp extends Component {
 }
 
 PopUp.propTypes = {
-  children : PropTypes.any.isRequired
+  children : PropTypes.any.isRequired,
+  id : PropTypes.string,
 };
 
 export default withRouter(onClickOutside(PopUp));

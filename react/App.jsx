@@ -10,18 +10,33 @@ class App extends Component {
     super(props);
     this.state = {
       showMap: true,
+      currentUser: null,
     };
+
+    this.loginUser = this.loginUser.bind(this);
+  }
+
+  loginUser(username, email) {
+    this.setState({ currentUser: username });
+    this.props.router.push(`/map`);
   }
 
   render(){
+    const {
+      showMap,
+      currentUser,
+    } = this.state;
+
     return (
       <div>
-        <Header />
+        <Header currentUser={currentUser} />
         <div id="content">
           <LeafletMap
-            display={this.state.showMap}
+            display={showMap}
           />
-          {this.props.children}
+          {React.cloneElement(this.props.children, {
+            loginUser: this.loginUser,
+          })}
         </div>
       </div>
     );
