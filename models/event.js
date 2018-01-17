@@ -16,7 +16,7 @@ const event = ((eventModel) => {
   that.getEvent = async (id) => {
     try {
       const newEvent = await eventModel.findOne({_id: id});
-      if (newEvent === null) {
+      if (!newEvent) {
         throw {message: 'Event does not exist.', errorCode: 404}
       }
       return newEvent;
@@ -70,7 +70,7 @@ const event = ((eventModel) => {
   that.editEvent = async (eventid, eventData, userid) => {
     try {
       const editableEvent = await eventModel.findOne({_id: eventid});
-      if (editableEvent === null) {
+      if (!editableEvent) {
         throw {message: 'Event does not exist.', errorCode: 404}
       }
       if (editableEvent.host == userid) {
@@ -86,7 +86,7 @@ const event = ((eventModel) => {
   that.joinEvent = async (eventid, userid) => {
     try {
       const edditedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$push: {participants: userid}}, {new: true});
-      if (edditedEvent === null) {throw {message: 'Event does not exist.', errorCode: 404}}
+      if (!edditedEvent) {throw {message: 'Event does not exist.', errorCode: 404}}
       return edditedEvent;
     } catch(e) {
       throw e;
@@ -96,7 +96,7 @@ const event = ((eventModel) => {
   that.leaveEvent = async (eventid, userid, targetid) => {
     try {
       const eventData = await eventModel.findOne({_id: eventid});
-      if (eventData === null) {throw {message: 'Event does not exist.', errorCode: 404}}
+      if (!eventData) {throw {message: 'Event does not exist.', errorCode: 404}}
       if (userid == targetid || userid == eventData.host) {
         return await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {participants: targetid}}, {new: true});
       } else {
@@ -110,7 +110,7 @@ const event = ((eventModel) => {
   that.deleteEvent = async (eventid, userid) => {
     try {
       const eventData = await eventModel.findOne({_id: eventid});
-      if (eventData === null) {throw {message: 'Event does not exist.', errorCode: 404}}
+      if (!eventData) {throw {message: 'Event does not exist.', errorCode: 404}}
       if (eventData.host != userid) {
         throw {message: 'User does not have permission to delete event.', errorCode: 403};
       }

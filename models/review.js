@@ -16,7 +16,7 @@ const review = ((reviewModel) => {
                                         body: body, time: time, user: user});
     try {
       const query = await reviewModel.findOne({user: user, greenspace: greenspace});
-      if (query === null) {
+      if (!query) {
         return await newReview.save();
       } else {
         throw {message: 'User has already written review.', errorCode: 400};
@@ -29,7 +29,7 @@ const review = ((reviewModel) => {
   that.deleteReview = async (greenspace, user) => {
     try {
       const oldReview = await reviewModel.findOneAndRemove({user: user, greenspace: greenspace});
-      if (oldReview === null) {
+      if (!oldReview) {
         throw {message: 'Review does not exist for this user', errorCode: 404};
       }
     } catch(e) {

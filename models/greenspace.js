@@ -8,8 +8,6 @@ const greenspaceModel = mongoose.model('Greenspace', mongoose.Schema({
 const greenspace = ((greenspaceModel) => {
   let that = {};
 
-  // TODO: figure out how to make sure greenspaces are unique, talk to mary
-  //        about location data
   that.createGreenspace = async (name, location) => {
     const newGreenspace = new greenspaceModel({location: location, name: name});
     try {
@@ -22,7 +20,7 @@ const greenspace = ((greenspaceModel) => {
   that.deleteGreenspace = async (id) => {
     try {
         const oldGreenspace = await greenspaceModel.findOneAndRemove({_id: id});
-        if (oldGreenspace === null) {
+        if (!oldGreenspace) {
           throw {message: 'Greenspace does not exist.', errorCode: 404}
         }
         return;
@@ -34,7 +32,7 @@ const greenspace = ((greenspaceModel) => {
   that.changeGreenspaceName = async (id, name) => {
     try {
       const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {name: name});
-      if (oldGreenspace === null) {
+      if (!oldGreenspace) {
         throw {message: 'Greenspace does not exist.', errorCode: 404}
       }
       return;
@@ -46,7 +44,7 @@ const greenspace = ((greenspaceModel) => {
   that.changeGreenspaceLocation = async (id, location) => {
     try {
       const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {location: location});
-      if (oldGreenspace === null) {
+      if (!oldGreenspace) {
         throw {message: 'Greenspace does not exist.', errorCode: 404}
       }
       return;
