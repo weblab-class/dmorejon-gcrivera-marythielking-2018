@@ -16,12 +16,12 @@ class CreateGreenspace extends Component {
     this.create = this.create.bind(this);
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.params !== this.props.params) {
-      this.state.lat = newProps.params.lat;
-      this.state.lng = newProps.params.lng;
-    }
-  }
+  // componentWillReceiveProps(newProps) {
+  //   if (newProps.params !== this.props.params) {
+  //     this.state.lat = newProps.params.lat;
+  //     this.state.lng = newProps.params.lng;
+  //   }
+  // }
 
   updateFormVal(event){
     const updatedField = event.target.name;
@@ -43,8 +43,6 @@ class CreateGreenspace extends Component {
     return (
       <Sidebar>
         <h1>Create Greenspace</h1>
-        <div>Latitude: {this.state.lat}</div>
-        <div>Longitude: {this.state.lng}</div>
         <div className="form">
           <input className='form-input'
             name='nameVal'

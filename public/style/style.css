@@ -36,6 +36,11 @@ a {
   display: none;
 }
 
+#content {
+  position: relative;
+  height: calc(100vh - 80px);
+}
+
 #header {
   width: 100%;
   height: 80px;
@@ -82,11 +87,6 @@ a {
 
 .header-btn-content:hover {
   cursor: default;
-}
-
-#content {
-  position: relative;
-  height: calc(100vh - 80px);
 }
 
 #leaflet-map {

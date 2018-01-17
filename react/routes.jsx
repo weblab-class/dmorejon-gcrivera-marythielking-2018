@@ -6,6 +6,7 @@ import Homepage from './Pages/Homepage.jsx';
 import LogIn from './Pages/LogIn.jsx';
 import MapView from './Pages/MapView.jsx';
 import CreateGreenspace from './Pages/CreateGreenspace.jsx';
+import GreenspaceInfo from './Pages/GreenspaceInfo.jsx';
 
 export default (
   <Router history={browserHistory} >
@@ -17,6 +18,8 @@ export default (
         component={MapView}/>
       <Route path="map/create/:lat,:lng"
         component={CreateGreenspace} />
+      <Route path="map/:lat,:lng"
+        component={GreenspaceInfo} />
     </Route>
   </Router>
 );

@@ -22,6 +22,10 @@ class LeafletMap extends Component {
     var layer = new L.StamenTileLayer("terrain");
     map.addLayer(layer);
     map.on('click', this.onMapClick)
+
+    // dummy marker pre-backend
+    const newMarker = L.marker([42.35665702548128, -71.1]).addTo(map);
+    newMarker.on('click', this.onMarkerClick);
   }
 
   componentWillUnmount() {
@@ -49,12 +53,15 @@ class LeafletMap extends Component {
     } = this.state;
 
     const { lat: e_lat, lng: e_lng } = event.latlng;
-    const { lat: m_lat, lng: m_lng } = marker.getLatLng();
-
-    if (e_lat === m_lat && e_lng === m_lng) {
-      this.props.router.push(`/map/create/${e_lat},${e_lng}`)
+    if (marker) {
+      const { lat: m_lat, lng: m_lng } = marker.getLatLng();
+      if (e_lat === m_lat && e_lng === m_lng) {
+        this.props.router.push(`/map/create/${e_lat},${e_lng}`);
+      } else {
+        console.log('marker state clicked');
+      }
     } else {
-      console.log('marker clicked');
+      this.props.router.push(`/map/${e_lat},${e_lng}`);
     }
   }
 
