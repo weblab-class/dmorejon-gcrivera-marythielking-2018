@@ -54,7 +54,8 @@ class LogIn extends Component {
             value={email}
             onChange={this.updateFormVal}
           />
-          <div className="fb-btn btn" onClick={this.loginUser}>Continue with Facebook</div>
+        <div className="fb-btn btn" onClick={this.loginUser}>Continue with not Facebook</div>
+          <a href="/auth/facebook" className="fb-btn btn">Log in with Facebook</a>
         </div>
       </PopUp>
     );
