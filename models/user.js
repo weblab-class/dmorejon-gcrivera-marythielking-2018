@@ -3,8 +3,8 @@ var mongoose = require('mongoose');
 var userModel = mongoose.model('User', mongoose.Schema({
   fbid: {type: Number, required: true, unique: true},
   displayname: {type: String, required: true},
-  username: {type: String, required: true}, // TODO: possibly remove required
-  email: {type: String, required: true} // TODO: possibly remove required
+  username: {type: String, required: true, unique: true}, // TODO: possibly remove required
+  email: {type: String, required: true, unique: true} // TODO: possibly remove required
 }));
 
 const user = (userModel) => {
@@ -15,7 +15,7 @@ const user = (userModel) => {
         const oldUser =  await userModel.findOneAndUpdate({user: user}, {username: username, email: email},
                                               {new: false});
         if (oldUser == null) {
-          throw {msg: 'User not found, cannot update', code: 404};
+          throw {message: 'User not found, cannot update', errorCode: 404};
         }
       } catch(e) {
         throw e;
@@ -26,7 +26,7 @@ const user = (userModel) => {
       try {
         const userData = await userModel.findOne({user: user})
         if (userData == null) {
-          throw {msg: 'User not found.', code: 404};
+          throw {message: 'User not found.', errorCode: 404};
         }
       } catch(e) {
         throw e;

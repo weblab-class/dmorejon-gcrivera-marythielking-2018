@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const greenspaceModel = mongoose.model('Greenspace', mongoose.Schema({
-  location: [{type: Number, required: true, unique: true}],
+  location: {type: [{type: Number, required: true}], required: true, unique: true},
   name: {type: String, required: true}
 }));
 
@@ -23,7 +23,7 @@ const greenspace = ((greenspaceModel) => {
     try {
         const oldGreenspace = await greenspaceModel.findOneAndRemove({_id: id});
         if (oldGreenspace === null) {
-          throw {msg: 'Greenspace does not exist.', code: 404}
+          throw {message: 'Greenspace does not exist.', errorCode: 404}
         }
         return;
     } catch (e) {
@@ -35,7 +35,7 @@ const greenspace = ((greenspaceModel) => {
     try {
       const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {name: name});
       if (oldGreenspace === null) {
-        throw {msg: 'Greenspace does not exist.', code: 404}
+        throw {message: 'Greenspace does not exist.', errorCode: 404}
       }
       return;
     } catch(e) {
@@ -47,7 +47,7 @@ const greenspace = ((greenspaceModel) => {
     try {
       const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {location: location});
       if (oldGreenspace === null) {
-        throw {msg: 'Greenspace does not exist.', code: 404}
+        throw {message: 'Greenspace does not exist.', errorCode: 404}
       }
       return;
     } catch(e) {

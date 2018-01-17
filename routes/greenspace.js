@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     const newGreenspace = await greenspace.createGreenspace(req.body.name, req.body.location);
     utils.sendSuccessResponse(res, newGreenspace);
   } catch(e) {
-    utils.sendErrorResponse(res, e.code, e.msg);
+    utils.sendErrorResponse(res, e.errorCode, e.message);
   }
 });
 
@@ -31,7 +31,7 @@ router.delete('/:greenspaceid', async (req, res) => {
     await greenspace.deleteGreenspace(req.params.greenspaceid);
     utils.sendSuccessResponse(res);
   } catch(e) {
-    utils.sendErrorResponse(res, e.code, e.msg);
+    utils.sendErrorResponse(res, e.errorCode, e.message);
   }
 });
 
@@ -46,7 +46,7 @@ router.put('/name/:greenspaceid', async (req, res) => {
     await greenspace.changeGreenspaceName(req.params.greenspaceid, req.body.name);
     utils.sendSuccessResponse(res);
   } catch(e) {
-    utils.sendErrorResponse(res, e.code, e.msg);
+    utils.sendErrorResponse(res, e.errorCode, e.message);
   }
 });
 
@@ -61,7 +61,7 @@ router.put('/location/:greenspaceid', async (req, res) => {
     await greenspace.changeGreenspaceName(req.params.greenspaceid, req.body.location);
     utils.sendSuccessResponse(res);
   } catch(e) {
-    utils.sendErrorResponse(res, e.code, e.msg);
+    utils.sendErrorResponse(res, e.errorCode, e.message);
   }
 });
 
