@@ -11,7 +11,7 @@ for (let i in mongoose.connection.collections) {
 }
 
 let barelyGreenID;
-const badID = mongoose.Types.ObjectId("112222222222")
+const badID = mongoose.Types.ObjectId("112222222222");
 
 describe('Greenspace API', () => {
 
@@ -84,7 +84,7 @@ describe('Greenspace API', () => {
 
     it('Get data for an invalid ID', (done) => {
       request(app)
-        .get('/greenspace/' + 1)
+        .get('/greenspace/1')
         .expect(400)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {

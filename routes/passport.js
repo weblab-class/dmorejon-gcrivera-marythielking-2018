@@ -7,7 +7,7 @@ const userModel = require('../models/user').userModel;
 passport.use(new fbp.Strategy({
   clientID: '132612304207672',
   clientSecret: 'c4c3e38c88b0252b15044a01aab497d4',
-  callbackURL: '/auth/facebook/callback'
+  callbackURL: 'user/auth/facebook/callback'
 }, async (accessToken, BrefreshToken, profile, done) => {
   try {
     let user = await userModel.findOne({fbid: profile.id});
