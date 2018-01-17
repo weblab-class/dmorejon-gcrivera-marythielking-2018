@@ -3,8 +3,8 @@ var mongoose = require('mongoose');
 var eventModel = mongoose.model('Event', mongoose.Schema({
   name: {type: String, required: true},
   description: {type: String},
-  starttime: {type: String, required: true},
-  endtime: {type: String, required: true},
+  starttime: {type: Date, required: true},
+  endtime: {type: Date, required: true, expires: '10s'},
   greenspace: {type: String, required: true},
   host: {type: String, required: true},
   participants: {type: [{type: String, required: true}], required: true}

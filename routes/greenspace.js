@@ -5,6 +5,37 @@ const greenspace = require('../models/greenspace');
 const router = express.Router();
 
 
+// GET /greenspace/:greenspaceid
+  // Response Body:
+    // success: true if green space added to database; false otherwise
+    // err: on error, an error message
+    // greenspace: greenspace object (see schema)
+router.get('/:greenspaceid', async (req, res) => {
+  try {
+    const greenspaceData = await greenspace.getGreenspace(req.params.greenspaceid);
+    utils.sendSuccessResponse(res, greenspaceData);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
+// GET /greenspace/:minLong/:maxLong/:minLat/:maxLat
+  // Response Body:
+    // success: true if green space added to database; false otherwise
+    // err: on error, an error message
+    // greenspaces: list of greenspace objects (see schema)
+router.get('/:minLong/:maxLong/:minLat/:maxLat', async (req, res) => {
+  try {
+    const greenspaces = await greenspace.getGreenspaces(req.params.minLong,
+                                                        req.params.maxLong,
+                                                        req.params.minLat,
+                                                        req.params.maxLat);
+    utils.sendSuccessResponse(res, greenspaces);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
 // POST /greenspace
   // Request Body:
     // name

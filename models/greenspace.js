@@ -8,6 +8,31 @@ const greenspaceModel = mongoose.model('Greenspace', mongoose.Schema({
 const greenspace = ((greenspaceModel) => {
   let that = {};
 
+  that.getGreenspace = async (id) => {
+    try {
+      const greenspaceData = await greenspaceModel.findOne({_id: id});
+      if (!oldGreenspace) {
+        throw {message: 'Greenspace does not exist.', errorCode: 404};
+      }
+      return greenspaceData;
+    } catch(e) {
+      throw e;
+    }
+  }
+
+  that.getGreenspaces = async (minLong, maxLong, minLat, maxLat) => {
+    try {
+      const greenspaces = await greenspace.find({location:
+          [{$lte: minLong, $gte: maxLong}, {$lte: minLat, $gte: maxLat}]});
+      if (greenspaces.length == 0) {
+        throw {message: 'No Greenspaces found.', errorCode: 404};
+      }
+      return greenspaces;
+    } catch(e) {
+      throw e;
+    }
+  }
+
   that.createGreenspace = async (name, location) => {
     const newGreenspace = new greenspaceModel({location: location, name: name});
     try {
