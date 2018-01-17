@@ -21,6 +21,11 @@ class App extends Component {
     this.props.router.push(`/map`);
   }
 
+  createGreenspace(name, lat, lng) {
+    console.log(`greenspace ${name} created at ${lat}, ${lng}`);
+    this.props.router.push(`/map`);
+  }
+
   render(){
     const {
       showMap,
@@ -36,6 +41,7 @@ class App extends Component {
           />
           {React.cloneElement(this.props.children, {
             loginUser: this.loginUser,
+            createGreenspace: this.createGreenspace,
           })}
         </div>
       </div>

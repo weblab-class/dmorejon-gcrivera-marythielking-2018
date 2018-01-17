@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Sidebar from '../Components/Sidebar.jsx';
 
 class CreateGreenspace extends Component {
@@ -7,7 +8,12 @@ class CreateGreenspace extends Component {
     this.state = {
       lat: props.params.lat,
       lng: props.params.lng,
+
+      nameVal: '',
     };
+
+    this.updateFormVal = this.updateFormVal.bind(this);
+    this.create = this.create.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -17,15 +23,44 @@ class CreateGreenspace extends Component {
     }
   }
 
+  updateFormVal(event){
+    const updatedField = event.target.name;
+    const updatedValue = event.target.value;
+    this.setState((prevState) => {
+      prevState[updatedField] = updatedValue;
+      return prevState;
+    });
+  }
+
+  create() {
+    const { lat, lng, nameVal } = this.state;
+    this.props.createGreenspace(nameVal, lat, lng);
+  }
+
   render(){
+    const { nameVal } = this.state;
+
     return (
       <Sidebar>
         <h1>Create Greenspace</h1>
         <div>Latitude: {this.state.lat}</div>
         <div>Longitude: {this.state.lng}</div>
+        <div className="form">
+          <input className='form-input'
+            name='nameVal'
+            placeholder='greenspace name'
+            value={nameVal}
+            onChange={this.updateFormVal}
+          />
+          <div className="btn" onClick={this.create}>Create</div>
+        </div>
       </Sidebar>
     );
   }
+}
+
+CreateGreenspace.propTypes = {
+  createGreenspace: PropTypes.func,
 }
 
 export default CreateGreenspace;

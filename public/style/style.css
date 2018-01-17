@@ -19,6 +19,19 @@ a {
   cursor: pointer;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input {
+  padding: 10px 15px;
+  margin: 5px;
+  font-size: 16px;
+  border: 1px solid #dbdbdb;
+  border-radius: 5px;
+}
+
 .hidden {
   display: none;
 }
@@ -90,7 +103,6 @@ a {
   height: 100%;
   width: 300px;
   background-color: rgba(219, 219, 219, 0.9);;
-  opacity: 0.8;
   padding: 10px 15px;
 }
 
@@ -111,19 +123,6 @@ a {
   text-align: center;
   flex-wrap: wrap;
   border-radius: 5px;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-input {
-  border: 1px solid #dbdbdb;
-  border-radius: 5px;
-  padding: 5px 10px;
-  margin: 5px;
-  font-size: 14px;
 }
 
 #homepage-btns {

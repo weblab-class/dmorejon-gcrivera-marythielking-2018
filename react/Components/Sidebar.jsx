@@ -5,7 +5,9 @@ import onClickOutside from 'react-onclickoutside';
 
 class Sidebar extends Component {
   handleClickOutside(event) {
-    this.props.router.push(`/map`);
+    if (this.props.clickOut) {
+      this.props.router.push(`/map`);
+    }
   }
 
   render(){
@@ -18,8 +20,13 @@ class Sidebar extends Component {
 }
 
 Sidebar.propTypes = {
-  children : PropTypes.any.isRequired,
-  id : PropTypes.string,
+  children: PropTypes.any.isRequired,
+  id: PropTypes.string,
+  clickOut: PropTypes.bool,
 };
+
+Sidebar.defaultProps = {
+  clickOut: true,
+}
 
 export default withRouter(onClickOutside(Sidebar));

@@ -15,7 +15,7 @@ class LeafletMap extends Component {
 
   componentDidMount() {
     var map = this.map = L.map(ReactDOM.findDOMNode(this), {
-      center: [42.3601, -71.0942],
+      center: [42.3580, -71.0942],
       zoom: 16,
       minZoom: 2,
     });
@@ -36,14 +36,8 @@ class LeafletMap extends Component {
     if (!marker) {
       const newMarker = L.marker(event.latlng).addTo(this.map);
       newMarker.on('click', this.onMarkerClick);
-
-      // var latlng = event.latlng;
-      // this.props.router.push(`/map/create/${latlng.lat},${latlng.lng}`);
-      // console.log(newMarker);
       this.setState({ marker: newMarker });
-    }
-
-    else {
+    } else {
       marker.remove(this.map);
       this.setState({ marker: null });
     }
