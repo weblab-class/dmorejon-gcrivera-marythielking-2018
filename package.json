@@ -62,6 +62,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-jsxhint": "^0.8.0",
     "json-loader": "^0.5.4",
+    "superagent": "^3.8.2",
     "webpack": "^1.13.3",
     "webpack-dev-middleware": "^1.8.4",
     "webpack-hot-middleware": "^2.13.2"

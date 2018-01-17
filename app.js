@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const passport = require('passport');
 
 const greenspace = require('./routes/greenspace');
 const review = require('./routes/review');
@@ -25,6 +26,10 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// hook up passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Set up our routes.
 app.use('/greenspace', greenspace);
