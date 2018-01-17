@@ -69,7 +69,7 @@ const event = ((eventModel) => {
                                       description: eventData.description,
                                       greenspace: eventData.greenspace,
                                       starttime: eventData.starttime,
-                                      endttime: eventData.endtime,
+                                      endtime: eventData.endtime,
                                       participants: eventData.participants,
                                       host: host});
     try {

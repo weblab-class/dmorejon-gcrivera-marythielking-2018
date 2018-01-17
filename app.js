@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const passport = require('passport');
+const passport = require('./routes/passport');
 
 const greenspace = require('./routes/greenspace');
 const review = require('./routes/review');
@@ -26,10 +26,37 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(bodyParser());
 
 // hook up passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+// authentication routes
+app.get('/auth/facebook', passport.authenticate('facebook'));
+
+app.get(
+  '/auth/facebook/callback',
+  passport.authenticate(
+    'facebook',
+    { failureRedirect: '/' }
+  ),
+  function(req, res) {
+    res.redirect('/');
+  }
+);
+
+if (process.env.TEST) {
+  app.use((req, res, next) => {
+    req.user = {fbid: "247833829183"};
+    next();
+  });
+}
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
 
 // Set up our routes.
 app.use('/greenspace', greenspace);

@@ -4,6 +4,20 @@ const event = require('../models/event');
 
 const router = express.Router();
 
+// GET /event/user/
+  // Response Body:
+    // success: true if events retrieved from the database; false otherwise
+    // err: on error, an error message
+    // events: list of event objects (see above schema)
+router.get('/user', async (req, res) => {
+  try {
+    const events = await event.getEventsByUser(req.user.fbid);
+    utils.sendSuccessResponse(res, events);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
 // GET /event/:eventid
   // Response Body:
     // success: true if event retrieved from the database; false otherwise
@@ -26,20 +40,6 @@ router.get('/:eventid', async (req, res) => {
 router.get('/greenspace/:greenspaceid', async (req, res) => {
   try {
     const events = await event.getEventsByGreenspace(req.params.greenspaceid);
-    utils.sendSuccessResponse(res, events);
-  } catch(e) {
-    utils.sendErrorResponse(res, e.errorCode, e.message);
-  }
-});
-
-// GET /event/user/
-  // Response Body:
-    // success: true if events retrieved from the database; false otherwise
-    // err: on error, an error message
-    // events: list of event objects (see above schema)
-router.get('/user', async (req, res) => {
-  try {
-    const events = await event.getEventsByUser(req.user.fbid);
     utils.sendSuccessResponse(res, events);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
