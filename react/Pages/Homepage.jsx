@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
-import LeafletMap from '../Components/LeafletMap.jsx';
 import PopUp from '../Components/PopUp.jsx';
 
-export default class Homepage extends Component {
-    render(){
-      return (
-        <div>
-          <LeafletMap />
-          <PopUp>Homepage</PopUp>
+class Homepage extends Component {
+  render(){
+    return (
+      <PopUp>
+        <h1 className="section-header">Welcome to Greenspace!</h1>
+        <div id="homepage-btns">
+          <div className="btn">Explore</div>
+          <div className="btn">Log In</div>
         </div>
-      );
-    }
+      </PopUp>
+    );
+  }
 }
+
+export default Homepage;
