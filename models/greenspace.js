@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const greenspaceModel = mongoose.model('Greenspace', mongoose.Schema({
-  location: {type: [{type: Number, required: true}], required: true, unique: true},
+  location: {type: [{type: Number, required: true}], required: true},
+  _arraySignature: { type: String, unique: true },
   name: {type: String, required: true}
 }));
 
@@ -11,7 +12,7 @@ const greenspace = ((greenspaceModel) => {
   that.getGreenspace = async (id) => {
     try {
       const greenspaceData = await greenspaceModel.findOne({_id: id});
-      if (!oldGreenspace) {
+      if (!greenspaceData) {
         throw {message: 'Greenspace does not exist.', errorCode: 404};
       }
       return greenspaceData;
@@ -22,8 +23,8 @@ const greenspace = ((greenspaceModel) => {
 
   that.getGreenspaces = async (minLong, maxLong, minLat, maxLat) => {
     try {
-      const greenspaces = await greenspace.find({location:
-          [{$lte: minLong, $gte: maxLong}, {$lte: minLat, $gte: maxLat}]});
+      const greenspaces = await greenspaceModel.find({'location.0': {$gte: minLong, $lte: maxLong},
+                                                      'location.1' :{$gte: minLat, $lte: maxLat}});
       if (greenspaces.length == 0) {
         throw {message: 'No Greenspaces found.', errorCode: 404};
       }
@@ -34,7 +35,13 @@ const greenspace = ((greenspaceModel) => {
   }
 
   that.createGreenspace = async (name, location) => {
-    const newGreenspace = new greenspaceModel({location: location, name: name});
+    if (!location) {
+      throw {message: 'Greenspace validation failed: location: Path `location` is required.', errorCode: 400};
+    }
+    const _arraySignature = location.join('.');
+    const newGreenspace = new greenspaceModel({location: location,
+                                                name: name,
+                                                _arraySignature: _arraySignature});
     try {
       return await newGreenspace.save();
     } catch(e) {
