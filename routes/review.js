@@ -11,13 +11,8 @@ const router = express.Router();
     // rating: float, average rating for green space
 router.get('/greenspace/:greenspaceid', async (req, res) => {
   try{
-<<<<<<< HEAD
-    await review.getReviewByGreenspace(req.params.greenspace);
-    utils.sendSuccessResponse(res);
-=======
-    const reviews = await review.getReviewByGreenspace(req.body.greenspace);
+    const reviews = await review.getReviewByGreenspace(req.params.greenspace);
     utils.sendSuccessResponse(res, reviews);
->>>>>>> bb4ef277170b9c6ed82b3dc51c53ed1149d40dd7
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
   }
