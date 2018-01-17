@@ -5,7 +5,7 @@ const reviewModel = mongoose.model('Review', mongoose.Schema({
   user: {type: String, required: true},
   body: {type: String, required: true},
   rating: {type: Number, required: true},
-  time: {type: String, required: true}
+  time: {type: Date, required: true}
 }));
 
 const review = ((reviewModel) => {
@@ -39,10 +39,17 @@ const review = ((reviewModel) => {
 
   that.getReviewByGreenspace = async (greenspace) => {
     try {
-      const reviews = await reviewModel.find({greenspace: greenspace});
+      let reviews = await reviewModel.find({greenspace: greenspace});
       if (reviews.length == 0) {
         throw {message: 'There are no reviews for this green space.', errorCode: 404};
       }
+      reviews = reviews.sort((a, b) => {
+        if (a.time.getTime() > b.time.getTime()) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
       const ratingSum = reviews.reduce((sum, currReview) => {
         return sum + currReview.rating;
       });
@@ -58,7 +65,13 @@ const review = ((reviewModel) => {
       if (reviews.length == 0) {
         throw {message: 'There are no reviews for this user.', errorCode: 404};
       }
-      return reviews;
+      return reviews.sort((a, b) => {
+        if (a.time.getTime() > b.time.getTime()) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
     } catch(e) {
       throw e;
     }

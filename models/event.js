@@ -31,7 +31,13 @@ const event = ((eventModel) => {
       if (events.length == 0) {
         throw {message: 'There are no events for this greenspace.', errorCode: 404}
       }
-      return events;
+      return events.sort((a, b) => {
+        if (a.starttime.getTime() > b.starttime.getTime()) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
     } catch(e) {
       throw e;
     }
@@ -43,7 +49,13 @@ const event = ((eventModel) => {
       if (events.length == 0) {
         throw {message: 'There are no events for this user.', errorCode: 404}
       }
-      return events;
+      return events.sort((a, b) => {
+        if (a.starttime.getTime() > b.starttime.getTime()) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
     } catch(e) {
       throw e;
     }
