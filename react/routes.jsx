@@ -1,9 +1,10 @@
 import React from 'react';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+
 import App from './App.jsx';
 import Homepage from './Pages/Homepage.jsx';
 import LogIn from './Pages/LogIn.jsx';
-import MapView from './Pages/MapView.jsx';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import CreateGreenspace from './Pages/CreateGreenspace.jsx';
 
 export default (
   <Router history={browserHistory} >
@@ -11,8 +12,9 @@ export default (
       <IndexRoute component={Homepage} />
       <Route path="login"
         component={LogIn} />
-      <Route path="map"
-        component={MapView} />
+      <Route path="map" />
+      <Route path="map/create/:lat,:lng"
+        component={CreateGreenspace} />
     </Route>
   </Router>
 );
