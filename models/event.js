@@ -109,6 +109,7 @@ const event = ((eventModel) => {
     try {
       const eventData = await eventModel.findOne({_id: eventid});
       if (!eventData) {throw {message: 'Event does not exist.', errorCode: 404}}
+      if (targetid == eventData.host) {throw {message: 'Host cannot leave event.', errorCode: 400}}
       if (userid == targetid || userid == eventData.host) {
         return await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {participants: targetid}}, {new: true});
       } else {
@@ -121,12 +122,9 @@ const event = ((eventModel) => {
 
   that.deleteEvent = async (eventid, userid) => {
     try {
-      const eventData = await eventModel.findOne({_id: eventid});
+      const eventData = await eventModel.findOne({_id: eventid, host: userid});
       if (!eventData) {throw {message: 'Event does not exist.', errorCode: 404}}
-      if (eventData.host != userid) {
-        throw {message: 'User does not have permission to delete event.', errorCode: 403};
-      }
-      await eventModel.findOneAndRemove({_id: eventid});
+      await eventModel.findOneAndRemove({_id: eventid, host: userid});
       return;
     } catch(e) {
       throw e;
