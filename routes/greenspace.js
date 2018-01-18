@@ -24,12 +24,12 @@ router.get('/:greenspaceid', async (req, res) => {
     // success: true if green space added to database; false otherwise
     // err: on error, an error message
     // greenspaces: list of greenspace objects (see schema)
-router.get('/:minLong/:maxLong/:minLat/:maxLat', async (req, res) => {
+router.get('/:minLat/:maxLat/:minLong/:maxLong', async (req, res) => {
   try {
-    const greenspaces = await greenspace.getGreenspaces(parseInt(req.params.minLong),
-                                                        parseInt(req.params.maxLong),
-                                                        parseInt(req.params.minLat),
-                                                        parseInt(req.params.maxLat));
+    const greenspaces = await greenspace.getGreenspaces(parseInt(req.params.minLat),
+                                                        parseInt(req.params.maxLat),
+                                                        parseInt(req.params.minLong),
+                                                        parseInt(req.params.maxLong));
     utils.sendSuccessResponse(res, greenspaces);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);

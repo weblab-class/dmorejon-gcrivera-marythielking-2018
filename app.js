@@ -28,6 +28,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(bodyParser());
 
+// set up sessions
+app.use(session({
+  secret: 'session-secret',
+  resave: 'false',
+  saveUninitialized: 'true'
+}));
+
 // hook up passport
 app.use(passport.initialize());
 app.use(passport.session());
@@ -42,7 +49,7 @@ app.get(
     { failureRedirect: '/' }
   ),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('/map');
   }
 );
 

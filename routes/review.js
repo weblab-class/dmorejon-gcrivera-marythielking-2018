@@ -37,9 +37,9 @@ router.get('/user', async (req, res) => {
 // POST /review
 // Request Body:
     // greenspace
-      // rating
-      // body
-      // time
+    // rating
+    // body
+    // time
 // Response body:
     // success: true if review added to database; false otherwise
     // err: on error, an error message
