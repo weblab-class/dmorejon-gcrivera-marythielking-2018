@@ -1,10 +1,9 @@
 const express = require('express');
 const passport = require('./passport');
 const utils = require('../utils');
+const user = require('../models/user').user;
 
 const router = express.Router();
-
-
 
 // GET /user
   // Response body:

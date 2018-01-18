@@ -12,13 +12,15 @@ const user = ((userModel) => {
 
     that.updateUser = async (user, username, email) => {
       try {
-        const editableUser = await eventModel.findOne({fbid: user});
+        if (!username) {throw {message: 'Username is required.', errorCode: 400}}
+        if(!email) {throw {message: 'Email is required.', errorCode: 400}}
+        const editableUser = await userModel.findOneAndUpdate({fbid: user},
+                                                              {username: username, email: email},
+                                                              {new: true});
         if (!editableUser) {
           throw {message: 'User does not exist.', errorCode: 404}
         }
-        return await userModel.update({fbid: user},
-                                {username: username, email: email},
-                                {new: true});
+        return editableUser;
       } catch(e) {
         throw e;
       }
