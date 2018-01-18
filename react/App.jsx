@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
+import Services from '../services';
 import Header from './Components/Header.jsx';
 import LeafletMap from './Components/LeafletMap.jsx';
 
@@ -30,7 +31,11 @@ class App extends Component {
   }
 
   createGreenspace(name, lat, lng) {
-    console.log(`greenspace ${name} created at ${lat}, ${lng}`);
+    // console.log(`greenspace ${name} created at ${lat}, ${lng}`);
+    Services.greenspace.create(name, [lat, lng])
+      .then((res) => {
+        console.log(res.content);
+      });
     this.props.router.push(`/map`);
   }
 
