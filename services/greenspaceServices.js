@@ -17,7 +17,7 @@ export default {
       method: 'GET',
       json: true,
     })
-  }
+  },
 
   create : (name, location) => {
     return request({
