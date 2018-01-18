@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router';
+import FontAwesome from 'react-fontawesome';
+
 import PopUp from '../Components/PopUp.jsx';
 
 class Homepage extends Component {

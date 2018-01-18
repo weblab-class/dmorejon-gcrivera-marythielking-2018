@@ -7,6 +7,10 @@ a {
   text-decoration: none;
 }
 
+.hidden {
+  display: none;
+}
+
 .btn {
   padding: 10px 15px;
   margin: 10px;
@@ -30,10 +34,6 @@ a {
   font-size: 16px;
   border: 1px solid #dbdbdb;
   border-radius: 5px;
-}
-
-.hidden {
-  display: none;
 }
 
 #content {
@@ -100,7 +100,7 @@ a {
   right: 0;
   top: 0;
   z-index: 10;
-  height: 100%;
+  height: calc(100vh - 100px);
   width: 300px;
   background-color: rgba(219, 219, 219, 0.9);;
   padding: 10px 15px;
@@ -139,4 +139,38 @@ a {
 
 .fb-logo {
   padding-right: 10px;
+}
+
+.list-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-item-event {
+  padding: 10px 15px;
+  margin: 2px 0px;
+  border-radius: 5px;
+  color: #000;
+  background-color: rgba(183, 183, 183, 0.5);
+}
+
+#add-event {
+  display: flex;
+  align-items: center;
+  color: #000;
+  margin: 10px 0px;
+  padding: 5px 5px;
+}
+
+#add-event:hover {
+  background-color: rgba(88, 155, 57, 0.5);
+  border-radius: 5px;
+}
+
+#add-event-icon {
+  margin-right: 10px;
+}
+
+#add-event-text {
+  font-size: 20px;
 }

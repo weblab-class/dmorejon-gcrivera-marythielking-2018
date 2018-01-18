@@ -5,7 +5,7 @@ class EventView extends Component {
   render(){
     return (
       <Sidebar>
-        <h1 className="section-header">EventView</h1>
+        <h1 className="section-header">{this.props.params.id}</h1>
       </Sidebar>
     );
   }
