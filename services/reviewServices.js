@@ -20,14 +20,16 @@ export default {
     });
   },
 
-  create : (name, location) => {
+  create : (greenspace, rating, body, time) => {
     return request({
       uri : BASE_URL,
       method: 'POST',
       json : true,
       body : {
-        name,
-        location,
+        greenspace,
+        rating,
+        body,
+        time,
       }
     });
   },
