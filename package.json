@@ -7,7 +7,8 @@
     "db": "sudo mongod",
     "build": "grunt",
     "start": "nodemon app.js",
-    "test": "mocha test/greenspace.js --timeout 15000; TEST=true mocha test/review.js --timeout 15000; TEST=true mocha test/user.js --timeout 15000; TEST=true mocha test/event.js --timeout 90000;"
+    "test": "mocha test/greenspace.js --timeout 15000; TEST=true mocha test/review.js --timeout 15000; TEST=true mocha test/user.js --timeout 15000; TEST=true mocha test/event.js --timeout 90000;",
+    "coverage": "TEST=true ./node_modules/.bin/istanbul cover --root ./ -x ./public/js/*  ./node_modules/mocha/bin/_mocha ./test/*"
   },
   "author": "Gabrielle C. Rivera, David Morejon, Mary G. Thielking",
   "license": "ISC",
@@ -61,6 +62,7 @@
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-jsxhint": "^0.8.0",
+    "istanbul": "^1.0.0-alpha.2",
     "json-loader": "^0.5.4",
     "superagent": "^3.8.2",
     "webpack": "^1.13.3",
