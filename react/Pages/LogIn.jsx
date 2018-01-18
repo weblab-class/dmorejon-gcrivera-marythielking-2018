@@ -39,7 +39,7 @@ class LogIn extends Component {
     } = this.state;
 
     return (
-      <PopUp>
+      <PopUp setMapViewOnly={this.props.setMapViewOnly}>
         <h1 className="section-header">Welcome to Greenspace!</h1>
         <div className="form">
           <input className='form-input'
@@ -70,6 +70,7 @@ class LogIn extends Component {
 
 LogIn.propTypes = {
   logInUser: PropTypes.func,
+  setMapViewOnly: PropTypes.func,
 }
 
 export default LogIn;

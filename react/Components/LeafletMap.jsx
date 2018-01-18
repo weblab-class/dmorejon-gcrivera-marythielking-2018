@@ -8,6 +8,7 @@ class LeafletMap extends Component {
     super(props);
     this.state = {
       marker: null,
+      placeMarkers: true,
     }
     this.onMapClick = this.onMapClick.bind(this);
     this.onMarkerClick = this.onMarkerClick.bind(this);
@@ -33,8 +34,10 @@ class LeafletMap extends Component {
       map.boxZoom.disable();
       map.keyboard.disable();
       if (map.tap) { map.tap.disable(); }
-      map.zoomControl = false;
+      // map.zoomControl = false;
       this.zoomControl.remove();
+
+      this.setState({ placeMarkers: false });
     }
 
     // dummy marker pre-backend
@@ -53,6 +56,8 @@ class LeafletMap extends Component {
         this.map.keyboard.disable();
         if (this.map.tap) { this.map.tap.disable(); }
         this.zoomControl.remove();
+
+        this.setState({ placeMarkers: false });
       } else {
         this.map.dragging.enable();
         this.map.touchZoom.enable();
@@ -71,10 +76,16 @@ class LeafletMap extends Component {
   }
 
   onMapClick(event) {
-    if (this.props.viewOnly) { return; }
     const {
-      marker
+      marker,
+      placeMarkers,
     } = this.state;
+
+    if (this.props.viewOnly) { return; }
+    if (!placeMarkers) {
+      this.setState({ placeMarkers: true });
+      return;
+    }
 
     if (!marker) {
       const newMarker = L.marker(event.latlng).addTo(this.map);
