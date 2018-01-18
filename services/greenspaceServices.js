@@ -11,9 +11,9 @@ export default {
     })
   },
 
-  getAll : (topLeft, bottomRight) => {
+  getAll : (minLat, maxLat, minLng, maxLng) => {
     return request({
-      uri: BASE_URL + `/${topLeft.lng}/${bottomRight.lng}/${bottomRight.lat}/${topLeft.lat}`,
+      uri: BASE_URL + `/${minLat}/${maxLat}/${minLng}/${maxLng}`,
       method: 'GET',
       json: true,
     })

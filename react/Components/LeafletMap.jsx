@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import greenspaceServices from '../../services/greenspaceServices.js';
 
 class LeafletMap extends Component {
   constructor(props){
@@ -10,8 +11,11 @@ class LeafletMap extends Component {
       marker: null,
       placeMarkers: true,
     }
+
+    this.setMarkers = this.setMarkers.bind(this);
     this.onMapClick = this.onMapClick.bind(this);
     this.onMarkerClick = this.onMarkerClick.bind(this);
+    this.setMapCenter = this.setMapCenter.bind(this);
   }
 
   componentDidMount() {
@@ -25,6 +29,10 @@ class LeafletMap extends Component {
     map.addLayer(layer);
     var zoomControl = this.zoomControl = new L.control.zoom({ position: 'bottomleft' }).addTo(map);
     map.on('click', this.onMapClick)
+    map.on('moveend', this.setMarkers);
+
+    this.setMarkers();
+    this.setMapCenter(this.map);
 
     if (this.props.viewOnly) {
       map.dragging.disable();
@@ -39,8 +47,6 @@ class LeafletMap extends Component {
 
       this.setState({ placeMarkers: false });
     }
-
-    this.setMapCenter(this.map);
 
     // dummy marker pre-backend
     const newMarker = L.marker([42.35665702548128, -71.1]).addTo(map);
@@ -75,6 +81,24 @@ class LeafletMap extends Component {
 
   componentWillUnmount() {
     this.map = null;
+  }
+
+  setMarkers() {
+    const bounds = this.map.getBounds();
+    const swBounds = bounds.getSouthWest();
+    const neBounds = bounds.getNorthEast();
+
+    const minLat = Math.min(swBounds.lat, neBounds.lat);
+    const maxLat = Math.max(swBounds.lat, neBounds.lat);
+    const minLng = Math.min(swBounds.lng, neBounds.lng);
+    const maxLng = Math.max(swBounds.lng, neBounds.lng);
+
+    greenspaceServices.getAll(minLat, maxLat, minLng, maxLng)
+      .then((res) => {
+        console.log(res);
+      }).catch((err) => {
+        console.log(err);
+      });
   }
 
   onMapClick(event) {
