@@ -70,6 +70,12 @@ class GreenspaceInfo extends Component {
     return (
       <Sidebar>
         <h1>Briggs Field</h1>
+        <div>
+          Directions to Briggs Field
+          <a href={`https://www.google.com/maps?saddr=My+Location&daddr=${lat},${lng}`} target="_blank">
+            <img src="../images/google-maps-icon-2015.png" height="40px" className="gmaps-logo" />
+          </a>
+        </div>
         <div className="rating-stars">{stars}</div>
         <div className="list-items">{events}</div>
         <Link to={`/map/${lat},${lng}/event/create`} id="add-event">
