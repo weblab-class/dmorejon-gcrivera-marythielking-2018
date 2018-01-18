@@ -40,6 +40,8 @@ class LeafletMap extends Component {
       this.setState({ placeMarkers: false });
     }
 
+    this.setMapCenter(this.map);
+
     // dummy marker pre-backend
     const newMarker = L.marker([42.35665702548128, -71.1]).addTo(map);
     newMarker.on('click', this.onMarkerClick);
@@ -115,6 +117,14 @@ class LeafletMap extends Component {
       }
     } else {
       this.props.router.push(`/map/${e_lat},${e_lng}`);
+    }
+  }
+
+  setMapCenter(map) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        map.setView([position.coords.latitude, position.coords.longitude])
+      });
     }
   }
 
