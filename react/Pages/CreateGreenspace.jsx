@@ -44,7 +44,7 @@ class CreateGreenspace extends Component {
       <Sidebar>
         <h1>Create Greenspace</h1>
         <div className="form">
-          <input className='form-input'
+          <input autoFocus className='form-input'
             name='nameVal'
             placeholder='greenspace name'
             value={nameVal}
