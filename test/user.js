@@ -18,7 +18,8 @@ describe('User API', () => {
     afterEach(async () => {
       try {
         const newUser = new userModel({fbid: '247833829183',
-                                        displayname: 'Cody Maverick'});
+                                        displayname: 'Cody Maverick',
+                                        photo: 'https://pbs.twimg.com/profile_images/491641114534117378/rcXXFash_400x400.jpeg'});
         await newUser.save()
         return;
       } catch(e) {
