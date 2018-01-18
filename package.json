@@ -7,7 +7,7 @@
     "db": "sudo mongod",
     "build": "grunt",
     "start": "nodemon app.js",
-    "test": "mocha test/greenspace.js --timeout 15000; mocha test/review.js --timeout 15000; TEST=true mocha test/event.js --timeout 15000; mocha test/user.js --timeout 15000;"
+    "test": "mocha test/greenspace.js --timeout 15000; TEST=true mocha test/review.js --timeout 15000; TEST=true mocha test/user.js --timeout 15000; TEST=true mocha test/event.js --timeout 90000;"
   },
   "author": "Gabrielle C. Rivera, David Morejon, Mary G. Thielking",
   "license": "ISC",

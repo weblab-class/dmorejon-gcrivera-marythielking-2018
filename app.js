@@ -51,6 +51,16 @@ if (process.env.TEST) {
     req.user = {fbid: "247833829183"};
     next();
   });
+
+  app.use('/event/join/*', (req, res, next) => {
+    req.user = {fbid: "247833829083"};
+    next();
+  });
+
+  app.use('/event/leave/*', (req, res, next) => {
+    req.user = {fbid: "247833829192"};
+    next();
+  });
 }
 
 app.get('/logout', (req, res) => {
