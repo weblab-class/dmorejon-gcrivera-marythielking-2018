@@ -26,10 +26,10 @@ router.get('/:greenspaceid', async (req, res) => {
     // greenspaces: list of greenspace objects (see schema)
 router.get('/:minLat/:maxLat/:minLong/:maxLong', async (req, res) => {
   try {
-    const greenspaces = await greenspace.getGreenspaces(parseInt(req.params.minLat),
-                                                        parseInt(req.params.maxLat),
-                                                        parseInt(req.params.minLong),
-                                                        parseInt(req.params.maxLong));
+    const greenspaces = await greenspace.getGreenspaces(parseFloat(req.params.minLat),
+                                                        parseFloat(req.params.maxLat),
+                                                        parseFloat(req.params.minLong),
+                                                        parseFloat(req.params.maxLong));
     utils.sendSuccessResponse(res, greenspaces);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
