@@ -12,6 +12,7 @@ class LeafletMap extends Component {
       placeMarkers: true,
     }
 
+    this.placeMarker = this.placeMarker.bind(this);
     this.setMarkers = this.setMarkers.bind(this);
     this.onMapClick = this.onMapClick.bind(this);
     this.onMarkerClick = this.onMarkerClick.bind(this);
@@ -83,6 +84,12 @@ class LeafletMap extends Component {
     this.map = null;
   }
 
+  placeMarker(latlng) {
+    const marker = L.marker(latlng).addTo(this.map);
+    marker.on('click', this.onMarkerClick);
+    return marker;
+  }
+
   setMarkers() {
     const bounds = this.map.getBounds();
     const swBounds = bounds.getSouthWest();
@@ -114,8 +121,7 @@ class LeafletMap extends Component {
     }
 
     if (!marker) {
-      const newMarker = L.marker(event.latlng).addTo(this.map);
-      newMarker.on('click', this.onMarkerClick);
+      const newMarker = this.placeMarker(event.latlng);
       this.setState({ marker: newMarker });
     } else {
       marker.remove(this.map);
