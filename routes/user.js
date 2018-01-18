@@ -19,23 +19,4 @@ router.get('/', async (req, res) => {
   }
 });
 
-// PUT /user
-  // Request body:
-    // username
-    // email
-  // Response body:
-    // success: true if user info updated in database; false otherwise
-    // err: on error, an error message
-    // user: user object (see above schema)
-router.put('/', async (req, res) => {
-  try{
-    const updatedUser = await user.updateUser(req.user.fbid,
-                                              req.body.username,
-                                              req.body.email);
-    utils.sendSuccessResponse(res, updatedUser);
-  } catch(e) {
-    utils.sendErrorResponse(res, e.errorCode, e.message);
-  }
-});
-
 module.exports = router;

@@ -45,6 +45,8 @@ router.get('/:minLong/:maxLong/:minLat/:maxLat', async (req, res) => {
     // err: on error, an error message
     // greenspace: greenspace object (see schema)
 router.post('/', async (req, res) => {
+  console.log("HERE")
+  console.log(req.user)
   try {
     const newGreenspace = await greenspace.createGreenspace(req.body.name, req.body.location);
     utils.sendSuccessResponse(res, newGreenspace);
