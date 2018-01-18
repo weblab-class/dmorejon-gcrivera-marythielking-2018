@@ -5,6 +5,7 @@ body {
 
 a {
   text-decoration: none;
+  color: #000;
 }
 
 .hidden {
@@ -101,9 +102,11 @@ a {
   top: 0;
   z-index: 10;
   height: calc(100vh - 100px);
+  max-height: calc(100vh - 100px);
   width: 300px;
   background-color: rgba(219, 219, 219, 0.9);;
   padding: 10px 15px;
+  overflow: hidden;
 }
 
 .popup {
@@ -144,20 +147,25 @@ a {
 .list-items {
   display: flex;
   flex-direction: column;
+  margin: 20px 0px;
+  overflow-y: scroll;
+  max-height: 300px;
 }
 
 .list-item-event {
   padding: 10px 15px;
   margin: 2px 0px;
   border-radius: 5px;
-  color: #000;
   background-color: rgba(183, 183, 183, 0.5);
+}
+
+.list-item-event:hover {
+  background-color: rgba(145, 145, 145, 0.5);
 }
 
 #add-event {
   display: flex;
   align-items: center;
-  color: #000;
   margin: 10px 0px;
   padding: 5px 5px;
 }
