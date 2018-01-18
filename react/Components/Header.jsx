@@ -5,18 +5,25 @@ import FontAwesome from 'react-fontawesome';
 
 class Header extends Component {
   render(){
-    const { currentUser } = this.props;
+    const {
+      currentUser,
+      logOutUser,
+    } = this.props;
 
     var headerButtons = null;
     if (currentUser) {
       headerButtons = (<div id="header-btns">
         <div className="header-btn-content">Welcome, {currentUser}</div>
-        <div className="header-btn">
-          <FontAwesome name="user" size="2x" />
-        </div>
-        <div className="header-btn">
-          <FontAwesome name="sign-out" size="2x" />
-        </div>
+        <Link to={`/user/${currentUser}`}>
+          <div className="header-btn">
+            <FontAwesome name="user" size="2x" />
+          </div>
+        </Link>
+        <Link to="/">
+          <div className="header-btn" onClick={logOutUser}>
+            <FontAwesome name="sign-out" size="2x" />
+          </div>
+        </Link>
       </div>);
     } else {
       headerButtons = (<Link to="/login">
@@ -37,6 +44,7 @@ class Header extends Component {
 
 Header.propTypes = {
   currentUser: PropTypes.string,
+  logOutUser: PropTypes.func,
 }
 
 export default withRouter(Header);

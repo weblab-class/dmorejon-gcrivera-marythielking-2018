@@ -12,7 +12,7 @@ class LogIn extends Component {
     };
 
     this.updateFormVal = this.updateFormVal.bind(this);
-    this.loginUser = this.loginUser.bind(this);
+    this.logInUser = this.logInUser.bind(this);
   }
 
   updateFormVal(event){
@@ -24,12 +24,12 @@ class LogIn extends Component {
     });
   }
 
-  loginUser() {
+  logInUser() {
     const {
       username,
       email,
     } = this.state;
-    this.props.loginUser(username, email);
+    this.props.logInUser(username, email);
   }
 
   render(){
@@ -54,8 +54,14 @@ class LogIn extends Component {
             value={email}
             onChange={this.updateFormVal}
           />
-        <div className="fb-btn btn" onClick={this.loginUser}>Continue with not Facebook</div>
-          <a href="/auth/facebook" className="fb-btn btn">Log in with Facebook</a>
+          <a
+            href="/auth/facebook"
+            className="fb-btn btn"
+            onClick={this.logInUser}
+          >
+            <img src="images/FB-f-Logo__white_1024.png" height="20px" className="fb-logo" />
+            Log in with Facebook
+          </a>
         </div>
       </PopUp>
     );
@@ -63,16 +69,7 @@ class LogIn extends Component {
 }
 
 LogIn.propTypes = {
-  loginUser: PropTypes.func,
+  logInUser: PropTypes.func,
 }
 
 export default LogIn;
-
-// <div
-//   className="fb-login-button"
-//   data-max-rows="1" data-size="large"
-//   data-button-type="continue_with"
-//   data-show-faces="false"
-//   data-auto-logout-link="false"
-//   data-use-continue-as="false"
-// ></div>

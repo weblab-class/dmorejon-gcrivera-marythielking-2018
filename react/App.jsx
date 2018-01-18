@@ -9,19 +9,24 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
+      currentUser: "Mary",
       showMap: true,
-      currentUser: null,
       mapViewOnly: false,
     };
 
-    this.loginUser = this.loginUser.bind(this);
+    this.logInUser = this.logInUser.bind(this);
+    this.logOutUser = this.logOutUser.bind(this);
     this.createGreenspace = this.createGreenspace.bind(this);
     this.setMapViewOnly = this.setMapViewOnly.bind(this);
   }
 
-  loginUser(username, email) {
+  logInUser(username, email) {
     this.setState({ currentUser: username });
     this.props.router.push(`/map`);
+  }
+
+  logOutUser() {
+    this.setState({ currentUser: null });
   }
 
   createGreenspace(name, lat, lng) {
@@ -44,14 +49,17 @@ class App extends Component {
 
     return (
       <div>
-        <Header currentUser={currentUser} />
+        <Header
+          currentUser={currentUser}
+          logOutUser={this.logOutUser}
+        />
         <div id="content">
           <LeafletMap
             display={showMap}
             viewOnly={mapViewOnly}
           />
           {React.cloneElement(this.props.children, {
-            loginUser: this.loginUser,
+            logInUser: this.logInUser,
             createGreenspace: this.createGreenspace,
             setMapViewOnly: this.setMapViewOnly,
           })}
