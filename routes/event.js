@@ -79,7 +79,7 @@ router.put('/:eventid', async (req, res) => {
     const edittedEvent = await event.editEvent(req.params.eventid,
                                                 req.body,
                                                 req.user.fbid);
-    utils.sendSuccessResponse(res, edditedEvent);
+    utils.sendSuccessResponse(res, edittedEvent);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
   }
@@ -122,6 +122,7 @@ router.put('/leave/:eventid', async (req, res) => {
 router.delete('/:eventid', async (req, res) => {
   try {
     await event.deleteEvent(req.params.eventid, req.user.fbid);
+    utils.sendSuccessResponse(res);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
   }
