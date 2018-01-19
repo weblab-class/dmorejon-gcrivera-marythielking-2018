@@ -19,6 +19,9 @@ passport.use(new fbp.Strategy({
       user = await newUser.save()
       done(null, user);
     } else {
+      await userModel.findOneAndUpdate({fbid: profile.id} ,
+                                        {displayname: profile.displayName,
+                                          photo: profile.photos[0].value});
       done(null, user);
     }
   } catch(e) {
