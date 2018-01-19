@@ -12,6 +12,8 @@ class LeafletMap extends Component {
       placeMarkers: true,
     }
 
+    this.disableMap = this.disableMap.bind(this);
+    this.enableMap = this.enableMap.bind(this);
     this.placeMarker = this.placeMarker.bind(this);
     this.setMarkers = this.setMarkers.bind(this);
     this.onMapClick = this.onMapClick.bind(this);
@@ -35,48 +37,13 @@ class LeafletMap extends Component {
     this.setMarkers();
     this.setMapCenter(this.map);
 
-    if (this.props.viewOnly) {
-      map.dragging.disable();
-      map.touchZoom.disable();
-      map.doubleClickZoom.disable();
-      map.scrollWheelZoom.disable();
-      map.boxZoom.disable();
-      map.keyboard.disable();
-      if (map.tap) { map.tap.disable(); }
-      // map.zoomControl = false;
-      this.zoomControl.remove();
-
-      this.setState({ placeMarkers: false });
-    }
-
-    // dummy marker pre-backend
-    const newMarker = L.marker([42.35665702548128, -71.1]).addTo(map);
-    newMarker.on('click', this.onMarkerClick);
+    if (this.props.viewOnly) { this.disableMap(); }
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.viewOnly !== this.props.viewOnly) {
-      if (newProps.viewOnly) {
-        this.map.dragging.disable();
-        this.map.touchZoom.disable();
-        this.map.doubleClickZoom.disable();
-        this.map.scrollWheelZoom.disable();
-        this.map.boxZoom.disable();
-        this.map.keyboard.disable();
-        if (this.map.tap) { this.map.tap.disable(); }
-        this.zoomControl.remove();
-
-        this.setState({ placeMarkers: false });
-      } else {
-        this.map.dragging.enable();
-        this.map.touchZoom.enable();
-        this.map.doubleClickZoom.enable();
-        this.map.scrollWheelZoom.enable();
-        this.map.boxZoom.enable();
-        this.map.keyboard.enable();
-        if (this.map.tap) { this.map.tap.enable() }
-        this.zoomControl.addTo(this.map);
-      }
+      if (newProps.viewOnly) { this.disableMap(); }
+      else { this.enableMap(); }
     }
   }
 
@@ -84,9 +51,33 @@ class LeafletMap extends Component {
     this.map = null;
   }
 
-  placeMarker(latlng) {
+  disableMap() {
+    this.map.dragging.disable();
+    this.map.touchZoom.disable();
+    this.map.doubleClickZoom.disable();
+    this.map.scrollWheelZoom.disable();
+    this.map.boxZoom.disable();
+    this.map.keyboard.disable();
+    if (this.map.tap) { this.map.tap.disable(); }
+    this.zoomControl.remove();
+    this.setState({ placeMarkers: false });
+  }
+
+  enableMap() {
+    this.map.dragging.enable();
+    this.map.touchZoom.enable();
+    this.map.doubleClickZoom.enable();
+    this.map.scrollWheelZoom.enable();
+    this.map.boxZoom.enable();
+    this.map.keyboard.enable();
+    if (this.map.tap) { this.map.tap.enable() }
+    this.zoomControl.addTo(this.map);
+  }
+
+  placeMarker(latlng, id="temp") {
     const marker = L.marker(latlng).addTo(this.map);
     marker.on('click', this.onMarkerClick);
+    marker.greenspaceId = id;
     return marker;
   }
 
@@ -102,7 +93,7 @@ class LeafletMap extends Component {
 
     greenspaceServices.getAll(minLat, maxLat, minLng, maxLng)
       .then((res) => {
-        console.log(res);
+        res.content.map((g) => this.placeMarker(g.location, g._id));
       }).catch((err) => {
         console.log(err);
       });
