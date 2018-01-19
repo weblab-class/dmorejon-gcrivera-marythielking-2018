@@ -39,11 +39,11 @@ class Header extends Component {
               <img src={photo} height="40px" className="profile-icon"/>
           </div>
         </Link>
-        <Link to="/">
+        <a href="/logout">
           <div className="header-btn" onClick={logOutUser}>
             <FontAwesome name="sign-out" size="2x" />
           </div>
-        </Link>
+        </a>
       </div>);
     } else {
       headerButtons = (<Link to="/login">

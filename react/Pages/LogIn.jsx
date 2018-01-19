@@ -6,11 +6,6 @@ class LogIn extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      username: '',
-      email: '',
-    };
-
     this.updateFormVal = this.updateFormVal.bind(this);
     this.logInUser = this.logInUser.bind(this);
   }
@@ -25,35 +20,14 @@ class LogIn extends Component {
   }
 
   logInUser() {
-    const {
-      username,
-      email,
-    } = this.state;
     this.props.logInUser();
   }
 
   render(){
-    const {
-      username,
-      email,
-    } = this.state;
-
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
         <h1 className="section-header">Welcome to Greenspace!</h1>
         <div className="form">
-          <input className='form-input'
-            name='username'
-            placeholder='username'
-            value={username}
-            onChange={this.updateFormVal}
-          />
-          <input className='form-input'
-            name='email'
-            placeholder='email'
-            value={email}
-            onChange={this.updateFormVal}
-          />
           <a
             href="/auth/facebook"
             className="fb-btn btn"
