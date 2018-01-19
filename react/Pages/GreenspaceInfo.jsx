@@ -3,31 +3,50 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
 import Sidebar from '../Components/Sidebar.jsx';
+import greenspaceServices from '../../services/greenspaceServices.js';
+import eventServices from '../../services/eventServices.js';
 
 class GreenspaceInfo extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      lat: props.params.lat,
-      lng: props.params.lng,
-    };
+    const gid = props.params.gid;
 
+    this.state = {
+      name: '',
+      lat: 0,
+      lng: 0,
+      events: [],
+    }
+
+    greenspaceServices.info(gid)
+      .then((res) => this.setState({
+        name: res.content.name,
+        lat: res.content.location[0],
+        lng: res.content.location[1],
+      }));
+
+    eventServices.getAllByGreenspace(gid)
+      .then((res) => this.setState({ events: res.content.events }))
+      .catch((err) => console.log(err.error.err));
+
+    this.renderEvents = this.renderEvents.bind(this);
     this.renderEvent = this.renderEvent.bind(this);
     this.renderStar = this.renderStar.bind(this);
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.params !== this.props.params) {
-      this.state.lat = newProps.params.lat;
-      this.state.lng = newProps.params.lng;
+  renderEvents() {
+    const { events } = this.state;
+    if (events.length === 0) {
+      return "There are no upcoming events.";
     }
+    return events.map((e) => this.renderEvent(e));
   }
 
   renderEvent(e) {
-    const { lat, lng } = this.state;
+    const { gid } = this.props.params;
     const { name } = e;
     return (<Link
-      to={`/map/${lat},${lng}/event/${name}`}
+      to={`/map/${gid}/event/${name}`}
       className="list-item-event"
       key={name}
     >{name}</Link>);
@@ -45,7 +64,9 @@ class GreenspaceInfo extends Component {
   }
 
   render(){
-    const { lat, lng } = this.state;
+    const { gid } = this.props.params;
+    const { name, lat, lng } = this.state;
+
     const dummyEvents = [
       { name: "Event 1" },
       { name: "Event 2" },
@@ -64,21 +85,20 @@ class GreenspaceInfo extends Component {
       { name: "Event 15" },
       { name: "Event 16" },
     ]
-    const events = dummyEvents.map((e) => this.renderEvent(e));
+    const renderedEvents = this.renderEvents();
     const stars = [1,2,3,4,5].map((s) => this.renderStar(s));
-
     return (
       <Sidebar>
-        <h1>Briggs Field</h1>
+        <h1>{name}</h1>
         <div>
-          Directions to Briggs Field
+          Directions to {name}:
           <a href={`https://www.google.com/maps?saddr=My+Location&daddr=${lat},${lng}`} target="_blank">
             <img src="../images/google-maps-icon-2015.png" height="40px" className="gmaps-logo" />
           </a>
         </div>
         <div className="rating-stars">{stars}</div>
-        <div className="list-items">{events}</div>
-        <Link to={`/map/${lat},${lng}/event/create`} id="add-event">
+        <div className="list-items">{renderedEvents}</div>
+        <Link to={`/map/${gid}/event/create`} id="add-event">
           <FontAwesome name="plus-square-o" size="2x" id="add-event-icon" />
           <div id="add-event-text">Create New Event</div>
         </Link>

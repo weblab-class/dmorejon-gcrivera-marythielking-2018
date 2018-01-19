@@ -77,7 +77,7 @@ class LeafletMap extends Component {
   placeMarker(latlng, id="temp") {
     const marker = L.marker(latlng).addTo(this.map);
     marker.on('click', this.onMarkerClick);
-    marker.greenspaceId = id;
+    marker.gid = id;
     return marker;
   }
 
@@ -134,10 +134,10 @@ class LeafletMap extends Component {
       } else {
         marker.remove(this.map);
         this.setState({ marker: null });
-        this.props.router.push(`/map/${e_lat},${e_lng}`);
+        this.props.router.push(`/map/${event.target.gid}`);
       }
     } else {
-      this.props.router.push(`/map/${e_lat},${e_lng}`);
+      this.props.router.push(`/map/${event.target.gid}`);
     }
   }
 
