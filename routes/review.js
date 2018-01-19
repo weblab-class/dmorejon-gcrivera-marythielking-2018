@@ -11,7 +11,7 @@ const router = express.Router();
     // rating: float, average rating for green space
 router.get('/greenspace/:greenspaceid', async (req, res) => {
   try{
-    const reviews = await review.getReviewByGreenspace(req.params.greenspace);
+    const reviews = await review.getReviewByGreenspace(req.params.greenspaceid);
     utils.sendSuccessResponse(res, reviews);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
@@ -62,7 +62,7 @@ router.post('/', async (req, res) => {
 // Response body:
     // success: true if review deleted from database; false otherwise
     // err: on error, an error message
-router.delete('/', async (req,rest) => {
+router.delete('/', async (req, res) => {
  try {
    await review.deleteReview(req.body.greenspace, req.user.fbid);
    utils.sendSuccessResponse(res);
