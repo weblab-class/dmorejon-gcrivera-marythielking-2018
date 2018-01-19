@@ -29,7 +29,7 @@ class LogIn extends Component {
       username,
       email,
     } = this.state;
-    this.props.logInUser(username, email);
+    this.props.logInUser();
   }
 
   render(){

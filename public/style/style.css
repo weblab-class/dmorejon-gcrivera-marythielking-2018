@@ -37,6 +37,10 @@ a {
   border-radius: 5px;
 }
 
+.profile-icon {
+    border-radius: 50%;
+}
+
 #content {
   position: relative;
   height: calc(100vh - 80px);

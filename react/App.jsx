@@ -10,7 +10,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      currentUser: "Mary",
+      currentUser: null,
       showMap: true,
       mapViewOnly: false,
     };
@@ -21,8 +21,7 @@ class App extends Component {
     this.setMapViewOnly = this.setMapViewOnly.bind(this);
   }
 
-  logInUser(username, email) {
-    this.setState({ currentUser: username });
+  logInUser() {
     this.props.router.push(`/map`);
   }
 

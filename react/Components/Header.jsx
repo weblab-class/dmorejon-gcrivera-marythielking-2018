@@ -2,21 +2,41 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
+import Services from '../../services';
 
 class Header extends Component {
-  render(){
-    const {
+  constructor(props) {
+    super(props);
+
+    this.state = {currentUser: '', photo: ''};
+
+    let {
       currentUser,
       logOutUser,
     } = this.props;
 
+    Services.user.info()
+      .then((res) => {
+        this.setState({ currentUser: res.content.displayname , photo: res.content.photo});
+      });
+  }
+
+  render(){
+    let {
+      currentUser,
+      logOutUser,
+    } = this.props;
+
+    currentUser = this.state.currentUser;
+    var photo = this.state.photo;
     var headerButtons = null;
+
     if (currentUser) {
       headerButtons = (<div id="header-btns">
         <div className="header-btn-content">Welcome, {currentUser}</div>
         <Link to={`/user/${currentUser}`}>
           <div className="header-btn">
-            <FontAwesome name="user" size="2x" />
+              <img src={photo} height="40px" className="profile-icon"/>
           </div>
         </Link>
         <Link to="/">
