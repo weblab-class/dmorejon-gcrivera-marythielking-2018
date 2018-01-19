@@ -10,14 +10,13 @@ for (let i in mongoose.connection.collections) {
   mongoose.connection.collections[i].remove(function() {});
 }
 
-const greenspaceID = mongoose.Types.ObjectId("112222222222");
 
 describe('Review API', () => {
 
   before((done) => {
     request(app)
       .post('/review')
-      .send({greenspace: greenspaceID , body: 'This is a positive review, I think.', rating: 4, time: new Date(2005,10,9)})
+      .send({greenspace: 'green479' , body: 'This is a positive review, I think.', rating: 4, time: new Date(2005,10,9)})
       .end((err, res) => {
         if (err) done(err);
         else {
@@ -29,7 +28,7 @@ describe('Review API', () => {
   before((done) => {
     request(app)
       .post('/review')
-      .send({greenspace: 'green479' , body: 'This is a negative review, I believe.', rating: 2, time: new Date(2007,9,6)})
+      .send({greenspace: 'green478' , body: 'This is a negative review, I believe.', rating: 2, time: new Date(2007,9,6)})
       .end((err, res) => {
         if (err) done(err);
         else {
