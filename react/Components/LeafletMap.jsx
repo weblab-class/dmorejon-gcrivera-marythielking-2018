@@ -25,8 +25,11 @@ class LeafletMap extends Component {
       minZoom: 2,
       zoomControl: false,
     });
-    var layer = new L.StamenTileLayer("terrain");
-    map.addLayer(layer);
+    var Hydda_Full = L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+    	maxZoom: 18,
+    	attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+    map.addLayer(Hydda_Full);
     var zoomControl = this.zoomControl = new L.control.zoom({ position: 'bottomleft' }).addTo(map);
     map.on('click', this.onMapClick)
     map.on('moveend', this.setMarkers);
