@@ -23,12 +23,8 @@ const greenspace = ((greenspaceModel) => {
 
   that.getGreenspaces = async (minLat, maxLat, minLong, maxLong) => {
     try {
-      const greenspaces = await greenspaceModel.find({'location.0': {$gte: minLat, $lte: maxLat},
+      return await greenspaceModel.find({'location.0': {$gte: minLat, $lte: maxLat},
                                                       'location.1' :{$gte: minLong, $lte: maxLong}});
-      if (greenspaces.length == 0) {
-        throw {message: 'No Greenspaces found.', errorCode: 404};
-      }
-      return greenspaces;
     } catch(e) {
       throw e;
     }

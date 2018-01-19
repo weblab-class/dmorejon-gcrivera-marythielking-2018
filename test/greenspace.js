@@ -130,11 +130,11 @@ describe('Greenspace API', () => {
     it('Get empty list of greenspaces', (done) => {
       request(app)
         .get('/greenspace/1/5/1/5')
-        .expect(404)
+        .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
-          assert.equal(res.body.success, false);
-          assert.equal(res.body.err, 'No Greenspaces found.');
+          assert.equal(res.body.success, true);
+          assert.equal(res.body.content.length, 0);
         })
         .end((err, res) => {
           if (err) done(err);
