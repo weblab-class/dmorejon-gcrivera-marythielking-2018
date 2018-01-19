@@ -41,6 +41,11 @@ a {
     border-radius: 50%;
 }
 
+.loading-img {
+  position: 'absolute';
+  bottom: 0;
+}
+
 #content {
   position: relative;
   height: calc(100vh - 80px);
