@@ -5,8 +5,8 @@ const userModel = require('../models/user').userModel;
 
 // set up passport configs
 passport.use(new fbp.Strategy({
-  clientID: '396400044127600',
-  clientSecret: 'aac7975616688359e46d2dca4e6a31b8',
+  clientID: process.env.FB_CLIENT_ID,
+  clientSecret: process.env.FB_CLIENT_SECRET,
   callbackURL: '/auth/facebook/callback',
   profileFields: ['id', 'displayName', 'email', 'picture.type(large)']
 }, async (accessToken, BrefreshToken, profile, done) => {
