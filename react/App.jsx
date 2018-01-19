@@ -22,7 +22,7 @@ class App extends Component {
   }
 
   logInUser() {
-    this.props.router.push(`/map`);
+    this.props.router.push(`/map/${window.location.search}`);
   }
 
   logOutUser() {
@@ -35,7 +35,7 @@ class App extends Component {
       .then((res) => {
         console.log(res.content);
       });
-    this.props.router.push(`/map`);
+    this.props.router.push(`/map/${window.location.search}`);
   }
 
   setMapViewOnly(viewOnly) {

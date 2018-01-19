@@ -93,12 +93,12 @@ class GreenspaceInfo extends Component {
         <div>
           Directions to {name}:
           <a href={`https://www.google.com/maps?saddr=My+Location&daddr=${lat},${lng}`} target="_blank">
-            <img src="../images/google-maps-icon-2015.png" height="40px" className="gmaps-logo" />
+            <img src="/images/google-maps-icon-2015.png" height="40px" className="gmaps-logo" />
           </a>
         </div>
         <div className="rating-stars">{stars}</div>
         <div className="list-items">{renderedEvents}</div>
-        <Link to={`/map/${gid}/event/create`} id="add-event">
+        <Link to={`/map/${gid}/event/create/${window.location.search}`} id="add-event">
           <FontAwesome name="plus-square-o" size="2x" id="add-event-icon" />
           <div id="add-event-text">Create New Event</div>
         </Link>

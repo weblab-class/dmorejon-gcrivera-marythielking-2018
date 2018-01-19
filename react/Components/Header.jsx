@@ -34,7 +34,7 @@ class Header extends Component {
     if (currentUser) {
       headerButtons = (<div id="header-btns">
         <div className="header-btn-content">Welcome, {currentUser}</div>
-        <Link to={`/user/${currentUser}`}>
+        <Link to={`/user/${currentUser}/${window.location.search}`}>
           <div className="header-btn">
               <img src={photo} height="40px" className="profile-icon"/>
           </div>
@@ -55,7 +55,7 @@ class Header extends Component {
 
     return (
       <div id="header">
-        <Link to="/"><div id="header-logo">greenspace</div></Link>
+        <Link to={`/${window.location.search}`}><div id="header-logo">greenspace</div></Link>
         {headerButtons}
       </div>
     )

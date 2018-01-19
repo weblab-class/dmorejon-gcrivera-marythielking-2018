@@ -11,9 +11,9 @@ class Homepage extends Component {
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
         <h1 className="section-header">Welcome to Greenspace!</h1>
         <div id="homepage-btns">
-          <Link to="/map">
+          <a href={`/loading/${window.location.search}`}>
             <div className="btn">Explore</div>
-          </Link>
+          </a>
           <Link to="/login">
             <div className="btn">Log In</div>
           </Link>

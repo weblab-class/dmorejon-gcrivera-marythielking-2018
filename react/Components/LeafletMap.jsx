@@ -7,9 +7,18 @@ import greenspaceServices from '../../services/greenspaceServices.js';
 class LeafletMap extends Component {
   constructor(props){
     super(props);
+
+    if (window.location.search) {
+      var center = window.location.search.split('=')[1].split(',');
+      center = [parseFloat(center[0]), parseFloat(center[1])];
+    } else {
+      var center = [42.308604, -71.096353]; //[42.3580, -71.0942],
+    }
+
     this.state = {
       marker: null,
       placeMarkers: true,
+      center: center,
     }
 
     this.disableMap = this.disableMap.bind(this);
@@ -23,7 +32,7 @@ class LeafletMap extends Component {
 
   componentDidMount() {
     var map = this.map = L.map(ReactDOM.findDOMNode(this), {
-      center: [42.3580, -71.0942],
+      center: this.state.center,
       zoom: 16,
       minZoom: 2,
       zoomControl: false,
@@ -133,21 +142,31 @@ class LeafletMap extends Component {
     if (marker) {
       const { lat: m_lat, lng: m_lng } = marker.getLatLng();
       if (e_lat === m_lat && e_lng === m_lng) {
-        this.props.router.push(`/map/${e_lat},${e_lng}/create`);
+        this.props.router.push(`/map/${e_lat},${e_lng}/create/${window.location.search}`);
       } else {
         marker.remove(this.map);
         this.setState({ marker: null });
-        this.props.router.push(`/map/${event.target.gid}`);
+        this.props.router.push(`/map/${event.target.gid}/${window.location.search}`);
       }
     } else {
-      this.props.router.push(`/map/${event.target.gid}`);
+      this.props.router.push(`/map/${event.target.gid}/${window.location.search}`);
     }
   }
 
   setMapCenter(map) {
-    if (navigator.geolocation) {
+    if (window.location.search) {
+      var center = window.location.search.split('=')[1].split(',');
+      map.setView([parseFloat(center[0]), parseFloat(center[1])]);
+      this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
+      return;
+    }
+    if (navigator.geolocation && this.props.location.pathname.startsWith('/loading')) {
       navigator.geolocation.getCurrentPosition((position) => {
-        map.setView([position.coords.latitude, position.coords.longitude])
+        // map.setView([position.coords.latitude, position.coords.longitude]);
+        this.setState({ center: [position.coords.latitude, position.coords.longitude] });
+        map.setView(this.state.center);
+        this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
+        return;
       });
     }
   }

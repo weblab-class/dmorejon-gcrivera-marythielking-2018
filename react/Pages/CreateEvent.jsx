@@ -31,7 +31,7 @@ class CreateEvent extends Component {
   create() {
     const { lat, lng } = this.state;
     console.log("new event created: ", this.state);
-    this.props.router.push(`/map/${lat},${lng}`);
+    this.props.router.push(`/map/${lat},${lng}/${window.location.search}`);
   }
 
   render(){

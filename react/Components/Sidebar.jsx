@@ -6,7 +6,7 @@ import onClickOutside from 'react-onclickoutside';
 class Sidebar extends Component {
   handleClickOutside(event) {
     if (this.props.clickOut) {
-      this.props.router.push(`/map`);
+      this.props.router.push(`/map/${window.location.search}`);
     }
   }
 

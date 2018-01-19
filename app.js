@@ -49,7 +49,7 @@ app.get(
     { failureRedirect: '/' }
   ),
   function(req, res) {
-    res.redirect('/map');
+    res.redirect('/loading');
   }
 );
 
