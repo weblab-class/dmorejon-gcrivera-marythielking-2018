@@ -40,7 +40,7 @@ const review = ((reviewModel) => {
   that.getReviewByGreenspace = async (greenspace) => {
     try {
       let reviews = await reviewModel.find({greenspace: greenspace});
-      if (reviews.length == 0) {
+      if (reviews.length === 0) {
         throw {message: 'There are no reviews for this green space.', errorCode: 404};
       }
       reviews = reviews.sort((a, b) => {
@@ -62,7 +62,7 @@ const review = ((reviewModel) => {
   that.getReviewByUser = async (user) => {
     try {
       const reviews = await reviewModel.find({user: user});
-      if (reviews.length == 0) {
+      if (reviews.length === 0) {
         throw {message: 'There are no reviews for this user.', errorCode: 404};
       }
       return reviews.sort((a, b) => {
