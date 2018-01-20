@@ -1,4 +1,6 @@
-const BASE_URL = 'http://localhost:3000/greenspace';
+let BASE_URL;
+if (process.env.BASE_URL) {BASE_URL = process.env.BASE_URL + 'greenspace'}
+else {BASE_URL = 'http://localhost:3000/greenspace'}
 
 var request = require('request-promise-native');
 

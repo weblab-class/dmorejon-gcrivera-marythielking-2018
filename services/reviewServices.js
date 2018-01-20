@@ -1,4 +1,6 @@
-const BASE_URL = 'http://localhost:3000/review';
+let BASE_URL;
+if (process.env.BASE_URL) {BASE_URL = process.env.BASE_URL + 'review'}
+else {BASE_URL = 'http://localhost:3000/review'}
 
 var request = require('request-promise-native');
 
