@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('./routes/passport');
+const utils = require('./utils');
 
 const greenspace = require('./routes/greenspace');
 const review = require('./routes/review');
@@ -75,6 +76,11 @@ app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
+
+// Set up authentication
+app.post('*', utils.requireAuthentication);
+app.put('*', utils.requireAuthentication);
+app.delete('*', utils.requireAuthentication);
 
 // Set up our routes.
 app.use('/greenspace', greenspace);

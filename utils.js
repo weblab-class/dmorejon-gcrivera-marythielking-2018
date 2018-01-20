@@ -2,6 +2,14 @@ const utils = (() => {
 
   let _utils = {};
 
+  _utils.requireAuthentication = (req, res, next) => {
+    if (!req.user) {
+      _utils.sendErrorResponse(res, 403, 'Must be logged in to use this feature.');
+    } else {
+      next();
+    }
+  };
+
   /*
     Send an error code with success:false and error message
     as provided in the arguments to the response argument provided.
