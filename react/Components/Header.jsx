@@ -28,8 +28,8 @@ class Header extends Component {
     } = this.props;
 
     currentUser = this.state.currentUser;
-    var photo = this.state.photo;
-    var headerButtons = null;
+    const photo = this.state.photo;
+    let headerButtons = null;
 
     if (currentUser) {
       headerButtons = (<div id="header-btns">
