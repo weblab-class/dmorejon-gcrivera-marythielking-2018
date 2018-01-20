@@ -16,7 +16,7 @@ class GreenspaceInfo extends Component {
       lat: 0,
       lng: 0,
       events: [],
-    }
+    };
 
     greenspaceServices.info(gid)
       .then((res) => this.setState({
@@ -44,9 +44,9 @@ class GreenspaceInfo extends Component {
 
   renderEvent(e) {
     const { gid } = this.props.params;
-    const { name } = e;
+    const { name, _id } = e;
     return (<Link
-      to={`/map/${gid}/event/${name}`}
+      to={`/map/${gid}/event/${_id}`}
       className="list-item-event"
       key={name}
     >{name}</Link>);

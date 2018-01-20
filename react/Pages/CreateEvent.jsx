@@ -38,6 +38,9 @@ class CreateEvent extends Component {
     } = this.state;
     const startDate = new Date(this.state.startVal);
     const endDate = new Date(this.state.endVal);
+
+    console.log(typeof startDate);
+    
     eventServices.create(nameVal, descriptionVal, gid, startDate, endDate, [])
       .then((res) => {
         console.log(res);
