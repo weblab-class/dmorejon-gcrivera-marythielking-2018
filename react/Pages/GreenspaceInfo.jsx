@@ -46,7 +46,7 @@ class GreenspaceInfo extends Component {
     const { gid } = this.props.params;
     const { name, _id } = e;
     return (<Link
-      to={`/map/${gid}/event/${_id}`}
+      to={`/map/${gid}/event/${_id}/${window.location.search}`}
       className="list-item-event"
       key={name}
     >{name}</Link>);
