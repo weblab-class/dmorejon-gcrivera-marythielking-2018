@@ -51,6 +51,7 @@ app.get(
     { failureRedirect: '/' }
   ),
   function(req, res) {
+    console.log(res.baseUrl)
     res.redirect('/loading');
   }
 );
