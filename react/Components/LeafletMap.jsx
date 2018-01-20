@@ -26,8 +26,9 @@ class LeafletMap extends Component {
     this.placeMarker = this.placeMarker.bind(this);
     this.setMarkers = this.setMarkers.bind(this);
     this.onMapClick = this.onMapClick.bind(this);
-    this.onMarkerClick = this.onMarkerClick.bind(this);
+    this.onNewMarker = this.onNewMarker.bind(this);
     this.setMapCenter = this.setMapCenter.bind(this);
+    this.placeNewMarker = this.placeNewMarker.bind(this);
   }
 
   componentDidMount() {
@@ -91,7 +92,15 @@ class LeafletMap extends Component {
 
   placeMarker(latlng, id="temp") {
     const marker = L.marker(latlng).addTo(this.map);
-    marker.on('click', this.onMarkerClick);
+    marker.on('click', this.onNewMarker);
+    marker.gid = id;
+    return marker;
+  }
+
+  placeNewMarker(latlng, id="temp") {
+    const marker = L.marker(latlng).addTo(this.map);
+    this.setState({ marker: marker });
+    this.onNewMarker({latlng: latlng, target: {gid: marker.gid}});
     marker.gid = id;
     return marker;
   }
@@ -120,8 +129,6 @@ class LeafletMap extends Component {
       placeMarkers,
     } = this.state;
 
-    console.log(this.state)
-
     if (this.props.viewOnly) { return; }
     if (!placeMarkers) {
       this.setState({ placeMarkers: true });
@@ -129,15 +136,14 @@ class LeafletMap extends Component {
     }
 
     if (!marker) {
-      const newMarker = this.placeMarker(event.latlng);
-      this.setState({ marker: newMarker });
+      const newMarker = this.placeNewMarker(event.latlng);
     } else {
       marker.remove(this.map);
       this.setState({ marker: null });
     }
   }
 
-  onMarkerClick(event) {
+  onNewMarker(event) {
     if (this.props.viewOnly) { return; }
     const {
       marker
