@@ -26,7 +26,7 @@ class GreenspaceInfo extends Component {
       }));
 
     eventServices.getAllByGreenspace(gid)
-      .then((res) => this.setState({ events: res.content.events }))
+      .then((res) => this.setState({ events: res.content }))
       .catch((err) => console.log(err.error.err));
 
     this.renderEvents = this.renderEvents.bind(this);
