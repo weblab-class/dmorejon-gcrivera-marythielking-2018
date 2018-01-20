@@ -13,6 +13,7 @@ class CreateGreenspace extends Component {
     };
 
     this.updateFormVal = this.updateFormVal.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
     this.create = this.create.bind(this);
   }
 
@@ -32,6 +33,12 @@ class CreateGreenspace extends Component {
     });
   }
 
+  onKeyPress(e){
+    if(e.which === 13) {
+      this.create();
+    }
+  }
+
   create() {
     const { lat, lng, nameVal } = this.state;
     this.props.createGreenspace(nameVal, lat, lng);
@@ -49,6 +56,7 @@ class CreateGreenspace extends Component {
             placeholder='greenspace name'
             value={nameVal}
             onChange={this.updateFormVal}
+            onKeyPress={this.onKeyPress}
           />
           <div className="btn" onClick={this.create}>Create</div>
         </div>

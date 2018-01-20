@@ -13,6 +13,7 @@ class App extends Component {
       currentUser: null,
       showMap: true,
       mapViewOnly: false,
+      newMarker: false,
     };
 
     this.logInUser = this.logInUser.bind(this);
@@ -34,8 +35,9 @@ class App extends Component {
     Services.greenspace.create(name, [lat, lng])
       .then((res) => {
         console.log(res.content);
+        this.setState({newMarker: true});
+        this.props.router.push(`/map/${res.content._id}/${window.location.search}`);
       });
-    this.props.router.push(`/map/${window.location.search}`);
   }
 
   setMapViewOnly(viewOnly) {
@@ -49,6 +51,7 @@ class App extends Component {
       showMap,
       currentUser,
       mapViewOnly,
+      newMarker,
     } = this.state;
 
     return (
@@ -61,6 +64,7 @@ class App extends Component {
           <LeafletMap
             display={showMap}
             viewOnly={mapViewOnly}
+            newMarker={newMarker}
           />
           {React.cloneElement(this.props.children, {
             logInUser: this.logInUser,

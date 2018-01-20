@@ -12,7 +12,7 @@ class LeafletMap extends Component {
       var center = window.location.search.split('=')[1].split(',');
       center = [parseFloat(center[0]), parseFloat(center[1])];
     } else {
-      var center = [42.308604, -71.096353]; //[42.3580, -71.0942],
+      var center = [42.3580, -71.0942];
     }
 
     this.state = {
@@ -56,6 +56,9 @@ class LeafletMap extends Component {
     if (newProps.viewOnly !== this.props.viewOnly) {
       if (newProps.viewOnly) { this.disableMap(); }
       else { this.enableMap(); }
+    }
+    if (newProps.newMarker) {
+      this.setMarkers();
     }
   }
 
