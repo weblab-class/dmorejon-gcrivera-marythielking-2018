@@ -120,6 +120,8 @@ class LeafletMap extends Component {
       placeMarkers,
     } = this.state;
 
+    console.log(this.state)
+
     if (this.props.viewOnly) { return; }
     if (!placeMarkers) {
       this.setState({ placeMarkers: true });
@@ -165,7 +167,6 @@ class LeafletMap extends Component {
     }
     if (navigator.geolocation && this.props.location.pathname.startsWith('/loading')) {
       navigator.geolocation.getCurrentPosition((position) => {
-        // map.setView([position.coords.latitude, position.coords.longitude]);
         this.setState({ center: [position.coords.latitude, position.coords.longitude] });
         map.setView(this.state.center);
         this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
