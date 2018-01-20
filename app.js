@@ -51,7 +51,6 @@ app.get(
     { failureRedirect: '/' }
   ),
   function(req, res) {
-    console.log("HREHEHRE")
     res.redirect('https://' + req.hostname + '/loading');
     // res.redirect('/loading');
   }

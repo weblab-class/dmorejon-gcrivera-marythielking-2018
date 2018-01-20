@@ -7,7 +7,7 @@ const userModel = require('../models/user').userModel;
 passport.use(new fbp.Strategy({
   clientID: process.env.FB_CLIENT_ID,
   clientSecret: process.env.FB_CLIENT_SECRET,
-  callbackURL: '/auth/facebook/callback',
+  callbackURL: 'https://greenspace2018.herokuapp.com/auth/facebook/callback',
   profileFields: ['id', 'displayName', 'email', 'picture.type(large)']
 }, async (accessToken, BrefreshToken, profile, done) => {
   try {
