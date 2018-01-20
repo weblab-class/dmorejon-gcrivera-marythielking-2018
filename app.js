@@ -51,8 +51,7 @@ app.get(
     { failureRedirect: '/' }
   ),
   function(req, res) {
-    res.redirect('https://' + req.hostname + '/loading');
-    // res.redirect('/loading');
+    res.redirect(process.env.BASE_URL + '/loading');
   }
 );
 
@@ -75,7 +74,7 @@ if (process.env.TEST) {
 
 app.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.redirect(process.env.BASE_URL + '/');
 });
 
 // Set up authentication
