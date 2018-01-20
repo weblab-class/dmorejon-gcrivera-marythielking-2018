@@ -1,6 +1,5 @@
-let BASE_URL;
-if (process.env.BASE_URL) {BASE_URL = process.env.BASE_URL + 'review'}
-else {BASE_URL = 'http://localhost:3000/review'}
+// const BASE_URL = 'http://localhost:3000/review'
+const BASE_URL = 'https://greenspace2018.herokuapp.com/review';
 
 var request = require('request-promise-native');
 

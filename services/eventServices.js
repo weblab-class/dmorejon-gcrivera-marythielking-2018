@@ -1,6 +1,5 @@
-let BASE_URL;
-if (process.env.BASE_URL) {BASE_URL = process.env.BASE_URL + 'event'}
-else {BASE_URL = 'http://localhost:3000/event'}
+// const BASE_URL = 'http://localhost:3000/event'
+const BASE_URL = 'https://greenspace2018.herokuapp.com/event';
 
 var request = require('request-promise-native');
 
