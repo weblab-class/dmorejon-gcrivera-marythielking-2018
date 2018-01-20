@@ -15,6 +15,42 @@ describe('User API', () => {
 
   describe('GET /user', () => {
 
+    before(async () => {
+      try {
+        const newUser = new userModel({fbid: '247833829184',
+                                        displayname: 'Chicken Joe',
+                                        photo: 'https://vignette.wikia.nocookie.net/p__/images/6/6f/E3319ee4080620c620b19f6dd957b119.jpg/revision/latest?cb=20170915211728&path-prefix=protagonist'});
+        await newUser.save()
+        return;
+      } catch(e) {
+        return e;
+      }
+    });
+
+    before(async () => {
+      try {
+        const newUser = new userModel({fbid: '247833829185',
+                                        displayname: 'Cotank Rjoevans',
+                                        photo: 'https://vignette.wikia.nocookie.net/sonypicturesanimation/images/2/25/Tank_evens2.png/revision/latest?cb=20170602010041'});
+        await newUser.save()
+        return;
+      } catch(e) {
+        return e;
+      }
+    });
+
+    before(async () => {
+      try {
+        const newUser = new userModel({fbid: '247833829186',
+                                        displayname: 'Geek Crust',
+                                        photo: 'https://images-na.ssl-images-amazon.com/images/M/MV5BMTM1NjA2NjAxMF5BMl5BanBnXkFtZTcwNTgzODYzMw@@._V1_SY1000_CR0,0,1659,1000_AL_.jpg'});
+        await newUser.save()
+        return;
+      } catch(e) {
+        return e;
+      }
+    });
+
     afterEach(async () => {
       try {
         const newUser = new userModel({fbid: '247833829183',
@@ -52,6 +88,54 @@ describe('User API', () => {
           assert.isDefined(res.body.content);
           assert.equal(res.body.content.displayname, 'Cody Maverick');
           assert.equal(res.body.content.fbid, '247833829183');
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Get users with a C', (done) => {
+      request(app)
+        .get('/user/C')
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+          assert.isDefined(res.body.content);
+          assert.equal(res.body.content.length, 4)
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Get users with a joe', (done) => {
+      request(app)
+        .get('/user/joe')
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+          assert.isDefined(res.body.content);
+          assert.equal(res.body.content.length, 2)
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Get users with a co', (done) => {
+      request(app)
+        .get('/user/Co')
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+          assert.isDefined(res.body.content);
+          assert.equal(res.body.content.length, 2)
         })
         .end((err, res) => {
           if (err) done(err);

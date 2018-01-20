@@ -157,11 +157,11 @@ describe('Review API', () => {
     it('Get reviews for fake greenspace', (done) => {
       request(app)
         .get('/review/greenspace/'+ 'fakegreenspacenameLOLOLOLOLGETPLAYEDBOI')
-        .expect(404)
+        .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
-          assert.equal(res.body.success, false);
-          assert.equal(res.body.err, 'There are no reviews for this green space.');
+          assert.equal(res.body.success, true);
+          assert.equal(res.body.content.reviews.length, 0);
         })
         .end((err, res) => {
           if (err) done(err);

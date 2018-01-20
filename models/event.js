@@ -28,9 +28,6 @@ const event = ((eventModel) => {
   that.getEventsByGreenspace = async (greenspaceid) => {
     try {
       const events = await eventModel.find({greenspace: greenspaceid});
-      if (events.length == 0) {
-        throw {message: 'There are no events for this greenspace.', errorCode: 404}
-      }
       return events.sort((a, b) => {
         if (a.starttime.getTime() > b.starttime.getTime()) {
           return 1;
@@ -46,9 +43,6 @@ const event = ((eventModel) => {
   that.getEventsByUser = async (userid) => {
     try {
       const events = await eventModel.find({participants: userid});
-      if (events.length == 0) {
-        throw {message: 'There are no events for this user.', errorCode: 404}
-      }
       return events.sort((a, b) => {
         if (a.starttime.getTime() > b.starttime.getTime()) {
           return 1;
