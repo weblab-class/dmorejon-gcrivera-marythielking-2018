@@ -6,7 +6,7 @@
   "scripts": {
     "build": "./node_modules/.bin/grunt",
     "start": "nodemon app.js",
-    "test": "mocha test/greenspace.js --timeout 15000; TEST=true mocha test/review.js --timeout 15000; TEST=true mocha test/user.js --timeout 15000; TEST=true mocha test/event.js --timeout 90000;",
+    "test": "TEST=true mocha test/greenspace.js --timeout 15000; TEST=true mocha test/review.js --timeout 15000; TEST=true mocha test/user.js --timeout 15000; TEST=true mocha test/event.js --timeout 90000;",
     "coverage": "TEST=true ./node_modules/.bin/istanbul cover --root ./ -x ./public/js/*  ./node_modules/mocha/bin/_mocha ./test/*"
   },
   "author": "Gabrielle C. Rivera, David Morejon, Mary G. Thielking",

@@ -104,11 +104,11 @@ describe('Event API', () => {
     it('Get events for greenspace with no events', (done) => {
       request(app)
         .get('/event/greenspace/' + emptyGreenspaceID)
-        .expect(404)
+        .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
-          assert.equal(res.body.success, false);
-          assert.equal(res.body.err, 'There are no events for this greenspace.');
+          assert.equal(res.body.success, true);
+          assert.equal(res.body.content.length, 0);
         })
         .end((err, res) => {
           if (err) done(err);
@@ -119,11 +119,11 @@ describe('Event API', () => {
     it('Get events for invalid greenspace', (done) => {
       request(app)
         .get('/event/greenspace/1')
-        .expect(404)
+        .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
-          assert.equal(res.body.success, false);
-          assert.equal(res.body.err, 'There are no events for this greenspace.');
+          assert.equal(res.body.success, true);
+          assert.equal(res.body.content.length, 0);
         })
         .end((err, res) => {
           if (err) done(err);
