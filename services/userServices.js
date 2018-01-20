@@ -1,5 +1,5 @@
 // const BASE_URL = 'http://localhost:3000/user'
-const BASE_URL = 'http://greenspace2018.herokuapp.com/user';
+const BASE_URL = 'https://greenspace2018.herokuapp.com/user';
 
 var request = require('request-promise-native');
 
