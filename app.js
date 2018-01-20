@@ -43,6 +43,7 @@ app.use(passport.session());
 
 // authentication routes
 app.get('/auth/facebook', (req, res, next) => {
+  console.log(req.hostname);
   passport.authenticate('facebook',
   {callbackURL:'https://' + req.hostname + '/auth/facebook/callback/'}) (req, res, next);
 });
