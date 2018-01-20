@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import Sidebar from '../Components/Sidebar.jsx';
+import eventServices from '../../services/eventServices.js';
 
 class CreateEvent extends Component {
   constructor(props){
     super(props);
     this.state = {
-      lat: props.params.lat,
-      lng: props.params.lng,
+      gid: props.params.gid,
 
       nameVal: '',
       descriptionVal: '',
@@ -29,9 +29,21 @@ class CreateEvent extends Component {
   }
 
   create() {
-    const { lat, lng } = this.state;
-    console.log("new event created: ", this.state);
-    this.props.router.push(`/map/${lat},${lng}/${window.location.search}`);
+    const {
+      gid,
+      nameVal,
+      descriptionVal,
+      startVal,
+      endVal,
+    } = this.state;
+    const startDate = new Date(this.state.startVal);
+    const endDate = new Date(this.state.endVal);
+    eventServices.create(nameVal, descriptionVal, gid, startDate, endDate, [])
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err.error.err));
+    this.props.router.push(`/map/${gid}/${window.location.search}`);
   }
 
   render(){

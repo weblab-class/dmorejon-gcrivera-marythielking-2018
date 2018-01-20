@@ -107,7 +107,4 @@ class GreenspaceInfo extends Component {
   }
 }
 
-GreenspaceInfo.propTypes = {
-}
-
 export default withRouter(GreenspaceInfo);

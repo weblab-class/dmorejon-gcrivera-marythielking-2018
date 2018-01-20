@@ -31,10 +31,9 @@ class App extends Component {
   }
 
   createGreenspace(name, lat, lng) {
-    // console.log(`greenspace ${name} created at ${lat}, ${lng}`);
     Services.greenspace.create(name, [lat, lng])
       .then((res) => {
-        console.log(res.content);
+        // console.log(res.content);
         this.setState({newMarker: true});
         this.props.router.push(`/map/${res.content._id}/${window.location.search}`);
       });
