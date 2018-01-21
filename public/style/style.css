@@ -51,9 +51,9 @@ a {
   background-color: white;
 }
 
-.rendered-users {
-  height: 500px;
-  overflow-y:auto;
+.user-list {
+  list-style-type: none;
+  padding-left: 0px;
 }
 
 #content {

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import Sidebar from '../Components/Sidebar.jsx';
-import UserSearch from '../Components/UserSearch.jsx'
+import UserSearch from '../Components/UserSearch.jsx';
+import eventServices from '../../services/eventServices.js';
 
 class CreateEvent extends Component {
   constructor(props){
     super(props);
     this.state = {
-      lat: props.params.lat,
-      lng: props.params.lng,
+      gid: props.params.gid,
 
       nameVal: '',
       descriptionVal: '',
@@ -39,9 +39,23 @@ class CreateEvent extends Component {
   }
 
   create() {
-    const { lat, lng } = this.state;
-    console.log("new event created: ", this.state);
-    this.props.router.push(`/map/${lat},${lng}/${window.location.search}`);
+    const {
+      gid,
+      nameVal,
+      descriptionVal,
+      startVal,
+      endVal,
+      participants,
+    } = this.state;
+    const startDate = new Date(this.state.startVal);
+    const endDate = new Date(this.state.endVal);
+
+    eventServices.create(nameVal, descriptionVal, gid, startDate, endDate, participants)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err.error.err));
+    this.props.router.push(`/map/${gid}/${window.location.search}`);
   }
 
   render(){
@@ -50,6 +64,7 @@ class CreateEvent extends Component {
       descriptionVal,
       startVal,
       endVal,
+      participants,
     } = this.state;
 
     return (
@@ -80,7 +95,7 @@ class CreateEvent extends Component {
             type="datetime-local"
             onChange={this.updateFormVal}
           />
-        <UserSearch onEventCreation={this.handleParticipants}/>
+        <UserSearch handleParticipants={this.handleParticipants}/>
           <div className="btn" onClick={this.create}>Create</div>
         </div>
       </Sidebar>

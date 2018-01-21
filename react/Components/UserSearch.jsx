@@ -35,6 +35,7 @@ class UserSearch extends Component {
 
   updateParticipants(event, user) {
     const updatedParticipants = this.state.participants.concat(user);
+    this.props.handleParticipants(updatedParticipants);
     this.refs.searchInput.value = '';
     this.refs.searchInput.focus();
     this.setState({ participants: updatedParticipants, users: [] });
@@ -46,16 +47,17 @@ class UserSearch extends Component {
       return participant.fbid !== user.fbid;
     });
     this.refs.searchInput.focus();
+    this.props.handleParticipants(participants);
     this.setState({ participants: participants});
   }
 
   renderUsers(users) {
     return users.map((user) => {
       return (
-        <div key={user.fbid} onClick={((e) => this.updateParticipants(e, user))} className="search-results">
+        <li key={user.fbid} onClick={((e) => this.updateParticipants(e, user))} className="search-results">
           <img src={user.photo} height="30px" className="profile-icon"/>
           {user.displayname}
-        </div>
+        </li>
       );
     });
   }
@@ -95,7 +97,7 @@ class UserSearch extends Component {
             onChange={this.updateFormVal}
             ref="searchInput"
           />
-        <div className="rendered-users">{renderedUsers}</div>
+        <ul className="user-list">{renderedUsers}</ul>
         </div>
       </div>
     );
