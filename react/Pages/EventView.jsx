@@ -44,6 +44,8 @@ class EventView extends Component {
         <h1 className="section-header">{name}</h1>
         <div>{description}</div>
         <div>{startDate} {startHour} to {endDate} {endHour}</div>
+        <div className="btn" onClick={this.create}>Back</div>
+
       </Sidebar>
     );
   }
