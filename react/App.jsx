@@ -36,6 +36,11 @@ class App extends Component {
         // console.log(res.content);
         this.setState({newMarker: true});
         this.props.router.push(`/map/${res.content._id}/${window.location.search}`);
+      })
+      .catch((err) => {
+        if (err.statusCode == 403) {
+          this.props.router.push(`/login/require/${window.location.search}`);
+        }
       });
   }
 
@@ -69,6 +74,7 @@ class App extends Component {
             logInUser: this.logInUser,
             createGreenspace: this.createGreenspace,
             setMapViewOnly: this.setMapViewOnly,
+            requireLogIn: this.requireLogIn,
           })}
         </div>
       </div>

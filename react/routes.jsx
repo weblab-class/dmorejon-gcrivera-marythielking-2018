@@ -13,6 +13,7 @@ import EventView from './Pages/EventView.jsx';
 import EditEvent from './Pages/EditEvent.jsx';
 import ReviewsView from './Pages/ReviewsView.jsx';
 import CreateReview from './Pages/CreateReview.jsx';
+import RequireLogIn from './Pages/RequireLogIn.jsx';
 import UserView from './Pages/UserView.jsx';
 import NotFound from './Pages/NotFound.jsx';
 
@@ -22,6 +23,8 @@ export default (
       <IndexRoute component={Homepage} />
       <Route path="login"
         component={LogIn} />
+      <Route path="login/require"
+          component={RequireLogIn} />
       <Route path="loading"
           component={Loading} />
       <Route path="map"
