@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import PopUp from '../Components/PopUp.jsx';
 import Services from '../../services';
@@ -32,8 +33,24 @@ class UserView extends Component {
 
     Services.event.getAllByUser()
     .then((res) => {
+      console.log(res);
       this.setState({ events: res.content});
     });
+  }
+
+  renderEvents() {
+    const { events } = this.state;
+    return events.map((e) => this.renderEvent(e));
+  }
+
+  renderEvent(e) {
+    const { gid } = this.props.params;
+    const { name, _id } = e;
+    return (<Link
+      to={`/map/${gid}/event/${_id}/${window.location.search}`}
+      className="list-item-event"
+      key={name}
+    >{name}</Link>);
   }
 
   render(){
@@ -45,6 +62,7 @@ class UserView extends Component {
     const photo = this.state.photo;
     const reviews = this.state.reviews;
     const events = this.state.events;
+    const renderedEvents = this.renderEvents();
     let reviews_div;
     let events_div;
 
@@ -72,8 +90,8 @@ class UserView extends Component {
     } else {
       events_div = (
         <div id = 'events'>
-          <h1 className="section-header"> events you're a part of </h1>
-          //display events here
+          <h1 className="section-header"> events you're a part of: </h1>
+            <div className="list-items">{renderedEvents}</div>
         </div>
       )
     };
@@ -85,7 +103,7 @@ class UserView extends Component {
         </div>
         {reviews_div}
         {events_div}
-        <div id = 'events'> </div>
+        <div className="btn" onClick={"window.location.href='/page2'"}>Back</div>
       </PopUp>
     );
   }
