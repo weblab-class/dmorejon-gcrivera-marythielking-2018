@@ -54,7 +54,11 @@ class CreateReview extends Component {
         console.log(res.content);
         this.props.router.push(`/map/${res.content._id}/reviews/${window.location.search}`);
       })
-      .catch((err) => console.log(err.error.err));
+      .catch((err) => {
+        if (err.statusCode == 403) {
+          this.props.router.push(`/login/require/${window.location.search}`);
+        }
+      });
   }
 
   render(){
