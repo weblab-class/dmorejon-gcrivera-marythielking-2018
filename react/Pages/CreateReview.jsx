@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router';
+import FontAwesome from 'react-fontawesome';
 import ReactStars from 'react-stars';
 import Sidebar from '../Components/Sidebar.jsx';
 import reviewServices from '../../services/reviewServices.js';
@@ -60,6 +62,9 @@ class CreateReview extends Component {
 
     return (
       <Sidebar>
+        <Link to={`/map/${this.props.params.gid}/${window.location.search}`} id="back-button">
+          <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
+        </Link>
         <h1 className="section-header">Create Review</h1>
         <ReactStars value={rating} onChange={this.setRating} color2="black" />
         <div className="form">
@@ -77,4 +82,4 @@ class CreateReview extends Component {
   }
 }
 
-export default CreateReview;
+export default withRouter(CreateReview);

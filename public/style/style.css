@@ -183,6 +183,17 @@ a {
   background-color: rgba(145, 145, 145, 0.5);
 }
 
+.list-item-review {
+  padding: 10px 15px;
+  margin: 2px 0px;
+  border-radius: 5px;
+  background-color: rgba(183, 183, 183, 0.5);
+}
+
+.list-item-review:hover {
+  cursor: default;
+}
+
 #add-event {
   display: flex;
   align-items: center;

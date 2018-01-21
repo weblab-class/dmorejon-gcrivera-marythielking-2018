@@ -72,6 +72,9 @@ class GreenspaceInfo extends Component {
         <Link to={`/map/${gid}/reviews/create/${window.location.search}`} id="write-review">
           <div id="write-review-text">Write a Review</div>
         </Link>
+        <Link to={`/map/${gid}/reviews/${window.location.search}`} id="write-review">
+          <div id="write-review-text">View Reviews</div>
+        </Link>
         <div className="list-items">{renderedEvents}</div>
         <Link to={`/map/${gid}/event/create/${window.location.search}`} id="add-event">
           <FontAwesome name="plus-square-o" size="2x" id="add-event-icon" />
