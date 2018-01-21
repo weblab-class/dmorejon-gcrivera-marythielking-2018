@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
+import { Link, withRouter } from 'react-router';
+import FontAwesome from 'react-fontawesome';
 import Sidebar from '../Components/Sidebar.jsx';
 import UserSearch from '../Components/UserSearch.jsx';
 import eventServices from '../../services/eventServices.js';
@@ -73,6 +74,9 @@ class CreateEvent extends Component {
 
     return (
       <Sidebar>
+        <Link to={`/map/${this.props.params.gid}/${window.location.search}`} id="back-button">
+          <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
+        </Link>
         <h1 className="section-header">CreateEvent</h1>
         <div className="form">
           <input className='form-input'

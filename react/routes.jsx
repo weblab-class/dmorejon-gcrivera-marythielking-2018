@@ -11,7 +11,7 @@ import GreenspaceInfo from './Pages/GreenspaceInfo.jsx';
 import CreateEvent from './Pages/CreateEvent.jsx';
 import EventView from './Pages/EventView.jsx';
 import EditEvent from './Pages/EditEvent.jsx';
-import ReviewsView from './Pages/ReviewsView.jsx';
+import ReviewView from './Pages/ReviewView.jsx';
 import CreateReview from './Pages/CreateReview.jsx';
 import RequireLogIn from './Pages/RequireLogIn.jsx';
 import UserView from './Pages/UserView.jsx';
@@ -40,7 +40,7 @@ export default (
       <Route path="map/:gid/event/:eventId/edit"
         component={EditEvent} />
       <Route path="map/:gid/reviews"
-        component={ReviewsView} />
+        component={ReviewView} />
       <Route path="map/:gid/reviews/create"
         component={CreateReview} />
       <Route path="user/:id"
