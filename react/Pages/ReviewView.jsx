@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Sidebar from '../Components/Sidebar.jsx';
 
-class ReviewsView extends Component {
+class ReviewView extends Component {
   render(){
     return (
       <Sidebar>
@@ -11,4 +11,4 @@ class ReviewsView extends Component {
   }
 }
 
-export default ReviewsView;
+export default ReviewView;

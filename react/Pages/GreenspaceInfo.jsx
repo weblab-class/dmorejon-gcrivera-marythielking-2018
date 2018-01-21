@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
+import ReactStars from 'react-stars';
+
 import Sidebar from '../Components/Sidebar.jsx';
 import greenspaceServices from '../../services/greenspaceServices.js';
 import eventServices from '../../services/eventServices.js';
@@ -31,7 +33,6 @@ class GreenspaceInfo extends Component {
 
     this.renderEvents = this.renderEvents.bind(this);
     this.renderEvent = this.renderEvent.bind(this);
-    this.renderStar = this.renderStar.bind(this);
   }
 
   renderEvents() {
@@ -52,41 +53,12 @@ class GreenspaceInfo extends Component {
     >{name}</Link>);
   }
 
-  renderStar(s) {
-    const rating = 3.5;
-    if (s < rating) {
-      return (<FontAwesome name="star" key={s} />);
-    } else if (s - rating === 0.5) {
-      return (<FontAwesome name="star-half-o" key={s} />);
-    } else {
-      return (<FontAwesome name="star-o" key={s} />);
-    }
-  }
-
   render(){
     const { gid } = this.props.params;
     const { name, lat, lng } = this.state;
 
-    const dummyEvents = [
-      { name: "Event 1" },
-      { name: "Event 2" },
-      { name: "Event 3" },
-      { name: "Event 4" },
-      { name: "Event 5" },
-      { name: "Event 6" },
-      { name: "Event 7" },
-      { name: "Event 8" },
-      { name: "Event 9" },
-      { name: "Event 10" },
-      { name: "Event 11" },
-      { name: "Event 12" },
-      { name: "Event 13" },
-      { name: "Event 14" },
-      { name: "Event 15" },
-      { name: "Event 16" },
-    ]
     const renderedEvents = this.renderEvents();
-    const stars = [1,2,3,4,5].map((s) => this.renderStar(s));
+
     return (
       <Sidebar>
         <h1>{name}</h1>
@@ -96,7 +68,10 @@ class GreenspaceInfo extends Component {
             <img src="/images/google-maps-icon-2015.png" height="40px" className="gmaps-logo" />
           </a>
         </div>
-        <div className="rating-stars">{stars}</div>
+        <ReactStars value={3.5} edit={false} color2="black" />
+        <Link to={`/map/${gid}/reviews/create/${window.location.search}`} id="write-review">
+          <div id="write-review-text">Write a Review</div>
+        </Link>
         <div className="list-items">{renderedEvents}</div>
         <Link to={`/map/${gid}/event/create/${window.location.search}`} id="add-event">
           <FontAwesome name="plus-square-o" size="2x" id="add-event-icon" />
