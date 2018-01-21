@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Services from '../../services';
+import ArrowKeysReact from 'arrow-keys-react';
 
 class UserSearch extends Component {
   constructor(props){
@@ -10,11 +11,28 @@ class UserSearch extends Component {
       participants: []
     };
 
+    ArrowKeysReact.config({
+        up: () => {
+          const currentFoc = parseInt(document.activeElement.id);
+          if (currentFoc > -1) {
+            this.refs[String(currentFoc - 1)].focus();
+          }
+        },
+        down: () => {
+          const currentFoc = parseInt(document.activeElement.id);
+          if (currentFoc < this.state.users.length - 1) {
+            this.refs[String(currentFoc + 1)].focus();
+          }
+        }
+      });
+
+
     this.updateFormVal = this.updateFormVal.bind(this);
     this.renderUsers = this.renderUsers.bind(this);
     this.updateParticipants = this.updateParticipants.bind(this);
     this.renderParticipants = this.renderParticipants.bind(this);
     this.deleteParticipant = this.deleteParticipant.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   updateFormVal(event) {
@@ -36,8 +54,8 @@ class UserSearch extends Component {
   updateParticipants(event, user) {
     const updatedParticipants = this.state.participants.concat(user);
     this.props.handleParticipants(updatedParticipants);
-    this.refs.searchInput.value = '';
-    this.refs.searchInput.focus();
+    this.refs[String(-1)].value = '';
+    this.refs[String(-1)].focus();
     this.setState({ participants: updatedParticipants, users: [] });
   }
 
@@ -46,15 +64,15 @@ class UserSearch extends Component {
     participants = participants.filter((participant) => {
       return participant.fbid !== user.fbid;
     });
-    this.refs.searchInput.focus();
+    this.refs[String(-1)].focus();
     this.props.handleParticipants(participants);
     this.setState({ participants: participants});
   }
 
   renderUsers(users) {
-    return users.map((user) => {
+    return users.map((user, idx) => {
       return (
-        <li key={user.fbid} onClick={((e) => this.updateParticipants(e, user))} className="search-results">
+        <li onKeyPress={((e) => this.handleKeyPress(e, user))} tabIndex={idx} id={idx.toString()} ref={idx.toString()} key={user.fbid} onClick={((e) => this.updateParticipants(e, user))} className="search-results">
           <img src={user.photo} height="30px" className="profile-icon"/>
           {user.displayname}
         </li>
@@ -74,6 +92,12 @@ class UserSearch extends Component {
     });
   }
 
+  handleKeyPress(event, user) {
+    if (event.key === 'Enter') {
+      this.updateParticipants(event, user)
+    }
+  }
+
   render() {
     const {
       users,
@@ -91,11 +115,11 @@ class UserSearch extends Component {
       <div>
         <div>Participants:</div>
         <div>{renderedParticipants}</div>
-        <div className="form">
-          <input className='form-input'
+        <div className="form" {...ArrowKeysReact.events} tabIndex="-1">
+          <input className='form-input' id="-1"
             placeholder='add participants'
             onChange={this.updateFormVal}
-            ref="searchInput"
+            ref="-1"
           />
         <ul className="user-list">{renderedUsers}</ul>
         </div>
