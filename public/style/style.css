@@ -46,6 +46,16 @@ a {
   bottom: 0;
 }
 
+.search-results {
+  cursor: pointer;
+  background-color: white;
+}
+
+.rendered-users {
+  height: 500px;
+  overflow-y:auto;
+}
+
 #content {
   position: relative;
   height: calc(100vh - 80px);

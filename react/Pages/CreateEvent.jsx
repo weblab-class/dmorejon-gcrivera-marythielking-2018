@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import Sidebar from '../Components/Sidebar.jsx';
+import UserSearch from '../Components/UserSearch.jsx'
 
 class CreateEvent extends Component {
   constructor(props){
@@ -13,9 +14,11 @@ class CreateEvent extends Component {
       descriptionVal: '',
       startVal: '',
       endVal: '',
+      participants: [],
     };
 
     this.updateFormVal = this.updateFormVal.bind(this);
+    this.handleParticipants = this.handleParticipants.bind(this);
     this.create = this.create.bind(this);
   }
 
@@ -26,6 +29,13 @@ class CreateEvent extends Component {
       prevState[updatedField] = updatedValue;
       return prevState;
     });
+  }
+
+  handleParticipants(participants) {
+    participants = participants.map((participant) => {
+      return participant.fbid;
+    });
+    this.setState({ participants: participants});
   }
 
   create() {
@@ -70,6 +80,7 @@ class CreateEvent extends Component {
             type="datetime-local"
             onChange={this.updateFormVal}
           />
+        <UserSearch onEventCreation={this.handleParticipants}/>
           <div className="btn" onClick={this.create}>Create</div>
         </div>
       </Sidebar>

@@ -11,4 +11,12 @@ export default {
       json : true
     });
   },
+
+  search : (name) => {
+    return request({
+      uri : BASE_URL + `/${name}`,
+      method: 'GET',
+      json : true
+    });
+  },
 }
