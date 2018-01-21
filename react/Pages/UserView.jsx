@@ -36,8 +36,10 @@ class UserView extends Component {
       console.log(res);
       this.setState({ events: res.content});
     });
-  }
 
+    this.renderEvents = this.renderEvents.bind(this);
+    this.renderEvent = this.renderEvent.bind(this);
+}
   renderEvents() {
     const { events } = this.state;
     return events.map((e) => this.renderEvent(e));
