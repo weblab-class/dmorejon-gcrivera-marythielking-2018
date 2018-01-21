@@ -103,7 +103,10 @@ class UserView extends Component {
         </div>
         {reviews_div}
         {events_div}
-        <div className="btn" onClick={"window.location.href='/page2'"}>Back</div>
+        <Link
+          to={`/map/`}
+          className="btn"
+        >back</Link>
       </PopUp>
     );
   }
