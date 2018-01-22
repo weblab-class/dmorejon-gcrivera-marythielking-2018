@@ -17,7 +17,9 @@ class Header extends Component {
 
     Services.user.info()
       .then((res) => {
-        this.setState({ currentUser: res.content.displayname , photo: res.content.photo});
+        if (res.content) {
+          this.setState({ currentUser: res.content.displayname , photo: res.content.photo});
+        }
       });
   }
 
