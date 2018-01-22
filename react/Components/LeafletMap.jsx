@@ -57,29 +57,38 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(newProps) {
+    if(this.props.location.pathname === '/loading') {
+      this.disableMap()
+      this.map.off('click');
+      this.setState({
+        placeMarkers: true,
+        prevPlaceMarkers: true,
+      });
+    }
+    else {
+      this.enableMap();
+      this.map.on('click', this.onMapClick);
+    }
+
     if (newProps.resetMarkers && this.state.marker) {
       this.state.marker.remove(this.map);
       this.setState({ marker: null });
     }
+
     if (newProps.viewOnly !== this.props.viewOnly) {
       if (newProps.viewOnly) { this.disableMap(); }
       else { this.enableMap(); }
     }
+
     if (newProps.newMarker) {
       this.setMarkers();
     }
+    
     if (newProps.placeMarkers !== this.state.placeMarkers) {
-      if(this.props.location.pathname === '/loading') {
-        this.setState({
-          placeMarkers: newProps.placeMarkers,
-          prevPlaceMarkers: true,
-        });
-      } else {
-        this.setState({
-          placeMarkers: newProps.placeMarkers,
-          prevPlaceMarkers: this.state.placeMarkers,
-        });
-      }
+      this.setState({
+        placeMarkers: newProps.placeMarkers,
+        prevPlaceMarkers: this.state.placeMarkers,
+      });
     }
   }
 
@@ -152,6 +161,8 @@ class LeafletMap extends Component {
       placeMarkers,
       prevPlaceMarkers,
     } = this.state;
+
+    console.log(this.state)
 
     if (!placeMarkers) {
       this.setState({ placeMarkers: true });
