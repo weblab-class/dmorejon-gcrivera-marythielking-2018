@@ -15,7 +15,9 @@ class PopUp extends Component {
   }
 
   handleClickOutside(event) {
-    this.props.router.push(`/map/${window.location.search}`);
+    if (!this.props.location.pathname.startsWith('/loading')) {
+      this.props.router.push(`/map/${window.location.search}`);
+    }
   }
 
   render(){
