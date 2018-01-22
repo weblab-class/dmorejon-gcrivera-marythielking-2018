@@ -57,7 +57,11 @@ app.get(
 
 if (process.env.TEST) {
   app.use((req, res, next) => {
-    req.user = {fbid: "247833829183"};
+    req.user = { _id: '5a63c29174d39b08342a59e2',
+  fbid: 10211342727149288,
+  displayname: 'Gabrielle Rivera',
+  photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901',
+  __v: 0 };
     next();
   });
 

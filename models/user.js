@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
-const userModel = mongoose.model('User', mongoose.Schema({
+const userSchema = mongoose.Schema({
   fbid: {type: Number, required: true, unique: true},
   displayname: {type: String, required: true},
   photo: {type: String, required: true}
-}));
+});
+const userModel = mongoose.model('User', userSchema );
 
 const user = ((userModel) => {
     let that = {};
@@ -86,3 +87,4 @@ const user = ((userModel) => {
 
 exports.userModel = userModel;
 exports.user = user;
+exports.userSchema = userSchema;

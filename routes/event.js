@@ -60,7 +60,7 @@ router.get('/greenspace/:greenspaceid', async (req, res) => {
     // event: event object (see above schema)
 router.post('/', async (req, res) => {
   try {
-    const newEvent = await event.createEvent(req.body, req.user.fbid);
+    const newEvent = await event.createEvent(req.body, req.user);
     utils.sendSuccessResponse(res, newEvent);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);

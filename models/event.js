@@ -1,13 +1,14 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const userSchema = require('./user').userSchema;
 
-var eventModel = mongoose.model('Event', mongoose.Schema({
+let eventModel = mongoose.model('Event', mongoose.Schema({
   name: {type: String, required: true},
   description: {type: String},
   starttime: {type: Date, required: true},
   endtime: {type: Date, required: true, expires: '10s'},
   greenspace: {type: String, required: true},
-  host: {type: String, required: true},
-  participants: {type: [{type: String, required: true}], required: true}
+  host: {type: userSchema, required: true},
+  participants: {type: [{type: userSchema, required: true}], required: true}
 }));
 
 const event = ((eventModel) => {
@@ -17,7 +18,7 @@ const event = ((eventModel) => {
     try {
       const newEvent = await eventModel.findOne({_id: id});
       if (!newEvent) {
-        throw {message: 'Event does not exist.', errorCode: 404}
+        throw {message: 'Event does not exist.', errorCode: 404};
       }
       return newEvent;
     } catch(e) {
@@ -40,9 +41,9 @@ const event = ((eventModel) => {
     }
   }
 
-  that.getEventsByUser = async (userid) => {
+  that.getEventsByUser = async (user) => {
     try {
-      const events = await eventModel.find({participants: userid});
+      const events = await eventModel.find({participants: user});
       return events.sort((a, b) => {
         if (a.starttime.getTime() > b.starttime.getTime()) {
           return 1;
@@ -73,13 +74,13 @@ const event = ((eventModel) => {
     }
   }
 
-  that.editEvent = async (eventid, eventData, userid) => {
+  that.editEvent = async (eventid, eventData, user) => {
     try {
       const editableEvent = await eventModel.findOne({_id: eventid});
       if (!editableEvent) {
         throw {message: 'Event does not exist.', errorCode: 404}
       }
-      if (editableEvent.host == userid) {
+      if (editableEvent.host === user.fbid) {
         return await eventModel.findOneAndUpdate({_id: eventid}, eventData, {new: true});
       } else {
         throw {message: 'User does not have permission to edit this event.', errorCode: 403};
@@ -89,23 +90,23 @@ const event = ((eventModel) => {
     }
   }
 
-  that.joinEvent = async (eventid, userid) => {
+  that.joinEvent = async (eventid, user) => {
     try {
-      const edditedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$push: {participants: userid}}, {new: true});
-      if (!edditedEvent) {throw {message: 'Event does not exist.', errorCode: 404}}
-      return edditedEvent;
+      const editedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$push: {participants: user}}, {new: true});
+      if (!editedEvent) {throw {message: 'Event does not exist.', errorCode: 404}}
+      return editedEvent;
     } catch(e) {
       throw e;
     }
   }
 
-  that.leaveEvent = async (eventid, userid, targetid) => {
+  that.leaveEvent = async (eventid, user, target) => {
     try {
       const eventData = await eventModel.findOne({_id: eventid});
       if (!eventData) {throw {message: 'Event does not exist.', errorCode: 404}}
-      if (targetid == eventData.host) {throw {message: 'Host cannot leave event.', errorCode: 400}}
-      if (userid == targetid || userid == eventData.host) {
-        return await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {participants: targetid}}, {new: true});
+      if (target === eventData.host) {throw {message: 'Host cannot leave event.', errorCode: 400}}
+      if (user === target || user === eventData.host) {
+        return await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {participants: target}}, {new: true});
       } else {
         throw {message: 'User does not have permission to remove specified user from event.', errorCode: 403};
       }
@@ -114,11 +115,11 @@ const event = ((eventModel) => {
     }
   }
 
-  that.deleteEvent = async (eventid, userid) => {
+  that.deleteEvent = async (eventid, user) => {
     try {
-      const eventData = await eventModel.findOne({_id: eventid, host: userid});
+      const eventData = await eventModel.findOne({_id: eventid, host: user});
       if (!eventData) {throw {message: 'Event does not exist.', errorCode: 404}}
-      await eventModel.findOneAndRemove({_id: eventid, host: userid});
+      await eventModel.findOneAndRemove({_id: eventid, host: user});
       return;
     } catch(e) {
       throw e;

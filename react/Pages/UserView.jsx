@@ -33,7 +33,6 @@ class UserView extends Component {
 
     Services.event.getAllByUser()
     .then((res) => {
-      console.log(res);
       this.setState({ events: res.content});
     });
 
