@@ -281,3 +281,7 @@ h1:hover {
 #add-event-text {
   font-size: 20px;
 }
+
+#explore-btn {
+  margin-bottom: 10px;
+}
