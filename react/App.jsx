@@ -18,19 +18,18 @@ class App extends Component {
       resetMarkers: false,
     };
 
-    this.logInUser = this.logInUser.bind(this);
-    this.logOutUser = this.logOutUser.bind(this);
+    Services.user.info()
+      .then((res) => {
+        if (res.content) {
+          this.setState({
+            currentUser: res.content
+          });
+        }
+      });
+
     this.createGreenspace = this.createGreenspace.bind(this);
     this.setMapPlaceMarkers = this.setMapPlaceMarkers.bind(this);
     this.setMapViewOnly = this.setMapViewOnly.bind(this);
-  }
-
-  logInUser() {
-    this.props.router.push(`/map/${window.location.search}`);
-  }
-
-  logOutUser() {
-    this.setState({ currentUser: null });
   }
 
   createGreenspace(name, lat, lng) {
@@ -74,7 +73,6 @@ class App extends Component {
       <div>
         <Header
           currentUser={currentUser}
-          logOutUser={this.logOutUser}
         />
         <div id="content">
           <LeafletMap
@@ -83,9 +81,10 @@ class App extends Component {
             placeMarkers={placeMarkers}
             newMarker={newMarker}
             resetMarkers={resetMarkers}
+            currentUser={currentUser}
           />
           {React.cloneElement(this.props.children, {
-            logInUser: this.logInUser,
+            currentUser: currentUser,
             createGreenspace: this.createGreenspace,
             setMapViewOnly: this.setMapViewOnly,
             setMapPlaceMarkers: this.setMapPlaceMarkers,

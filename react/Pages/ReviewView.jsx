@@ -43,7 +43,15 @@ class ReviewView extends Component {
   }
 
   render(){
+    const { currentUser } = this.props;
+    const { gid } = this.props.params;
     const renderedReviews = this.renderReviews();
+
+    const writeReview = (
+      <Link to={`/map/${gid}/reviews/create/${window.location.search}`}>
+        <div>Write a Review</div>
+      </Link>
+    );
 
     return (
       <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
@@ -52,9 +60,14 @@ class ReviewView extends Component {
         </Link>
         <h1 className="section-header">Reviews</h1>
         <div className="list-items">{renderedReviews}</div>
+        { currentUser ? writeReview : '' }
       </Sidebar>
     );
   }
+}
+
+ReviewView.propTypes = {
+  currentUser: PropTypes.object,
 }
 
 export default withRouter(ReviewView);

@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import PopUp from '../Components/PopUp.jsx';
+import ReactStars from 'react-stars';
 import Services from '../../services';
-
+import Promise from 'bluebird';
 
 class UserView extends Component {
   constructor(props) {
@@ -13,7 +14,9 @@ class UserView extends Component {
       currentUser: '',
       photo: '',
       reviews: [],
-      events: []
+      events: [],
+      reviews: [],
+      reviewsCorrect: false,
     };
 
     let {
@@ -38,7 +41,39 @@ class UserView extends Component {
 
     this.renderEvents = this.renderEvents.bind(this);
     this.renderEvent = this.renderEvent.bind(this);
-}
+    this.renderReviews = this.renderReviews.bind(this);
+    this.renderReview = this.renderReview.bind(this);
+    }
+
+    renderReviews() {
+      const reviews = this.state.reviews;
+      const renderedReviews = reviews.map((r) => this.renderReview(r));
+      Promise.all(renderedReviews).then((renderedReviews) => {
+        this.setState({ reviews: renderedReviews , reviewsCorrect: true });
+        return;
+      });
+    }
+
+    renderReview(r) {
+      return Services.greenspace.info(r.greenspace)
+      .then((res) => {
+        const greenspaceName = res.content.name;
+        r.greenspace = greenspaceName;
+        return r;
+      });
+    }
+
+    reviewDivs(reviews) {
+      return reviews.map((r) => {
+        return (<div className="list-item-review" key={r._id}>
+          <ReactStars value={r.rating} edit={false} color2="black" />
+            <div> for: {r.greenspace}</div>
+          {r.body}
+        </div>)
+      })
+    }
+
+
   renderEvents() {
     const { events } = this.state;
     return events.map((e) => this.renderEvent(e));
@@ -58,12 +93,15 @@ class UserView extends Component {
     let {
       currentUser,
     } = this.props;
-    console.log(this.state);
     currentUser = this.state.currentUser;
     const photo = this.state.photo;
     const reviews = this.state.reviews;
     const events = this.state.events;
+    const reviewsCorrect = this.state.reviewsCorrect;
     const renderedEvents = this.renderEvents();
+    let reviewDivList = null;
+    if(reviews.length !== 0 && !reviewsCorrect) {this.renderReviews();}
+    else if (reviews.length !== 0) {reviewDivList = this.reviewDivs(this.state.reviews);}
     let reviews_div;
     let events_div;
 
@@ -76,8 +114,8 @@ class UserView extends Component {
     } else {
       reviews_div = (
         <div id = 'ratings'>
-          <h1 className="section-header"> reviews you've written </h1>
-          //display reviews here
+          <h1 className="section-header"> reviews you've written:</h1>
+          <div className="list-items">{reviewDivList}</div>
         </div>
       )
     };
