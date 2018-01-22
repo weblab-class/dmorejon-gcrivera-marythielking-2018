@@ -10,13 +10,18 @@ class Homepage extends Component {
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
         <h1 className="section-header">Welcome to Greenspace!</h1>
-        <div id="homepage-btns">
+        <div>
           <a href={`/loading/${window.location.search}`}>
             <div className="btn">Explore</div>
           </a>
-          <Link to="/login">
-            <div className="btn">Log In</div>
-          </Link>
+          <a
+            href="/auth/facebook"
+            className="fb-btn btn"
+            onClick={this.props.logInUser}
+          >
+            <img src="images/FB-f-Logo__white_1024.png" height="20px" className="fb-logo" />
+            Log in with Facebook
+          </a>
         </div>
       </PopUp>
     );

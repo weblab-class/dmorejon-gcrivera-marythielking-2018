@@ -32,7 +32,7 @@ class GreenspaceInfo extends Component {
       .catch((err) => console.log(err.error.err));
 
     Services.review.getAllByGreenspace(gid)
-      .then((res) => this.setState({ rating: res.content.rating }))
+      .then((res) => console.log(res))
       .catch((err) => console.log(err.error.err));
 
     this.renderEvents = this.renderEvents.bind(this);
