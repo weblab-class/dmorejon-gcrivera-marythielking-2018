@@ -13,6 +13,7 @@ class App extends Component {
       currentUser: null,
       showMap: true,
       mapViewOnly: false,
+      placeMarkers: true,
       newMarker: false,
       resetMarkers: false,
     };
@@ -20,6 +21,7 @@ class App extends Component {
     this.logInUser = this.logInUser.bind(this);
     this.logOutUser = this.logOutUser.bind(this);
     this.createGreenspace = this.createGreenspace.bind(this);
+    this.setMapPlaceMarkers = this.setMapPlaceMarkers.bind(this);
     this.setMapViewOnly = this.setMapViewOnly.bind(this);
   }
 
@@ -34,7 +36,6 @@ class App extends Component {
   createGreenspace(name, lat, lng) {
     Services.greenspace.create(name, [lat, lng])
       .then((res) => {
-        // console.log(res.content);
         this.setState({newMarker: true});
         this.props.router.push(`/map/${res.content._id}/${window.location.search}`);
       })
@@ -45,6 +46,12 @@ class App extends Component {
           this.setState({resetMarkers: false});
         }
       });
+  }
+
+  setMapPlaceMarkers(placeMarkers) {
+    if (placeMarkers !== this.state.placeMarkers) {
+      this.setState({ placeMarkers });
+    }
   }
 
   setMapViewOnly(viewOnly) {
@@ -58,6 +65,7 @@ class App extends Component {
       showMap,
       currentUser,
       mapViewOnly,
+      placeMarkers,
       newMarker,
       resetMarkers,
     } = this.state;
@@ -72,6 +80,7 @@ class App extends Component {
           <LeafletMap
             display={showMap}
             viewOnly={mapViewOnly}
+            placeMarkers={placeMarkers}
             newMarker={newMarker}
             resetMarkers={resetMarkers}
           />
@@ -79,6 +88,7 @@ class App extends Component {
             logInUser: this.logInUser,
             createGreenspace: this.createGreenspace,
             setMapViewOnly: this.setMapViewOnly,
+            setMapPlaceMarkers: this.setMapPlaceMarkers,
           })}
         </div>
       </div>

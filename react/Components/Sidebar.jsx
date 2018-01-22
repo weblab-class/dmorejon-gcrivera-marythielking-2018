@@ -4,6 +4,14 @@ import { withRouter } from 'react-router';
 import onClickOutside from 'react-onclickoutside';
 
 class Sidebar extends Component {
+  componentDidMount() {
+    this.props.setMapPlaceMarkers(false);
+  }
+
+  componentWillUnmount() {
+    this.props.setMapPlaceMarkers(true);
+  }
+
   handleClickOutside(event) {
     if (this.props.clickOut) {
       this.props.router.push(`/map/${window.location.search}`);
@@ -23,6 +31,7 @@ Sidebar.propTypes = {
   children: PropTypes.any.isRequired,
   id: PropTypes.string,
   clickOut: PropTypes.bool,
+  setMapPlaceMarkers: PropTypes.func,
 };
 
 Sidebar.defaultProps = {

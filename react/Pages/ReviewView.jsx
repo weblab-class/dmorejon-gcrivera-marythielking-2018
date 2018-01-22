@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
 import ReactStars from 'react-stars';
@@ -45,7 +46,7 @@ class ReviewView extends Component {
     const renderedReviews = this.renderReviews();
 
     return (
-      <Sidebar>
+      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
         <Link to={`/map/${this.props.params.gid}/${window.location.search}`} id="back-button">
           <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
         </Link>
