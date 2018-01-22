@@ -175,7 +175,7 @@ describe('Event API', () => {
           assert.isDefined(res.body.content);
           assert.equal(res.body.content.name, 'African Safari');
           assert.equal(res.body.content.greenspace, greenspaceID);
-          assert.include(res.body.content.participants, '247833829183');
+          assert.equal(res.body.content.participants.length, 3);
         })
         .end((err, res) => {
           if (err) done(err);
@@ -218,170 +218,174 @@ describe('Event API', () => {
         });
     });
   });
-  //
-  // describe('PUT /event', () => {
-  //
-  //   it('Edit a valid event', (done) => {
-  //     request(app)
-  //       .put('/event/' + snowballFightID)
-  //       .send({name: 'Snowball Fight', greenspace: greenspaceID, starttime: Date.now(),
-  //               endtime: Date.now() + 180000, participants: [user1, user2],
-  //               description: 'Icy'})
-  //       .expect(200)
-  //       .expect('Content-Type', 'application/json; charset=utf-8')
-  //       .expect((res) => {
-  //         assert.equal(res.body.success, true);
-  //         assert.equal(res.body.content.name, 'Snowball Fight');
-  //         assert.equal(res.body.content.description, 'Icy');
-  //       })
-  //       .end((err, res) => {
-  //         if (err) done(err);
-  //         else done();
-  //       });
-  //   });
-  //
-  //   it('Edit an invalid event', (done) => {
-  //     request(app)
-  //       .put('/event/' + badID)
-  //       .send({name: 'Snowball Fight', greenspace: greenspaceID, starttime: Date.now(),
-  //               endtime: Date.now() + 180000, participants: [user1, user2],
-  //               description: 'Icy'})
-  //       .expect(404)
-  //       .expect('Content-Type', 'application/json; charset=utf-8')
-  //       .expect((res) => {
-  //         assert.equal(res.body.success, false);
-  //         assert.equal(res.body.err, 'Event does not exist.');
-  //       })
-  //       .end((err, res) => {
-  //         if (err) done(err);
-  //         else done();
-  //       });
-  //   });
-  //
-  //   it('Join a valid event', (done) => {
-  //     request(app)
-  //       .put('/event/join/' + snowballFightID)
-  //       .expect(200)
-  //       .expect('Content-Type', 'application/json; charset=utf-8')
-  //       .expect((res) => {
-  //         assert.equal(res.body.success, true);
-  //         assert.include(res.body.content.participants, '247833829083');
-  //       })
-  //       .end((err, res) => {
-  //         if (err) done(err);
-  //         else done();
-  //       });
-  //   });
-  //
-  //   it('Join an invalid event', (done) => {
-  //     request(app)
-  //       .put('/event/join/' + badID)
-  //       .expect(404)
-  //       .expect('Content-Type', 'application/json; charset=utf-8')
-  //       .expect((res) => {
-  //         assert.equal(res.body.success, false);
-  //         assert.include(res.body.err, 'Event does not exist.');
-  //       })
-  //       .end((err, res) => {
-  //         if (err) done(err);
-  //         else done();
-  //       });
-  //   });
-  //
-  //   it('Leave a valid event', (done) => {
-  //     request(app)
-  //       .put('/event/leave/' + snowballFightID)
-  //       .send({target: user2})
-  //       .expect(200)
-  //       .expect('Content-Type', 'application/json; charset=utf-8')
-  //       .expect((res) => {
-  //         assert.equal(res.body.success, true);
-  //         assert.notInclude(res.body.content.participants, user2);
-  //       })
-  //       .end((err, res) => {
-  //         if (err) done(err);
-  //         else done();
-  //       });
-  //   });
-  //
-  //   it('Leave an invalid event', (done) => {
-  //     request(app)
-  //       .put('/event/leave/' + badID)
-  //       .send({target: user1})
-  //       .expect(404)
-  //       .expect('Content-Type', 'application/json; charset=utf-8')
-  //       .expect((res) => {
-  //         assert.equal(res.body.success, false);
-  //         assert.equal(res.body.err, 'Event does not exist.');
-  //       })
-  //       .end((err, res) => {
-  //         if (err) done(err);
-  //         else done();
-  //       });
-  //   });
-  //
-  //   it('Have host leave event', (done) => {
-  //     request(app)
-  //       .put('/event/leave/' + snowballFightID)
-  //       .send({target: '247833829183'})
-  //       .expect(400)
-  //       .expect('Content-Type', 'application/json; charset=utf-8')
-  //       .expect((res) => {
-  //         assert.equal(res.body.success, false);
-  //         assert.equal(res.body.err, 'Host cannot leave event.');
-  //       })
-  //       .end((err, res) => {
-  //         if (err) done(err);
-  //         else done();
-  //       });
-  //   });
-  //
-  //   it('Have participant (not host) try to remove another participant', (done) => {
-  //     request(app)
-  //       .put('/event/leave/' + snowballFightID)
-  //       .send({target: user1})
-  //       .expect(403)
-  //       .expect('Content-Type', 'application/json; charset=utf-8')
-  //       .expect((res) => {
-  //         assert.equal(res.body.success, false);
-  //         assert.equal(res.body.err, 'User does not have permission to remove specified user from event.');
-  //       })
-  //       .end((err, res) => {
-  //         if (err) done(err);
-  //         else done();
-  //       });
-  //   });
-  // });
-  //
-  // describe('DELETE /event', () => {
-  //
-  //   it('Delete a valid event', (done) => {
-  //     request(app)
-  //       .delete('/event/' + snowballFightID)
-  //       .expect(200)
-  //       .expect('Content-Type', 'application/json; charset=utf-8')
-  //       .expect((res) => {
-  //         assert.equal(res.body.success, true);
-  //       })
-  //       .end((err, res) => {
-  //         if (err) done(err);
-  //         else done();
-  //       });
-  //   });
-  //
-  //   it('Delete an invalid event', (done) => {
-  //     request(app)
-  //       .delete('/event/' + badID)
-  //       .expect(404)
-  //       .expect('Content-Type', 'application/json; charset=utf-8')
-  //       .expect((res) => {
-  //         assert.equal(res.body.success, false);
-  //         assert.equal(res.body.err, 'Event does not exist.');
-  //       })
-  //       .end((err, res) => {
-  //         if (err) done(err);
-  //         else done();
-  //       });
-  //   });
-  // });
+
+  describe('PUT /event', () => {
+
+    it('Edit a valid event', (done) => {
+      request(app)
+        .put('/event/' + snowballFightID)
+        .send({name: 'Snowball Fight', greenspace: greenspaceID, starttime: Date.now(),
+                endtime: Date.now() + 180000, participants: [user1, user2],
+                description: 'Icy'})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+          assert.equal(res.body.content.name, 'Snowball Fight');
+          assert.equal(res.body.content.description, 'Icy');
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Edit an invalid event', (done) => {
+      request(app)
+        .put('/event/' + badID)
+        .send({name: 'Snowball Fight', greenspace: greenspaceID, starttime: Date.now(),
+                endtime: Date.now() + 180000, participants: [user1, user2],
+                description: 'Icy'})
+        .expect(404)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, false);
+          assert.equal(res.body.err, 'Event does not exist.');
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Join a valid event', (done) => {
+      request(app)
+        .put('/event/join/' + snowballFightID)
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+          assert.equal(res.body.content.host.fbid, 10211342727149288);
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Join an invalid event', (done) => {
+      request(app)
+        .put('/event/join/' + badID)
+        .expect(404)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, false);
+          assert.include(res.body.err, 'Event does not exist.');
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Leave a valid event', (done) => {
+      request(app)
+        .put('/event/leave/' + snowballFightID)
+        .send({target: user2})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+          assert.notInclude(res.body.content.participants, user2);
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Leave an invalid event', (done) => {
+      request(app)
+        .put('/event/leave/' + badID)
+        .send({target: user1})
+        .expect(404)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, false);
+          assert.equal(res.body.err, 'Event does not exist.');
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Have host leave event', (done) => {
+      request(app)
+        .put('/event/leave/' + snowballFightID)
+        .send({target: {_id: '5a63c29174d39b08342a59e2',
+        fbid: 10211342727149288,
+        displayname: 'Gabrielle Rivera',
+        photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901',
+        __v: 0 }})
+        .expect(400)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, false);
+          assert.equal(res.body.err, 'Host cannot leave event.');
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Have participant (not host) try to remove another participant', (done) => {
+      request(app)
+        .put('/event/leave/' + snowballFightID)
+        .send({target: user1})
+        .expect(403)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, false);
+          assert.equal(res.body.err, 'User does not have permission to remove specified user from event.');
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+  });
+
+  describe('DELETE /event', () => {
+
+    it('Delete a valid event', (done) => {
+      request(app)
+        .delete('/event/' + snowballFightID)
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Delete an invalid event', (done) => {
+      request(app)
+        .delete('/event/' + badID)
+        .expect(404)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, false);
+          assert.equal(res.body.err, 'Event does not exist.');
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+  });
 });

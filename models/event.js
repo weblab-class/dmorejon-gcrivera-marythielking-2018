@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
-const userSchema = require('./user').userSchema;
+
+const userSchema = mongoose.Schema({
+  fbid: {type: Number, required: true},
+  displayname: {type: String, required: true},
+  photo: {type: String, required: true}
+});
 
 let eventModel = mongoose.model('Event', mongoose.Schema({
   name: {type: String, required: true},
@@ -43,7 +48,7 @@ const event = ((eventModel) => {
 
   that.getEventsByUser = async (user) => {
     try {
-      const events = await eventModel.find({participants: user});
+      const events = await eventModel.find({'participants.fbid': user});
       return events.sort((a, b) => {
         if (a.starttime.getTime() > b.starttime.getTime()) {
           return 1;
@@ -80,7 +85,7 @@ const event = ((eventModel) => {
       if (!editableEvent) {
         throw {message: 'Event does not exist.', errorCode: 404}
       }
-      if (editableEvent.host === user.fbid) {
+      if (editableEvent.host.fbid === user.fbid) {
         return await eventModel.findOneAndUpdate({_id: eventid}, eventData, {new: true});
       } else {
         throw {message: 'User does not have permission to edit this event.', errorCode: 403};
@@ -104,8 +109,8 @@ const event = ((eventModel) => {
     try {
       const eventData = await eventModel.findOne({_id: eventid});
       if (!eventData) {throw {message: 'Event does not exist.', errorCode: 404}}
-      if (target === eventData.host) {throw {message: 'Host cannot leave event.', errorCode: 400}}
-      if (user === target || user === eventData.host) {
+      if (target.fbid === eventData.host.fbid) {throw {message: 'Host cannot leave event.', errorCode: 400}}
+      if (user.fbid === target.fbid || user.fbid === eventData.host.fbid) {
         return await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {participants: target}}, {new: true});
       } else {
         throw {message: 'User does not have permission to remove specified user from event.', errorCode: 403};
@@ -117,7 +122,7 @@ const event = ((eventModel) => {
 
   that.deleteEvent = async (eventid, user) => {
     try {
-      const eventData = await eventModel.findOne({_id: eventid, host: user});
+      const eventData = await eventModel.findOne({_id: eventid, 'host.fbid': user.fbid});
       if (!eventData) {throw {message: 'Event does not exist.', errorCode: 404}}
       await eventModel.findOneAndRemove({_id: eventid, host: user});
       return;
