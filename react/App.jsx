@@ -11,6 +11,7 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: null,
+      userPhoto: null,
       showMap: true,
       mapViewOnly: false,
       placeMarkers: true,
@@ -18,20 +19,26 @@ class App extends Component {
       resetMarkers: false,
     };
 
-    this.logInUser = this.logInUser.bind(this);
-    this.logOutUser = this.logOutUser.bind(this);
+    Services.user.info()
+      .then((res) => {
+        if (res.content) {
+          this.setState({
+            currentUser: res.content.displayname,
+            userPhoto: res.content.photo,
+          });
+        }
+      });
+
+    // this.logInUser = this.logInUser.bind(this);
+    // this.logOutUser = this.logOutUser.bind(this);
     this.createGreenspace = this.createGreenspace.bind(this);
     this.setMapPlaceMarkers = this.setMapPlaceMarkers.bind(this);
     this.setMapViewOnly = this.setMapViewOnly.bind(this);
   }
-
-  logInUser() {
-    this.props.router.push(`/map/${window.location.search}`);
-  }
-
-  logOutUser() {
-    this.setState({ currentUser: null });
-  }
+  //
+  // logInUser() {
+  //   this.props.router.push(`/map/${window.location.search}`);
+  // }
 
   createGreenspace(name, lat, lng) {
     Services.greenspace.create(name, [lat, lng])
@@ -64,17 +71,18 @@ class App extends Component {
     const {
       showMap,
       currentUser,
+      userPhoto,
       mapViewOnly,
       placeMarkers,
       newMarker,
       resetMarkers,
     } = this.state;
-
+    
     return (
       <div>
         <Header
           currentUser={currentUser}
-          logOutUser={this.logOutUser}
+          userPhoto={userPhoto}
         />
         <div id="content">
           <LeafletMap
@@ -83,9 +91,10 @@ class App extends Component {
             placeMarkers={placeMarkers}
             newMarker={newMarker}
             resetMarkers={resetMarkers}
+            currentUser={currentUser}
           />
           {React.cloneElement(this.props.children, {
-            logInUser: this.logInUser,
+            currentUser: currentUser,
             createGreenspace: this.createGreenspace,
             setMapViewOnly: this.setMapViewOnly,
             setMapPlaceMarkers: this.setMapPlaceMarkers,

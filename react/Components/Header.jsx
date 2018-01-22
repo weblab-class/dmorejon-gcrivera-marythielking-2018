@@ -5,32 +5,11 @@ import FontAwesome from 'react-fontawesome';
 import Services from '../../services';
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {currentUser: '', photo: ''};
-
-    let {
-      currentUser,
-      logOutUser,
-    } = this.props;
-
-    Services.user.info()
-      .then((res) => {
-        if (res.content) {
-          this.setState({ currentUser: res.content.displayname , photo: res.content.photo});
-        }
-      });
-  }
-
   render(){
-    let {
+    const {
       currentUser,
-      logOutUser,
+      userPhoto,
     } = this.props;
-
-    currentUser = this.state.currentUser;
-    const photo = this.state.photo;
     let headerButtons = null;
 
     if (currentUser) {
@@ -38,11 +17,11 @@ class Header extends Component {
         <div className="header-btn-content">Welcome, {currentUser}</div>
         <Link to={`/user/${currentUser}/${window.location.search}`}>
           <div className="header-btn">
-              <img src={photo} height="40px" className="profile-icon"/>
+              <img src={userPhoto} height="40px" className="profile-icon"/>
           </div>
         </Link>
         <a href="/logout">
-          <div className="header-btn" onClick={logOutUser}>
+          <div className="header-btn">
             <FontAwesome name="sign-out" size="2x" />
           </div>
         </a>
@@ -66,7 +45,6 @@ class Header extends Component {
 
 Header.propTypes = {
   currentUser: PropTypes.string,
-  logOutUser: PropTypes.func,
 }
 
 export default withRouter(Header);

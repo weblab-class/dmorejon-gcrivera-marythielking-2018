@@ -58,10 +58,23 @@ class GreenspaceInfo extends Component {
   }
 
   render(){
+    const { currentUser } = this.props;
     const { gid } = this.props.params;
     const { name, lat, lng, rating } = this.state;
 
     const renderedEvents = this.renderEvents();
+
+    const writeReview = (
+      <Link to={`/map/${gid}/reviews/create/${window.location.search}`} id="write-review">
+        <div id="write-review-text">Write a Review</div>
+      </Link>
+    );
+    const createEvent = (
+      <Link to={`/map/${gid}/event/create/${window.location.search}`} id="add-event">
+        <FontAwesome name="plus-square-o" size="2x" id="add-event-icon" />
+        <div id="add-event-text">Create New Event</div>
+      </Link>
+    );
 
     return (
       <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
@@ -73,17 +86,12 @@ class GreenspaceInfo extends Component {
           </a>
         </div>
         <ReactStars value={rating} edit={false} color2="black" />
-        <Link to={`/map/${gid}/reviews/create/${window.location.search}`} id="write-review">
-          <div id="write-review-text">Write a Review</div>
-        </Link>
+        { currentUser ? writeReview : '' }
         <Link to={`/map/${gid}/reviews/${window.location.search}`} id="write-review">
           <div id="write-review-text">View Reviews</div>
         </Link>
         <div className="list-items">{renderedEvents}</div>
-        <Link to={`/map/${gid}/event/create/${window.location.search}`} id="add-event">
-          <FontAwesome name="plus-square-o" size="2x" id="add-event-icon" />
-          <div id="add-event-text">Create New Event</div>
-        </Link>
+        { currentUser ? createEvent : '' }
       </Sidebar>
     );
   }
@@ -91,6 +99,7 @@ class GreenspaceInfo extends Component {
 
 GreenspaceInfo.propTypes = {
   setMapPlaceMarkers: PropTypes.func,
+  currentUser: PropTypes.object,
 }
 
 export default withRouter(GreenspaceInfo);

@@ -169,7 +169,9 @@ class LeafletMap extends Component {
     if (marker) {
       const { lat: m_lat, lng: m_lng } = marker.getLatLng();
       if (e_lat === m_lat && e_lng === m_lng) {
-        this.props.router.push(`/map/${e_lat},${e_lng}/create/${window.location.search}`);
+        if (this.props.currentUser){
+          this.props.router.push(`/map/${e_lat},${e_lng}/create/${window.location.search}`);
+        }
       } else {
         marker.remove(this.map);
         this.setState({ marker: null });
@@ -208,6 +210,7 @@ LeafletMap.propTypes = {
   display: PropTypes.bool,
   viewOnly: PropTypes.bool,
   placeMarkers: PropTypes.bool,
+  currentUser: PropTypes.object,
 }
 
 LeafletMap.defaultProps = {

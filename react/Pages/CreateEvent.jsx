@@ -75,7 +75,7 @@ class CreateEvent extends Component {
         <Link to={`/map/${this.props.params.gid}/${window.location.search}`} id="back-button">
           <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
         </Link>
-        <h1 className="section-header">CreateEvent</h1>
+        <h1 className="section-header">Create Event</h1>
         <div className="form">
           <input className='form-input'
             name='nameVal'

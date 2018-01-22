@@ -167,6 +167,10 @@ a {
   align-items: center;
 }
 
+.fb-btn:hover {
+  background-color: #344f89;
+}
+
 .fb-logo {
   padding-right: 10px;
 }
