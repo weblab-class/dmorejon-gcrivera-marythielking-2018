@@ -111,6 +111,9 @@ class LeafletMap extends Component {
   }
 
   placeNewMarker(latlng, id="temp") {
+    if (!this.props.currentUser) {
+      return;
+    }
     const marker = L.marker(latlng).addTo(this.map);
     this.setState({ marker: marker });
     this.onNewMarker({latlng: latlng, target: {gid: marker.gid}});
