@@ -15,6 +15,7 @@ class App extends Component {
       mapViewOnly: false,
       placeMarkers: true,
       newMarker: false,
+      resetMarkers: false,
     };
 
     this.logInUser = this.logInUser.bind(this);
@@ -37,6 +38,13 @@ class App extends Component {
       .then((res) => {
         this.setState({newMarker: true});
         this.props.router.push(`/map/${res.content._id}/${window.location.search}`);
+      })
+      .catch((err) => {
+        if (err.statusCode == 403) {
+          this.setState({resetMarkers: true});
+          this.props.router.push(`/login/require/${window.location.search}`);
+          this.setState({resetMarkers: false});
+        }
       });
   }
 
@@ -59,6 +67,7 @@ class App extends Component {
       mapViewOnly,
       placeMarkers,
       newMarker,
+      resetMarkers,
     } = this.state;
 
     return (
@@ -73,6 +82,7 @@ class App extends Component {
             viewOnly={mapViewOnly}
             placeMarkers={placeMarkers}
             newMarker={newMarker}
+            resetMarkers={resetMarkers}
           />
           {React.cloneElement(this.props.children, {
             logInUser: this.logInUser,

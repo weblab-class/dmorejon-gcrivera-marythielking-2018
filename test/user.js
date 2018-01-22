@@ -53,9 +53,9 @@ describe('User API', () => {
 
     afterEach(async () => {
       try {
-        const newUser = new userModel({fbid: '247833829183',
-                                        displayname: 'Cody Maverick',
-                                        photo: 'https://pbs.twimg.com/profile_images/491641114534117378/rcXXFash_400x400.jpeg'});
+        const newUser = new userModel({fbid: 10211342727149288,
+        displayname: 'Cody Maverick',
+        photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901'});
         await newUser.save()
         return;
       } catch(e) {
@@ -87,7 +87,7 @@ describe('User API', () => {
           assert.equal(res.body.success, true);
           assert.isDefined(res.body.content);
           assert.equal(res.body.content.displayname, 'Cody Maverick');
-          assert.equal(res.body.content.fbid, '247833829183');
+          assert.equal(res.body.content.fbid, '10211342727149288');
         })
         .end((err, res) => {
           if (err) done(err);

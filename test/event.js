@@ -12,8 +12,16 @@ for (let i in mongoose.connection.collections) {
 
 const greenspaceID = mongoose.Types.ObjectId("112222222222");
 const emptyGreenspaceID = mongoose.Types.ObjectId("112222222223");
-const userID1 = "247833829180";
-const userID2 = "247833829192";
+const user1 = { _id: '5a63c29174d39b08342a5969',
+  fbid: 10211342727149269,
+  displayname: 'Cody Maverick',
+  photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901',
+  };
+const user2 = { _id: '5a63c29174d39b08342a5420',
+  fbid: 10211342727149420,
+  displayname: 'Tank Evans',
+  photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901',
+  };
 const badID = mongoose.Types.ObjectId("222222222222");
 let snowballFightID;
 let africanSafariID;
@@ -24,7 +32,7 @@ describe('Event API', () => {
     request(app)
       .post('/event')
       .send({name: 'Snowball Fight', greenspace: greenspaceID, starttime: Date.now(),
-              endtime: Date.now() + 180000, participants: [userID1, userID2]})
+              endtime: Date.now() + 180000, participants: [user1, user2]})
       .end((err, res) => {
         if (err) done(err);
         else {
@@ -38,7 +46,7 @@ describe('Event API', () => {
     request(app)
       .post('/event')
       .send({name: 'Penguin Party', greenspace: greenspaceID, starttime: Date.now() + 1800000,
-              endtime: Date.now() + 1803000, participants: [userID1, userID2],
+              endtime: Date.now() + 1803000, participants: [user1, user2],
               description: 'Come party with the penguins.'})
       .end((err, res) => {
         if (err) done(err);
@@ -157,7 +165,7 @@ describe('Event API', () => {
       request(app)
         .post('/event')
         .send({name: 'African Safari', greenspace: greenspaceID, starttime: Date.now(),
-                endtime: Date.now() + 2000, participants: [userID1, userID2],
+                endtime: Date.now() + 2000, participants: [user1, user2],
                 description: 'Avoid the hippos.'})
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -167,7 +175,7 @@ describe('Event API', () => {
           assert.isDefined(res.body.content);
           assert.equal(res.body.content.name, 'African Safari');
           assert.equal(res.body.content.greenspace, greenspaceID);
-          assert.include(res.body.content.participants, '247833829183');
+          assert.equal(res.body.content.participants.length, 3);
         })
         .end((err, res) => {
           if (err) done(err);
@@ -197,7 +205,7 @@ describe('Event API', () => {
       request(app)
         .post('/event')
         .send({greenspace: greenspaceID, starttime: Date.now(),
-                endtime: Date.now() + 2000, participants: [userID1, userID2]})
+                endtime: Date.now() + 2000, participants: [user1, user2]})
         .expect(400)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
@@ -217,7 +225,7 @@ describe('Event API', () => {
       request(app)
         .put('/event/' + snowballFightID)
         .send({name: 'Snowball Fight', greenspace: greenspaceID, starttime: Date.now(),
-                endtime: Date.now() + 180000, participants: [userID1, userID2],
+                endtime: Date.now() + 180000, participants: [user1, user2],
                 description: 'Icy'})
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -236,7 +244,7 @@ describe('Event API', () => {
       request(app)
         .put('/event/' + badID)
         .send({name: 'Snowball Fight', greenspace: greenspaceID, starttime: Date.now(),
-                endtime: Date.now() + 180000, participants: [userID1, userID2],
+                endtime: Date.now() + 180000, participants: [user1, user2],
                 description: 'Icy'})
         .expect(404)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -257,7 +265,7 @@ describe('Event API', () => {
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
           assert.equal(res.body.success, true);
-          assert.include(res.body.content.participants, '247833829083');
+          assert.equal(res.body.content.host.fbid, 10211342727149288);
         })
         .end((err, res) => {
           if (err) done(err);
@@ -283,12 +291,12 @@ describe('Event API', () => {
     it('Leave a valid event', (done) => {
       request(app)
         .put('/event/leave/' + snowballFightID)
-        .send({target: userID2})
+        .send({target: user2})
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
           assert.equal(res.body.success, true);
-          assert.notInclude(res.body.content.participants, userID2);
+          assert.notInclude(res.body.content.participants, user2);
         })
         .end((err, res) => {
           if (err) done(err);
@@ -299,7 +307,7 @@ describe('Event API', () => {
     it('Leave an invalid event', (done) => {
       request(app)
         .put('/event/leave/' + badID)
-        .send({target: userID1})
+        .send({target: user1})
         .expect(404)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
@@ -315,7 +323,11 @@ describe('Event API', () => {
     it('Have host leave event', (done) => {
       request(app)
         .put('/event/leave/' + snowballFightID)
-        .send({target: '247833829183'})
+        .send({target: {_id: '5a63c29174d39b08342a59e2',
+        fbid: 10211342727149288,
+        displayname: 'Gabrielle Rivera',
+        photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901',
+        __v: 0 }})
         .expect(400)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
@@ -331,7 +343,7 @@ describe('Event API', () => {
     it('Have participant (not host) try to remove another participant', (done) => {
       request(app)
         .put('/event/leave/' + snowballFightID)
-        .send({target: userID1})
+        .send({target: user1})
         .expect(403)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {

@@ -34,9 +34,6 @@ class CreateEvent extends Component {
   }
 
   handleParticipants(participants) {
-    participants = participants.map((participant) => {
-      return participant.fbid;
-    });
     this.setState({ participants: participants});
   }
 
@@ -56,7 +53,11 @@ class CreateEvent extends Component {
       .then((res) => {
         console.log(res);
       })
-      .catch((err) => console.log(err.error.err));
+      .catch((err) => {
+        if (err.statusCode == 403) {
+          this.props.router.push(`/login/require/${window.location.search}`);
+        }
+      });
     this.props.router.push(`/map/${gid}/${window.location.search}`);
   }
 

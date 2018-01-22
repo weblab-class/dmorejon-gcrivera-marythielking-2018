@@ -60,7 +60,7 @@ router.get('/greenspace/:greenspaceid', async (req, res) => {
     // event: event object (see above schema)
 router.post('/', async (req, res) => {
   try {
-    const newEvent = await event.createEvent(req.body, req.user.fbid);
+    const newEvent = await event.createEvent(req.body, req.user);
     utils.sendSuccessResponse(res, newEvent);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
@@ -78,7 +78,7 @@ router.put('/:eventid', async (req, res) => {
   try {
     const edittedEvent = await event.editEvent(req.params.eventid,
                                                 req.body,
-                                                req.user.fbid);
+                                                req.user);
     utils.sendSuccessResponse(res, edittedEvent);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
@@ -92,7 +92,7 @@ router.put('/:eventid', async (req, res) => {
     // event: event object (see schema)
 router.put('/join/:eventid', async (req, res) => {
   try {
-    const edditedEvent = await event.joinEvent(req.params.eventid, req.user.fbid);
+    const edditedEvent = await event.joinEvent(req.params.eventid, req.user);
     utils.sendSuccessResponse(res, edditedEvent);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
@@ -108,7 +108,7 @@ router.put('/join/:eventid', async (req, res) => {
     // event: event object (see above schema)
 router.put('/leave/:eventid', async (req, res) => {
   try {
-    const edditedEvent = await event.leaveEvent(req.params.eventid, req.user.fbid, req.body.target);
+    const edditedEvent = await event.leaveEvent(req.params.eventid, req.user, req.body.target);
     utils.sendSuccessResponse(res, edditedEvent);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
@@ -121,7 +121,7 @@ router.put('/leave/:eventid', async (req, res) => {
     // err: on error, an error message
 router.delete('/:eventid', async (req, res) => {
   try {
-    await event.deleteEvent(req.params.eventid, req.user.fbid);
+    await event.deleteEvent(req.params.eventid, req.user);
     utils.sendSuccessResponse(res);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);

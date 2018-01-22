@@ -55,6 +55,10 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(newProps) {
+    if (newProps.resetMarkers && this.state.marker) {
+      this.state.marker.remove(this.map);
+      this.setState({ marker: null });
+    }
     if (newProps.viewOnly !== this.props.viewOnly) {
       if (newProps.viewOnly) { this.disableMap(); }
       else { this.enableMap(); }
