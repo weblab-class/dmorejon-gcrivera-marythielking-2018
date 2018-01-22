@@ -11,7 +11,6 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: null,
-      userPhoto: null,
       showMap: true,
       mapViewOnly: false,
       placeMarkers: true,
@@ -22,9 +21,9 @@ class App extends Component {
     Services.user.info()
       .then((res) => {
         if (res.content) {
+          console.log(res.content);
           this.setState({
-            currentUser: res.content.displayname,
-            userPhoto: res.content.photo,
+            currentUser: res.content
           });
         }
       });
@@ -71,18 +70,16 @@ class App extends Component {
     const {
       showMap,
       currentUser,
-      userPhoto,
       mapViewOnly,
       placeMarkers,
       newMarker,
       resetMarkers,
     } = this.state;
-    
+
     return (
       <div>
         <Header
           currentUser={currentUser}
-          userPhoto={userPhoto}
         />
         <div id="content">
           <LeafletMap
