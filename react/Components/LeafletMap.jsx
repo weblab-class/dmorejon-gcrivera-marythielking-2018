@@ -69,10 +69,17 @@ class LeafletMap extends Component {
       this.setMarkers();
     }
     if (newProps.placeMarkers !== this.state.placeMarkers) {
-      this.setState({
-        placeMarkers: newProps.placeMarkers,
-        prevPlaceMarkers: this.state.placeMarkers,
-      });
+      if(this.props.location.pathname === '/loading') {
+        this.setState({
+          placeMarkers: newProps.placeMarkers,
+          prevPlaceMarkers: true,
+        });
+      } else {
+        this.setState({
+          placeMarkers: newProps.placeMarkers,
+          prevPlaceMarkers: this.state.placeMarkers,
+        });
+      }
     }
   }
 
@@ -145,8 +152,6 @@ class LeafletMap extends Component {
       placeMarkers,
       prevPlaceMarkers,
     } = this.state;
-
-    if (this.props.viewOnly) { return; }
 
     if (!placeMarkers) {
       this.setState({ placeMarkers: true });
