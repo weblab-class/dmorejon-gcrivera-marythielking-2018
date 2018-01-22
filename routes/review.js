@@ -26,7 +26,7 @@ router.get('/greenspace/:greenspaceid', async (req, res) => {
     // reviews: list of review objects (see above schema)
 router.get('/user', async (req, res) => {
   try{
-    const reviews = await review.getReviewByUser(req.user.fbid);
+    const reviews = await review.getReviewByUser(req.user);
     utils.sendSuccessResponse(res, reviews);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
@@ -48,7 +48,7 @@ router.post('/', async (req, res) => {
   try {
     const newReview = await review.createReview(req.body.greenspace,
                                 req.body.rating, req.body.body,
-                                req.body.time, req.user.fbid);
+                                req.body.time, req.user);
     utils.sendSuccessResponse(res, newReview);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
@@ -64,7 +64,7 @@ router.post('/', async (req, res) => {
     // err: on error, an error message
 router.delete('/', async (req, res) => {
  try {
-   await review.deleteReview(req.body.greenspace, req.user.fbid);
+   await review.deleteReview(req.body.greenspace, req.user);
    utils.sendSuccessResponse(res);
  } catch(e) {
    utils.sendErrorResponse(res, e.errorCode, e.message);
