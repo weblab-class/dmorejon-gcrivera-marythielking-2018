@@ -21,7 +21,7 @@ const checkUser = (nextState, replace, callback) => {
     Services.user.info()
       .then((res) => {
         if (!res.content) {
-          replace('/login/require');
+          replace('/login');
         }
         callback();
       }).catch((err => {
