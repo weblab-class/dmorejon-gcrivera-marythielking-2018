@@ -83,7 +83,7 @@ class LeafletMap extends Component {
     if (newProps.newMarker) {
       this.setMarkers();
     }
-    
+
     if (newProps.placeMarkers !== this.state.placeMarkers) {
       this.setState({
         placeMarkers: newProps.placeMarkers,
@@ -168,6 +168,10 @@ class LeafletMap extends Component {
       this.setState({ placeMarkers: true });
       return;
     } else if (prevPlaceMarkers === false) {
+      if (marker) {
+        marker.remove(this.map);
+        this.setState({ marker: null });
+      }
       this.setState({ prevPlaceMarkers: true });
       return;
     }
