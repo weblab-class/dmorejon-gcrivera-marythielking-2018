@@ -3,3 +3,4 @@ public/js/bundle.js
 package-lock.json
 npm-debug.log
 coverage/
+public/images/.DS_Store

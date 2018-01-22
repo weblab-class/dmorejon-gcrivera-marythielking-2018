@@ -9,7 +9,7 @@ class Loading extends Component {
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
         <h1 className="section-header">finding your location...</h1>
         <div className="loading-img">
-          <img src="/images/loading.gif" height="250px"/>
+          <img src="/images/giphy.gif" height="250px"/>
         </div>
       </PopUp>
     );
