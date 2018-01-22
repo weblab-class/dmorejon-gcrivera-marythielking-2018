@@ -20,6 +20,7 @@ class LeafletMap extends Component {
       placeMarkers: props.placeMarkers,
       prevPlaceMarkers: true,
       center: center,
+      locImage: null,
     }
 
     this.disableMap = this.disableMap.bind(this);
@@ -33,9 +34,10 @@ class LeafletMap extends Component {
   }
 
   componentDidMount() {
+    let zoom = 16;
     var map = this.map = L.map(ReactDOM.findDOMNode(this), {
       center: this.state.center,
-      zoom: 16,
+      zoom: zoom,
       minZoom: 2,
       zoomControl: false,
     });
@@ -185,6 +187,10 @@ class LeafletMap extends Component {
       var center = window.location.search.split('=')[1].split(',');
       map.setView([parseFloat(center[0]), parseFloat(center[1])]);
       this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
+      const bounds = [this.state.center, this.state.center]
+      const locImage = L.imageOverlay('/images/pulse_dot.gif', bounds);
+      locImage.addTo(this.map);
+      this.setState({ locImage: locImage });
       return;
     }
     if (navigator.geolocation && this.props.location.pathname.startsWith('/loading')) {
@@ -192,6 +198,10 @@ class LeafletMap extends Component {
         this.setState({ center: [position.coords.latitude, position.coords.longitude] });
         map.setView(this.state.center);
         this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
+        const bounds = [this.state.center, this.state.center]
+        const locImage = L.imageOverlay('/images/pulse_dot.gif', bounds);
+        locImage.addTo(this.map);
+        this.setState({ locImage: locImage });
         return;
       });
     }

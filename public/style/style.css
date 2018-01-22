@@ -63,6 +63,11 @@ a {
   padding-left: 0px;
 }
 
+.leaflet-image-layer {
+  height: 20px !important;
+  width: 20px !important;
+}
+
 #content {
   position: relative;
   height: calc(100vh - 80px);
