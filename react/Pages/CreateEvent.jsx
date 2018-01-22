@@ -82,18 +82,20 @@ class CreateEvent extends Component {
             value={nameVal}
             onChange={this.updateFormVal}
           />
-          <input className='form-input'
+          <textarea className='form-input textarea'
             name='descriptionVal'
             placeholder='event description'
             value={descriptionVal}
             onChange={this.updateFormVal}
           />
+          <div>Start:</div>
           <input className='form-input'
             name='startVal'
             value={startVal}
             type="datetime-local"
             onChange={this.updateFormVal}
           />
+          <div>End:</div>
           <input className='form-input'
             name='endVal'
             value={endVal}

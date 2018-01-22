@@ -5,12 +5,10 @@ import onClickOutside from 'react-onclickoutside';
 
 class Sidebar extends Component {
   componentDidMount() {
-    // console.log('sidebar did mount');
     this.props.setMapPlaceMarkers(false);
   }
 
   componentWillUnmount() {
-    // console.log('sidebar will unmount');
     this.props.setMapPlaceMarkers(true);
   }
 

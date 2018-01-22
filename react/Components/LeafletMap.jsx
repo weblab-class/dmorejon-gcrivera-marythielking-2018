@@ -63,7 +63,6 @@ class LeafletMap extends Component {
       this.setMarkers();
     }
     if (newProps.placeMarkers !== this.state.placeMarkers) {
-      console.log('setState placeMarkers: ', newProps.placeMarkers)
       this.setState({
         placeMarkers: newProps.placeMarkers,
         prevPlaceMarkers: this.state.placeMarkers,
@@ -140,7 +139,6 @@ class LeafletMap extends Component {
 
     if (this.props.viewOnly) { return; }
 
-    console.log('in onMapClick: ', placeMarkers);
     if (!placeMarkers) {
       this.setState({ placeMarkers: true });
       return;

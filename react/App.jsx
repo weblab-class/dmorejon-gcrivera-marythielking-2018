@@ -35,16 +35,13 @@ class App extends Component {
   createGreenspace(name, lat, lng) {
     Services.greenspace.create(name, [lat, lng])
       .then((res) => {
-        // console.log(res.content);
         this.setState({newMarker: true});
         this.props.router.push(`/map/${res.content._id}/${window.location.search}`);
       });
   }
 
   setMapPlaceMarkers(placeMarkers) {
-    // console.log('in setMapPlaceMarkers: ', placeMarkers);
     if (placeMarkers !== this.state.placeMarkers) {
-      console.log('setting placeMarkers: ', placeMarkers);
       this.setState({ placeMarkers });
     }
   }
