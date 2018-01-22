@@ -73,7 +73,7 @@ class CreateReview extends Component {
         <h1 className="section-header">Create Review</h1>
         <ReactStars value={rating} onChange={this.setRating} color2="black" />
         <div className="form">
-          <input autoFocus className='form-input'
+          <textarea autoFocus className='form-input'
             name='reviewVal'
             placeholder='review content'
             value={reviewVal}

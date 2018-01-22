@@ -5,8 +5,7 @@ import FontAwesome from 'react-fontawesome';
 import ReactStars from 'react-stars';
 
 import Sidebar from '../Components/Sidebar.jsx';
-import greenspaceServices from '../../services/greenspaceServices.js';
-import eventServices from '../../services/eventServices.js';
+import Services from '../../services';
 
 class GreenspaceInfo extends Component {
   constructor(props){
@@ -18,17 +17,22 @@ class GreenspaceInfo extends Component {
       lat: 0,
       lng: 0,
       events: [],
+      rating: 0,
     };
 
-    greenspaceServices.info(gid)
+    Services.greenspace.info(gid)
       .then((res) => this.setState({
         name: res.content.name,
         lat: res.content.location[0],
         lng: res.content.location[1],
       }));
 
-    eventServices.getAllByGreenspace(gid)
+    Services.event.getAllByGreenspace(gid)
       .then((res) => this.setState({ events: res.content }))
+      .catch((err) => console.log(err.error.err));
+
+    Services.review.getAllByGreenspace(gid)
+      .then((res) => this.setState({ rating: res.content.rating }))
       .catch((err) => console.log(err.error.err));
 
     this.renderEvents = this.renderEvents.bind(this);
@@ -55,7 +59,7 @@ class GreenspaceInfo extends Component {
 
   render(){
     const { gid } = this.props.params;
-    const { name, lat, lng } = this.state;
+    const { name, lat, lng, rating } = this.state;
 
     const renderedEvents = this.renderEvents();
 
@@ -68,7 +72,7 @@ class GreenspaceInfo extends Component {
             <img src="/images/google-maps-icon-2015.png" height="40px" className="gmaps-logo" />
           </a>
         </div>
-        <ReactStars value={3.5} edit={false} color2="black" />
+        <ReactStars value={rating} edit={false} color2="black" />
         <Link to={`/map/${gid}/reviews/create/${window.location.search}`} id="write-review">
           <div id="write-review-text">Write a Review</div>
         </Link>
