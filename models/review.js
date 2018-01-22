@@ -56,7 +56,7 @@ const review = ((reviewModel) => {
       });
       const ratingSum = reviews.reduce((sum, currReview) => {
         return sum + currReview.rating;
-      });
+      }, 0.0);
       return {reviews: reviews, rating: ratingSum/reviews.length};
     } catch(e) {
       throw e;
