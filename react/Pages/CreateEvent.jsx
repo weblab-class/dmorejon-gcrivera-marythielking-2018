@@ -51,9 +51,8 @@ class CreateEvent extends Component {
 
     eventServices.create(nameVal, descriptionVal, gid, startDate, endDate, participants)
       .then((res) => {
-        console.log(res);
+        this.props.router.push(`/map/${gid}/${window.location.search}`);
       });
-    this.props.router.push(`/map/${gid}/${window.location.search}`);
   }
 
   render(){
