@@ -19,7 +19,6 @@ import UserView from './Pages/UserView.jsx';
 import NotFound from './Pages/NotFound.jsx';
 
 const checkUser = (nextState, replace, callback) => {
-    console.log(nextState);
     Services.user.info()
       .then((res) => {
         if (!res.content) {

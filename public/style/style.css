@@ -8,6 +8,10 @@ a {
   color: #000;
 }
 
+h1:hover {
+  cursor: default;
+}
+
 .hidden {
   display: none;
 }
@@ -134,6 +138,7 @@ a {
   background-color: rgba(219, 219, 219, 0.9);
   padding: 10px 15px;
   overflow: hidden;
+  overflow-y: scroll;
 }
 
 .popup {
@@ -178,9 +183,9 @@ a {
 .list-items {
   display: flex;
   flex-direction: column;
-  margin: 20px 0px;
   overflow-y: scroll;
   max-height: 300px;
+  font-size: 16px;
 }
 
 .list-item-event {
@@ -194,6 +199,15 @@ a {
   background-color: rgba(145, 145, 145, 0.5);
 }
 
+.event-name {
+  font-weight: bold;
+}
+
+.event-date {
+  font-size: 14px;
+  color: #4f4f4f;
+}
+
 .list-item-review {
   padding: 10px 15px;
   margin: 2px 0px;
@@ -203,6 +217,43 @@ a {
 
 .list-item-review:hover {
   cursor: default;
+}
+
+#greenspace-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#greenspace-rating {
+  display: flex;
+  align-items: center;
+}
+
+.greenspace-rating-stars {
+  margin-right: 5px;
+}
+
+#greenspace-rating-text {
+  font-size: 14px;
+  color: #4f4f4f;
+}
+
+#greenspace-rating-text:hover {
+  text-decoration: underline;
+}
+
+#upcoming-events {
+  margin: 20px 0px;
+  font-size: 20px;
+}
+
+#upcoming-events:hover {
+  cursor: default;
+}
+
+#upcoming-events-text {
+  margin-bottom: 5px;
 }
 
 #add-event {

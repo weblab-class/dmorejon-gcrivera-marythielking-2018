@@ -21,23 +21,16 @@ class App extends Component {
     Services.user.info()
       .then((res) => {
         if (res.content) {
-          console.log(res.content);
           this.setState({
             currentUser: res.content
           });
         }
       });
 
-    // this.logInUser = this.logInUser.bind(this);
-    // this.logOutUser = this.logOutUser.bind(this);
     this.createGreenspace = this.createGreenspace.bind(this);
     this.setMapPlaceMarkers = this.setMapPlaceMarkers.bind(this);
     this.setMapViewOnly = this.setMapViewOnly.bind(this);
   }
-  //
-  // logInUser() {
-  //   this.props.router.push(`/map/${window.location.search}`);
-  // }
 
   createGreenspace(name, lat, lng) {
     Services.greenspace.create(name, [lat, lng])
