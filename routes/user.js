@@ -12,8 +12,12 @@ const router = express.Router();
     // user: user object (see above schema)
 router.get('/', async (req, res) => {
   try {
-    const userData = await user.getUser(req.user.fbid);
-    utils.sendSuccessResponse(res, userData);
+    if (req.user === undefined) {
+      utils.sendSuccessResponse(res, null);
+    } else {
+      const userData = await user.getUser(req.user.fbid);
+      utils.sendSuccessResponse(res, userData);
+    }
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
   }
