@@ -58,7 +58,6 @@ class UserView extends Component {
     let {
       currentUser,
     } = this.props;
-    console.log(this.state);
     currentUser = this.state.currentUser;
     const photo = this.state.photo;
     const reviews = this.state.reviews;
