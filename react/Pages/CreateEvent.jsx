@@ -33,9 +33,6 @@ class CreateEvent extends Component {
   }
 
   handleParticipants(participants) {
-    participants = participants.map((participant) => {
-      return participant.fbid;
-    });
     this.setState({ participants: participants});
   }
 

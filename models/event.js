@@ -62,7 +62,10 @@ const event = ((eventModel) => {
   }
 
   that.createEvent = async (eventData, host) => {
-    if (!eventData.participants.includes(host)) {
+    const duplicates = eventData.participants.filter((participant) => {
+      return participant.fbid == host.fbid
+    });
+    if (duplicates.length == 0) {
       eventData.participants.push(host);
     }
     const newEvent = new eventModel({name: eventData.name,
