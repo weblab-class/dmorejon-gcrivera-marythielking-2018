@@ -60,7 +60,7 @@ class GreenspaceInfo extends Component {
     const renderedEvents = this.renderEvents();
 
     return (
-      <Sidebar>
+      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
         <h1>{name}</h1>
         <div>
           Directions to {name}:
@@ -83,6 +83,10 @@ class GreenspaceInfo extends Component {
       </Sidebar>
     );
   }
+}
+
+GreenspaceInfo.propTypes = {
+  setMapPlaceMarkers: PropTypes.func,
 }
 
 export default withRouter(GreenspaceInfo);

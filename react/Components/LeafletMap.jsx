@@ -17,7 +17,8 @@ class LeafletMap extends Component {
 
     this.state = {
       marker: null,
-      placeMarkers: true,
+      placeMarkers: props.placeMarkers,
+      prevPlaceMarkers: true,
       center: center,
     }
 
@@ -60,6 +61,13 @@ class LeafletMap extends Component {
     }
     if (newProps.newMarker) {
       this.setMarkers();
+    }
+    if (newProps.placeMarkers !== this.state.placeMarkers) {
+      console.log('setState placeMarkers: ', newProps.placeMarkers)
+      this.setState({
+        placeMarkers: newProps.placeMarkers,
+        prevPlaceMarkers: this.state.placeMarkers,
+      });
     }
   }
 
@@ -127,11 +135,17 @@ class LeafletMap extends Component {
     const {
       marker,
       placeMarkers,
+      prevPlaceMarkers,
     } = this.state;
 
     if (this.props.viewOnly) { return; }
+
+    console.log('in onMapClick: ', placeMarkers);
     if (!placeMarkers) {
       this.setState({ placeMarkers: true });
+      return;
+    } else if (prevPlaceMarkers === false) {
+      this.setState({ prevPlaceMarkers: true });
       return;
     }
 
@@ -191,11 +205,13 @@ class LeafletMap extends Component {
 LeafletMap.propTypes = {
   display: PropTypes.bool,
   viewOnly: PropTypes.bool,
+  placeMarkers: PropTypes.bool,
 }
 
 LeafletMap.defaultProps = {
   display: true,
   viewOnly: false,
+  placeMarkers: true,
 }
 
 export default withRouter(LeafletMap);

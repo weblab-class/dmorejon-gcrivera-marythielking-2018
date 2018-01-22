@@ -13,12 +13,14 @@ class App extends Component {
       currentUser: null,
       showMap: true,
       mapViewOnly: false,
+      placeMarkers: true,
       newMarker: false,
     };
 
     this.logInUser = this.logInUser.bind(this);
     this.logOutUser = this.logOutUser.bind(this);
     this.createGreenspace = this.createGreenspace.bind(this);
+    this.setMapPlaceMarkers = this.setMapPlaceMarkers.bind(this);
     this.setMapViewOnly = this.setMapViewOnly.bind(this);
   }
 
@@ -39,6 +41,14 @@ class App extends Component {
       });
   }
 
+  setMapPlaceMarkers(placeMarkers) {
+    // console.log('in setMapPlaceMarkers: ', placeMarkers);
+    if (placeMarkers !== this.state.placeMarkers) {
+      console.log('setting placeMarkers: ', placeMarkers);
+      this.setState({ placeMarkers });
+    }
+  }
+
   setMapViewOnly(viewOnly) {
     if (viewOnly !== this.state.mapViewOnly) {
       this.setState({ mapViewOnly: viewOnly });
@@ -50,6 +60,7 @@ class App extends Component {
       showMap,
       currentUser,
       mapViewOnly,
+      placeMarkers,
       newMarker,
     } = this.state;
 
@@ -63,12 +74,14 @@ class App extends Component {
           <LeafletMap
             display={showMap}
             viewOnly={mapViewOnly}
+            placeMarkers={placeMarkers}
             newMarker={newMarker}
           />
           {React.cloneElement(this.props.children, {
             logInUser: this.logInUser,
             createGreenspace: this.createGreenspace,
             setMapViewOnly: this.setMapViewOnly,
+            setMapPlaceMarkers: this.setMapPlaceMarkers,
           })}
         </div>
       </div>

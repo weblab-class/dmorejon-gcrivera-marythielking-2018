@@ -48,7 +48,7 @@ class CreateGreenspace extends Component {
     const { nameVal } = this.state;
 
     return (
-      <Sidebar>
+      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
         <h1>Create Greenspace</h1>
         <div className="form">
           <input autoFocus className='form-input'
@@ -67,6 +67,7 @@ class CreateGreenspace extends Component {
 
 CreateGreenspace.propTypes = {
   createGreenspace: PropTypes.func,
+  setMapPlaceMarkers: PropTypes.func,
 }
 
 export default CreateGreenspace;

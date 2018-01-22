@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
 import Sidebar from '../Components/Sidebar.jsx';
@@ -69,7 +70,7 @@ class CreateEvent extends Component {
     } = this.state;
 
     return (
-      <Sidebar>
+      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
         <Link to={`/map/${this.props.params.gid}/${window.location.search}`} id="back-button">
           <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
         </Link>
@@ -105,6 +106,10 @@ class CreateEvent extends Component {
       </Sidebar>
     );
   }
+}
+
+CreateEvent.propTypes = {
+  setMapPlaceMarkers: PropTypes.func,
 }
 
 export default withRouter(CreateEvent);
