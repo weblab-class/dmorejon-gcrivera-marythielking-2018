@@ -77,7 +77,7 @@ class CreateEvent extends Component {
         </Link>
         <h1 className="section-header">Create Event</h1>
         <div className="form">
-          <input className='form-input'
+          <input autoFocus className='form-input'
             name='nameVal'
             placeholder='event name'
             value={nameVal}
