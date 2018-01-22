@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
 import Sidebar from '../Components/Sidebar.jsx';
 import eventServices from '../../services/eventServices.js';
+import userServices from '../../services/userServices.js';
 
 class EventView extends Component {
   constructor(props){
@@ -25,10 +26,10 @@ class EventView extends Component {
       endtime,
     } = this.state;
 
-    var startDate = '';
-    var startHour = '';
-    var endDate = '';
-    var endHour = '';
+    let startDate = '';
+    let startHour = '';
+    let endDate = '';
+    let endHour = '';
 
     if (starttime && endtime) {
       startDate = starttime.substring(0,10);
@@ -37,11 +38,27 @@ class EventView extends Component {
       endHour = endtime.substring(11,16);
     }
 
-    return (
-      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
+    let back_link;
+    let user_id;
+    if (this.props.params.gid !== 'undefined') {
+      back_link =
         <Link to={`/map/${this.props.params.gid}/${window.location.search}`} id="back-button">
           <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
         </Link>
+    } else {
+      userServices.info()
+        .then((res) => {
+          user_id = res.content._id;
+        });
+      back_link =
+        <Link to={`/user/${user_id}`} id="back-button">
+          <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
+        </Link>
+    }
+
+    return (
+      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
+        {back_link}
         <h1 className="section-header">{name}</h1>
         <div>{description}</div>
         <div>{startDate} {startHour} to {endDate} {endHour}</div>
