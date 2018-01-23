@@ -60,12 +60,17 @@ class ReviewView extends Component {
 
     const renderedReviews = this.renderReviews();
 
-    const writeReview = (
-      <Link to={`/map/${gid}/reviews/create/${window.location.search}`} id="add-event">
-        <FontAwesome name="plus-square-o" size="2x" id="add-event-icon" />
-        <div id="add-event-text">Write a Review</div>
-      </Link>
-    );
+    let writeReview;
+    const matchedUserArray = this.state.reviews.filter((r) => r.user.fbid === this.props.currentUser.fbid);
+    if (matchedUserArray.length > 0) {
+      writeReview = null;
+    } else {
+      writeReview = (
+        <Link to={`/map/${gid}/reviews/create/${window.location.search}`}>
+          <div>Write a Review</div>
+        </Link>
+      );
+    }
 
     return (
       <GreenspaceSidebar
@@ -77,7 +82,7 @@ class ReviewView extends Component {
       >
         <h1 className="section-header">Reviews</h1>
         <div className="list-items">{renderedReviews}</div>
-        { currentUser ? writeReview : '' }
+        { currentUser ? writeReview : null }
       </GreenspaceSidebar>
     );
   }

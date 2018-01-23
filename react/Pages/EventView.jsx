@@ -15,9 +15,14 @@ class EventView extends Component {
       greenspaceName: '',
       lat: 0,
       lng: 0,
+      bottomButton: null,
+      buttonRendered: false,
     };
 
+    this.joinButton = this.joinButton.bind(this);
+    this.leaveButton = this.leaveButton.bind(this);
     this.deleteEvent = this.deleteEvent.bind(this);
+    this.redirect = this.redirect.bind(this);
   }
 
   componentDidMount() {
@@ -30,10 +35,32 @@ class EventView extends Component {
       .catch((err) => console.log(err));
   }
 
+  redirect() {
+    if (this.props.params.gid !== 'undefined') {
+      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
+    } else {
+      this.props.router.push(`/user/${this.props.currentUser._id}`);
+    }
+  }
+
+  joinButton() {
+    eventServices.join(this.props.params.eventId)
+    .then((res) => {
+      this.redirect();
+    });
+  }
+
+  leaveButton() {
+    eventServices.leave(this.props.params.eventId, this.props.currentUser)
+    .then((res) => {
+      this.redirect();
+    });
+  }
+
   deleteEvent() {
     eventServices.delete(this.state._id)
     .then((res) => {
-      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
+      this.redirect();
     });
   }
 
@@ -43,11 +70,19 @@ class EventView extends Component {
       description,
       starttime,
       endtime,
+      participants,
       host,
       greenspaceName,
       lat,
       lng,
     } = this.state;
+
+    let localStart = '';
+    let localEnd = '';
+    if (starttime && endtime) {
+      localStart = (new Date(starttime)).toString().substring(0, 21); // You can change substring but you must work with (new Date(starttime)).toString()
+      localEnd = (new Date(endtime)).toString().substring(0, 21);
+    }
 
     let deleteBtn;
     if (host && this.props.currentUser) {
@@ -61,17 +96,7 @@ class EventView extends Component {
       }
     }
 
-    let startDate = '';
-    let startHour = '';
-    let endDate = '';
-    let endHour = '';
-
-    if (starttime && endtime) {
-      startDate = starttime.substring(0,10);
-      startHour = starttime.substring(11,16);
-      endDate = endtime.substring(0,10);
-      endHour = endtime.substring(11,16);
-    }
+    let bottomButton = this.state.bottomButton;
 
     let backLink;
     let userId;
@@ -82,8 +107,20 @@ class EventView extends Component {
         .then((res) => {
           userId = res.content._id;
         });
-      backLink = `/user/${userId}`
+      backLink = `/user/${this.props.currentUser._id}`
     }
+    if (participants){
+      const matchedUserArray = participants.filter((u) => u.fbid === this.props.currentUser.fbid);
+      if (!matchedUserArray.length > 0 && !this.state.buttonRendered) {
+        bottomButton =
+          <div className="btn" onClick={this.joinButton}>join this event</div>;
+        this.state.buttonRendered = true;
+      } else if (matchedUserArray.length > 0 && this.props.currentUser.fbid !== host.fbid){
+        bottomButton =
+          <div className="btn" onClick={this.leaveButton}>leave this event</div>;
+      }
+    }
+
 
     return (
       <GreenspaceSidebar
@@ -98,8 +135,8 @@ class EventView extends Component {
           {deleteBtn}
         </div>
         <div>{description}</div>
-        <div>{startDate} {startHour} to {endDate} {endHour}</div>
-
+        <div>{localStart} to {localEnd}</div>
+        {bottomButton}
       </GreenspaceSidebar>
     );
   }

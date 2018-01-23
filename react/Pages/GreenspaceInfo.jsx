@@ -63,15 +63,15 @@ class GreenspaceInfo extends Component {
     const { name, _id, starttime } = e;
     const gid = this.props.params.gid
 
-    const date = monthsMap[starttime.substring(5,7)]
-      + " " + starttime.substring(8,10)
-      + ", " + starttime.substring(0,4)
-      + " at " + starttime.substring(11,16);
+    const localStart = new Date(starttime).toString()
+    const date = localStart.substring(4,10)
+      + ", " + localStart.substring(11,15)
+      + " at " + localStart.substring(16,21);
 
     return (<Link
       to={`/map/${gid}/event/${_id}/${window.location.search}`}
       className="list-item-event"
-      key={name}
+      key={_id}
     >
       <div className="event-name">{name}</div>
       <div className="event-date">{date}</div>
