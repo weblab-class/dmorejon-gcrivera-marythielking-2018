@@ -162,8 +162,6 @@ class LeafletMap extends Component {
       prevPlaceMarkers,
     } = this.state;
 
-    console.log(this.state)
-
     if (!placeMarkers) {
       this.setState({ placeMarkers: true });
       return;
