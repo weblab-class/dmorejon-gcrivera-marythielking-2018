@@ -39,9 +39,13 @@ class ReviewView extends Component {
     const { reviews } = this.state;
 
     if (reviews.length === 0) {
-      return "There are no reviews.";
+      return null;
     }
-    return reviews.map((r) => this.renderReview(r));
+    return (
+      <div className="list-items">
+        {reviews.map((r) => this.renderReview(r))}
+      </div>)
+    ;
   }
 
   renderReview(r) {
@@ -56,20 +60,35 @@ class ReviewView extends Component {
   render(){
     const { currentUser } = this.props;
     const { gid } = this.props.params;
-    const { greenspaceName, lat, lng } = this.state;
+    const {
+      greenspaceName,
+      lat,
+      lng,
+      reviews,
+    } = this.state;
 
     const renderedReviews = this.renderReviews();
 
-    let writeReview;
-    const matchedUserArray = this.state.reviews.filter((r) => r.user.fbid === this.props.currentUser.fbid);
-    if (matchedUserArray.length > 0) {
-      writeReview = null;
+    let writeReview = null;
+    if (currentUser) {
+      const matchedUserArray = reviews.filter((r) => r.user.fbid === this.props.currentUser.fbid);
+      if (reviews.length === 0) {
+        writeReview = (
+          <Link to={`/map/${gid}/reviews/create/${window.location.search}`}>
+            <div id="greenspace-rating-text">Be the First to Write a Review</div>
+          </Link>
+        );
+      } else if (matchedUserArray.length === 0) {
+        writeReview = (
+          <Link to={`/map/${gid}/reviews/create/${window.location.search}`}>
+            <div id="greenspace-rating-text">Write a Review</div>
+          </Link>
+        );
+      }
     } else {
-      writeReview = (
-        <Link to={`/map/${gid}/reviews/create/${window.location.search}`}>
-          <div>Write a Review</div>
-        </Link>
-      );
+      if (reviews.length === 0) {
+        writeReview = (<div className="section-header">There are no reviews.</div>);
+      }
     }
 
     return (
@@ -80,9 +99,9 @@ class ReviewView extends Component {
         lng={lng}
         backTo={`/map/${this.props.params.gid}/${window.location.search}`}
       >
-        <h1 className="section-header">Reviews</h1>
-        <div className="list-items">{renderedReviews}</div>
-        { currentUser ? writeReview : null }
+        { (reviews.length > 0) ? (<div className="section-header">Reviews:</div>) : null }
+        { writeReview }
+        { renderedReviews }
       </GreenspaceSidebar>
     );
   }
