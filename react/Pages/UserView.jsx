@@ -12,8 +12,8 @@ class UserView extends Component {
     super(props);
 
     this.state = {
-      currentUser: props.currentUser.displayname,
-      photo: props.currentUser.photo,
+      currentUser: null,
+      photo: null,
       reviews: [],
       events: [],
       reviews: [],
@@ -34,6 +34,12 @@ class UserView extends Component {
     this.renderEvent = this.renderEvent.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
     this.renderReview = this.renderReview.bind(this);
+    }
+
+    componentWillReceiveProps(newProps) {
+      if(newProps.currentUser) {
+        this.setState({ currentUser: newProps.currentUser.displayname, photo: newProps.currentUser.photo });
+      }
     }
 
     renderReviews() {

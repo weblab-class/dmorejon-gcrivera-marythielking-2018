@@ -57,7 +57,7 @@ export default (
       <Route path="map/:gid/reviews/create"
         component={CreateReview}
         onEnter={checkUser} />
-      <Route path="user/:id"
+      <Route path="user/view/:id"
         component={UserView} />
       <Route path="*"
         component={NotFound} />
