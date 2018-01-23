@@ -73,6 +73,10 @@ h1:hover {
   width: 20px !important;
 }
 
+.delete-btn {
+  cursor: pointer;
+}
+
 #content {
   position: relative;
   height: calc(100vh - 80px);
@@ -282,6 +286,34 @@ h1:hover {
   font-size: 20px;
 }
 
+#delete-event {
+  display: flex;
+  align-items: center;
+  margin: 10px 0px;
+  padding: 5px 5px;
+}
+
+#delete-event:hover {
+  background-color: rgba(88, 155, 57, 0.5);
+  border-radius: 5px;
+}
+
+#delete-event-icon {
+  margin-right: 10px;
+  margin-bottom: -5px;
+}
+
+#delete-event-text {
+  font-size: 15px;
+}
+
+
 #explore-btn {
   margin-bottom: 10px;
+}
+
+#event-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

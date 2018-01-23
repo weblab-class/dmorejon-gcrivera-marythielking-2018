@@ -16,6 +16,15 @@ class EventView extends Component {
     eventServices.info(eventId)
       .then((res) => this.setState(res.content))
       .catch((err) => console.log(err));
+
+      this.deleteEvent = this.deleteEvent.bind(this);
+  }
+
+  deleteEvent() {
+    eventServices.delete(this.state._id)
+    .then((res) => {
+      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
+    });
   }
 
   render(){
@@ -24,7 +33,20 @@ class EventView extends Component {
       description,
       starttime,
       endtime,
+      host,
     } = this.state;
+
+    let deleteBtn;
+    if (host) {
+      if (host.fbid === this.props.currentUser.fbid) {
+        deleteBtn = (
+          <Link onClick={this.deleteEvent} className="delete-btn" id="delete-event">
+            <FontAwesome name="trash" id="delete-event-icon" />
+            <div id="delete-event-text">Delete Event</div>
+          </Link>
+        )
+      }
+    }
 
     let startDate = '';
     let startHour = '';
@@ -59,7 +81,10 @@ class EventView extends Component {
     return (
       <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
         {back_link}
-        <h1 className="section-header">{name}</h1>
+        <div id="event-header">
+          <h1 className="section-header">{name}</h1>
+          {deleteBtn}
+        </div>
         <div>{description}</div>
         <div>{startDate} {startHour} to {endDate} {endHour}</div>
 
