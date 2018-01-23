@@ -98,11 +98,13 @@ class EventView extends Component {
     }
     if (participants){
       const matchedUserArray = participants.filter((u) => u.fbid === this.props.currentUser.fbid);
-      if (!matchedUserArray.length>0 && !this.state.buttonRendered) {
-        bottomButton = <div className="btn" onClick={this.joinButton}>join this event</div>;
+      if (!matchedUserArray.length > 0 && !this.state.buttonRendered) {
+        bottomButton =
+          <div className="btn" onClick={this.joinButton}>join this event</div>;
         this.state.buttonRendered = true;
-      } else if (matchedUserArray.length>0 && this.props.currentUser.fbid !== host.fbid){
-        bottomButton = <div className="btn" onClick={this.leaveButton}>leave this event</div>;
+      } else if (matchedUserArray.length > 0 && this.props.currentUser.fbid !== host.fbid){
+        bottomButton =
+          <div className="btn" onClick={this.leaveButton}>leave this event</div>;
       }
     }
 
