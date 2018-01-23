@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import PopUp from '../Components/PopUp.jsx';
 
 class Loading extends Component {
-
   render(){
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>

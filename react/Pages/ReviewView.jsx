@@ -28,10 +28,18 @@ class ReviewView extends Component {
   componentDidMount() {
     const gid = this.props.params.gid;
 
-    this.props.getGreenspaceInfo(gid, (info) => this.setState(info));
+    this.props.getGreenspaceInfo(gid, (info) => {
+      if (this.refs.component) {
+        this.setState(info)
+      }
+    });
 
     reviewServices.getAllByGreenspace(gid)
-      .then((res) => this.setState(res.content))
+      .then((res) => {
+        if (this.refs.component) {
+          this.setState(res.content);
+        }
+      })
       .catch((err) => console.log(err));
   }
 
@@ -91,6 +99,7 @@ class ReviewView extends Component {
         name={greenspaceName}
         lat={lat}
         lng={lng}
+        ref="component"
       >
         { (reviews.length > 0) ? (<div className="section-header">Reviews:</div>) : null }
         { writeReview }

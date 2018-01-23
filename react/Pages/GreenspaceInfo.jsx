@@ -28,18 +28,26 @@ class GreenspaceInfo extends Component {
     const gid = this.props.params.gid;
 
     Services.greenspace.info(gid)
-      .then((res) => this.setState({
-        name: res.content.name,
-        lat: res.content.location[0],
-        lng: res.content.location[1],
-      }));
+      .then((res) => {
+        if (this.refs.component) {
+          this.setState({
+            name: res.content.name,
+            lat: res.content.location[0],
+            lng: res.content.location[1],
+          });
+        }
+      });
 
     Services.event.getAllByGreenspace(gid)
-      .then((res) => this.setState({ events: res.content }));
+      .then((res) => {
+        if (this.refs.component) {
+          this.setState({ events: res.content });
+        }
+      });
 
     Services.review.getAllByGreenspace(gid)
       .then((res) => {
-        if (res.content.reviews.length !== 0) {
+        if (res.content.reviews.length !== 0 && this.refs.component) {
           this.setState({ rating: res.content.rating })
         }
       });
@@ -125,6 +133,7 @@ class GreenspaceInfo extends Component {
         lat={lat}
         lng={lng}
         backButton={false}
+        ref="component"
       >
         { renderedRating }
         { renderedEvents }

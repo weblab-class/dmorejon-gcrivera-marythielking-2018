@@ -28,7 +28,11 @@ class CreateReview extends Component {
 
   componentDidMount() {
     const gid = this.props.params.gid;
-    this.props.getGreenspaceInfo(gid, (info) => this.setState(info));
+    this.props.getGreenspaceInfo(gid, (info) => {
+      if (this.refs.component) {
+        this.setState(info)
+      }
+    });
   }
 
   updateFormVal(event){
@@ -80,6 +84,7 @@ class CreateReview extends Component {
         name={greenspaceName}
         lat={lat}
         lng={lng}
+        ref="component"
       >
         <div className="section-header">Create Review</div>
         <ReactStars value={rating} onChange={this.setRating} color2="black" />
