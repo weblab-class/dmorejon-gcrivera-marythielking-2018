@@ -20,7 +20,6 @@ class EventView extends Component {
     this.joinButton = this.joinButton.bind(this);
     this.leaveButton = this.leaveButton.bind(this);
     this.deleteEvent = this.deleteEvent.bind(this);
-    this.redirect = this.redirect.bind(this);
     this.renderTime = this.renderTime.bind(this);
     this.renderDeleteBtn = this.renderDeleteBtn.bind(this);
     this.renderJoinLeaveBtn = this.renderJoinLeaveBtn.bind(this);
@@ -38,33 +37,32 @@ class EventView extends Component {
       .catch((err) => console.log(err));
   }
 
-  redirect() {
-    if (this.props.params.gid !== 'undefined') {
-      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
-    } else {
-      this.props.router.push(`/user/${this.props.currentUser._id}`);
-    }
-  }
-
   joinButton() {
+    const { gid, eventId } = this.props.params;
     eventServices.join(this.props.params.eventId)
-    .then((res) => {
-      this.redirect();
-    });
+      .then((res) => {
+        this.setState({ participants: res.content.participants });
+      });
   }
 
   leaveButton() {
+    const { gid, eventId } = this.props.params;
     eventServices.leave(this.props.params.eventId, this.props.currentUser)
-    .then((res) => {
-      this.redirect();
-    });
+      .then((res) => {
+        this.setState({ participants: res.content.participants });
+      });
   }
 
   deleteEvent() {
+    const { gid } = this.props.params;
     eventServices.delete(this.state._id)
-    .then((res) => {
-      this.redirect();
-    });
+      .then((res) => {
+        if (gid !== 'undefined') {
+          this.props.router.push(`/map/${gid}/${window.location.search}`);
+        } else {
+          this.props.router.push(`/user/${this.props.currentUser._id}`);
+        }
+      });
   }
 
   renderTime() {
