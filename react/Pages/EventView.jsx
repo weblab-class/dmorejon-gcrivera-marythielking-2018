@@ -36,6 +36,13 @@ class EventView extends Component {
       host,
     } = this.state;
 
+    let localStart = '';
+    let localEnd = '';
+    if (starttime && endtime) {
+      localStart = (new Date(starttime)).toString().substring(0, 21); // You can change substring but you must work with (new Date(starttime)).toString()
+      localEnd = (new Date(endtime)).toString().substring(0, 21);
+    }
+
     let deleteBtn;
     if (host && this.props.currentUser) {
       if (host.fbid === this.props.currentUser.fbid) {
@@ -46,18 +53,6 @@ class EventView extends Component {
           </Link>
         )
       }
-    }
-
-    let startDate = '';
-    let startHour = '';
-    let endDate = '';
-    let endHour = '';
-
-    if (starttime && endtime) {
-      startDate = starttime.substring(0,10);
-      startHour = starttime.substring(11,16);
-      endDate = endtime.substring(0,10);
-      endHour = endtime.substring(11,16);
     }
 
     let back_link;
@@ -86,7 +81,7 @@ class EventView extends Component {
           {deleteBtn}
         </div>
         <div>{description}</div>
-        <div>{startDate} {startHour} to {endDate} {endHour}</div>
+        <div>{localStart} to {localEnd}</div>
 
       </Sidebar>
     );
