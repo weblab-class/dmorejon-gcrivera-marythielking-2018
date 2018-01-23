@@ -20,26 +20,35 @@ class EventView extends Component {
       this.joinButton = this.joinButton.bind(this);
       this.leaveButton = this.leaveButton.bind(this);
       this.deleteEvent = this.deleteEvent.bind(this);
+      this.redirect = this.redirect.bind(this);
+  }
+
+  redirect() {
+    if (this.props.params.gid !== 'undefined') {
+      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
+    } else {
+      this.props.router.push(`/user/${this.props.currentUser._id}`);
+    }
   }
 
   joinButton() {
     eventServices.join(this.props.params.eventId)
     .then((res) => {
-      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
+      this.redirect();
     });
   }
 
   leaveButton(){
     eventServices.leave(this.props.params.eventId, this.props.currentUser)
     .then((res) => {
-      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
+      this.redirect();
     });
   }
 
   deleteEvent() {
     eventServices.delete(this.state._id)
     .then((res) => {
-      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
+      this.redirect();
     });
   }
 
@@ -86,12 +95,8 @@ class EventView extends Component {
           <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
         </Link>
     } else {
-      userServices.info()
-        .then((res) => {
-          user_id = res.content._id;
-        });
       back_link =
-        <Link to={`/user/${user_id}`} id="back-button">
+        <Link to={`/user/${this.props.currentUser._id}`} id="back-button">
           <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
         </Link>
     }
@@ -100,7 +105,7 @@ class EventView extends Component {
       if (!matchedUserArray.length>0 && !this.state.buttonRendered) {
         bottomButton = <div className="btn" onClick={this.joinButton}>join this event</div>;
         this.state.buttonRendered = true;
-      } else if (matchedUserArray.length>0){
+      } else if (matchedUserArray.length>0 && this.props.currentUser.fbid !== host.fbid){
         bottomButton = <div className="btn" onClick={this.leaveButton}>leave this event</div>;
       }
     }
