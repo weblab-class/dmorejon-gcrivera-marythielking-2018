@@ -72,13 +72,7 @@ class ReviewView extends Component {
     let writeReview = null;
     if (currentUser) {
       const matchedUserArray = reviews.filter((r) => r.user.fbid === this.props.currentUser.fbid);
-      if (reviews.length === 0) {
-        writeReview = (
-          <Link to={`/map/${gid}/reviews/create/${window.location.search}`}>
-            <div id="greenspace-rating-text">Be the First to Write a Review</div>
-          </Link>
-        );
-      } else if (matchedUserArray.length === 0) {
+      if (matchedUserArray.length === 0) {
         writeReview = (
           <Link to={`/map/${gid}/reviews/create/${window.location.search}`}>
             <div id="greenspace-rating-text">Write a Review</div>
@@ -97,7 +91,6 @@ class ReviewView extends Component {
         name={greenspaceName}
         lat={lat}
         lng={lng}
-        backTo={`/map/${this.props.params.gid}/${window.location.search}`}
       >
         { (reviews.length > 0) ? (<div className="section-header">Reviews:</div>) : null }
         { writeReview }

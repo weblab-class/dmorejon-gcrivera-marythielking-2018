@@ -124,6 +124,7 @@ class GreenspaceInfo extends Component {
         name={name}
         lat={lat}
         lng={lng}
+        backButton={false}
       >
         { renderedRating }
         { renderedEvents }

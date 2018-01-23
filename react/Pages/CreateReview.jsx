@@ -80,7 +80,6 @@ class CreateReview extends Component {
         name={greenspaceName}
         lat={lat}
         lng={lng}
-        backTo={`/map/${this.props.params.gid}/reviews/${window.location.search}`}
       >
         <div className="section-header">Create Review</div>
         <ReactStars value={rating} onChange={this.setRating} color2="black" />
