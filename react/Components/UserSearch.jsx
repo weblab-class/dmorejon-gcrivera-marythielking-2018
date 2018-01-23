@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Services from '../../services';
 import ArrowKeysReact from 'arrow-keys-react';
+import FontAwesome from 'react-fontawesome';
 
 class UserSearch extends Component {
   constructor(props){
@@ -72,10 +73,12 @@ class UserSearch extends Component {
   renderUsers(users) {
     return users.map((user, idx) => {
       return (
+        <div>
         <li onKeyPress={((e) => this.handleKeyPress(e, user))} tabIndex={idx} id={idx.toString()} ref={idx.toString()} key={user.fbid} onClick={((e) => this.updateParticipants(e, user))} className="search-results">
-          <img src={user.photo} height="30px" className="profile-icon"/>
+          <img src={user.photo} height="30px" className="profile-icon" id="search-icon"/>
           {user.displayname}
         </li>
+      </div>
       );
     });
   }
@@ -83,10 +86,10 @@ class UserSearch extends Component {
   renderParticipants(participants) {
     return participants.map((user) => {
       return (
-        <div key={user.fbid}>
+        <div key={user.fbid} className="list-item-participant">
           <img src={user.photo} height="30px" className="profile-icon"/>
           {user.displayname}
-          <button onClick={((e) => this.deleteParticipant(e, user))}>X</button>
+          <FontAwesome name="trash" id="delete-participant-icon" onClick={((e) => this.deleteParticipant(e, user))}/>
         </div>
       );
     });
@@ -114,14 +117,16 @@ class UserSearch extends Component {
     return (
       <div>
         <div>Participants:</div>
-        <div>{renderedParticipants}</div>
+        <div className="list-items" id="list-items-participant">{renderedParticipants}</div>
         <div className="form" {...ArrowKeysReact.events} tabIndex="-1">
           <input className='form-input' id="-1"
             placeholder='add participants'
             onChange={this.updateFormVal}
             ref="-1"
           />
-        <ul className="user-list">{renderedUsers}</ul>
+        <div className="list-items" id="list-items-participant">
+          <ul className="user-list">{renderedUsers}</ul>
+        </div>
         </div>
       </div>
     );

@@ -60,12 +60,31 @@ h1:hover {
 
 .search-results {
   cursor: pointer;
-  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 5px 15px;
+  margin: 2px 0px;
+  border-radius: 5px;
+}
+
+.search-results:hover {
+  background-color: rgba(183, 183, 183, 0.5);
+}
+
+.search-results:focus {
+  background-color: rgba(183, 183, 183, 0.5);
+  outline-width: 0px;
+}
+
+#search-icon {
+  margin-right: 15px;
 }
 
 .user-list {
   list-style-type: none;
   padding-left: 0px;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 
 .leaflet-image-layer {
@@ -217,6 +236,16 @@ h1:hover {
   color: #4f4f4f;
 }
 
+.list-item-participant {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 15px;
+  margin: 2px 0px;
+  border-radius: 5px;
+  background-color: rgba(183, 183, 183, 0.5);
+}
+
 .list-item-review {
   padding: 10px 15px;
   margin: 2px 0px;
@@ -257,6 +286,12 @@ h1:hover {
 
 .greenspace-rating-stars {
   margin-right: 5px;
+}
+
+#list-items-participant {
+  max-height: 105px;
+  overflow-y: scroll;
+  display: block;
 }
 
 #greenspace-rating-text {
@@ -317,6 +352,11 @@ h1:hover {
 #delete-event-icon {
   margin-right: 10px;
   margin-bottom: -5px;
+}
+
+#delete-participant-icon {
+  margin-left: 75px;
+  cursor: pointer;
 }
 
 #delete-event-text {
