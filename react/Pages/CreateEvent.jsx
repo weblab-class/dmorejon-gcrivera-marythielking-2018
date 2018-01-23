@@ -84,7 +84,6 @@ class CreateEvent extends Component {
         name={greenspaceName}
         lat={lat}
         lng={lng}
-        backTo={`/map/${this.props.params.gid}/${window.location.search}`}
       >
         <div className="section-header">Create Event</div>
         <div className="form">

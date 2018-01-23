@@ -13,23 +13,27 @@ class GreenspaceSidebar extends Component {
       name,
       lat,
       lng,
-      backTo,
+      backButton,
       children,
+      router
     } = this.props;
 
-
-    let backButton = null;
-    if (backTo !== '') {
-      backButton = (
-        <Link to={backTo} id="back-button">
-          <FontAwesome name="angle-left" size="2x" id="back-button-icon" title="Back"/>
-        </Link>
+    let renderedBackButton = null;
+    if (backButton) {
+      renderedBackButton = (
+        <FontAwesome
+          name="angle-left"
+          size="2x"
+          id="back-button"
+          title="Back"
+          onClick={router.goBack}
+        />
       );
     }
 
     return (
       <Sidebar setMapPlaceMarkers={setMapPlaceMarkers}>
-        { backButton }
+        { renderedBackButton }
         <div id="greenspace-header">
           <h1>{name}</h1>
           <a href={`https://www.google.com/maps?saddr=My+Location&daddr=${lat},${lng}`} target="_blank">
@@ -48,11 +52,11 @@ GreenspaceSidebar.propTypes = {
   name: PropTypes.string,
   lat: PropTypes.number,
   lng: PropTypes.number,
-  backTo: PropTypes.string,
+  backButton: PropTypes.bool,
 }
 
 GreenspaceSidebar.defaultProps = {
-  backTo: '',
+  backButton: true,
 }
 
 export default withRouter(GreenspaceSidebar);

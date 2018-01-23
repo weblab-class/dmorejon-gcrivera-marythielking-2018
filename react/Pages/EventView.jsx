@@ -57,11 +57,7 @@ class EventView extends Component {
     const { gid } = this.props.params;
     eventServices.delete(this.state._id)
       .then((res) => {
-        if (gid !== 'undefined') {
-          this.props.router.push(`/map/${gid}/${window.location.search}`);
-        } else {
-          this.props.router.push(`/user/${this.props.currentUser._id}`);
-        }
+        this.props.router.goBack();
       });
   }
 
@@ -154,12 +150,12 @@ class EventView extends Component {
     const joinLeaveBtn = this.renderJoinLeaveBtn();
     const renderedParticipants = this.renderParticipants();
 
-    let backLink;
-    if (params.gid !== 'undefined') {
-      backLink = `/map/${params.gid}/${window.location.search}`
-    } else {
-      backLink = `/user/${currentUser._id}`
-    }
+    // let backLink;
+    // if (params.gid !== 'undefined') {
+    //   backLink = `/map/${params.gid}/${window.location.search}`
+    // } else {
+    //   backLink = `/user/${currentUser._id}`
+    // }
 
     return (
       <GreenspaceSidebar
@@ -167,7 +163,6 @@ class EventView extends Component {
         name={greenspaceName}
         lat={lat}
         lng={lng}
-        backTo={backLink}
       >
         <div id="event-header">
           <div className="section-header" id="event-name">{name}</div>

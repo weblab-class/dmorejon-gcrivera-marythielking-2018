@@ -270,6 +270,7 @@ h1:hover {
 
 #back-button:hover {
   color: #4f4f4f;
+  cursor: pointer;
 }
 
 #greenspace-header {
