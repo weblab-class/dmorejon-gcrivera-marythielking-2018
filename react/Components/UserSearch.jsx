@@ -37,6 +37,8 @@ class UserSearch extends Component {
   }
 
   updateFormVal(event) {
+    const currentUser = this.props.currentUser;
+
     if (!event.target.value) {this.setState({ users: []});}
     Services.user.search(event.target.value).then((res) => {
       let users = res.content;
@@ -45,7 +47,7 @@ class UserSearch extends Component {
           let matches = this.state.participants.filter((participant) => {
             return participant.fbid === user.fbid;
           });
-          return !(matches.length > 0);
+          return !(matches.length > 0) && user.fbid !== currentUser.fbid;
         });
       }
       this.setState({ users: users});
@@ -73,7 +75,6 @@ class UserSearch extends Component {
   renderUsers(users) {
     return users.map((user, idx) => {
       return (
-        <div>
         <li
           onKeyPress={((e) => this.handleKeyPress(e, user))}
           tabIndex={idx}
@@ -86,7 +87,6 @@ class UserSearch extends Component {
           <img src={user.photo} height="30px" className="profile-icon" id="search-icon"/>
           {user.displayname}
         </li>
-      </div>
       );
     });
   }

@@ -114,7 +114,7 @@ class CreateEvent extends Component {
             type="datetime-local"
             onChange={this.updateFormVal}
           />
-        <UserSearch handleParticipants={this.handleParticipants}/>
+        <UserSearch handleParticipants={this.handleParticipants} currentUser={this.props.currentUser}/>
           <div className="btn" onClick={this.create}>Create</div>
         </div>
       </GreenspaceSidebar>
