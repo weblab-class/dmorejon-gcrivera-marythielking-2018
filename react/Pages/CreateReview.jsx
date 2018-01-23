@@ -82,7 +82,7 @@ class CreateReview extends Component {
         lng={lng}
         backTo={`/map/${this.props.params.gid}/reviews/${window.location.search}`}
       >
-        <h1 className="section-header">Create Review</h1>
+        <div className="section-header">Create Review</div>
         <ReactStars value={rating} onChange={this.setRating} color2="black" />
         <div className="form">
           <textarea autoFocus className='form-input'
