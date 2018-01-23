@@ -22,7 +22,7 @@ class GreenspaceSidebar extends Component {
     if (backTo !== '') {
       backButton = (
         <Link to={backTo} id="back-button">
-          <FontAwesome name="angle-left" size="2x" id="back-button-icon" />
+          <FontAwesome name="angle-left" size="2x" id="back-button-icon" title="Back"/>
         </Link>
       );
     }
@@ -33,7 +33,7 @@ class GreenspaceSidebar extends Component {
         <div id="greenspace-header">
           <h1>{name}</h1>
           <a href={`https://www.google.com/maps?saddr=My+Location&daddr=${lat},${lng}`} target="_blank">
-            <img src="/images/google-maps-icon-2015.png" height="30px" className="gmaps-logo" />
+            <img src="/images/google-maps-icon-2015.png" height="30px" className="gmaps-logo" title="Directions"/>
           </a>
         </div>
         { children }
