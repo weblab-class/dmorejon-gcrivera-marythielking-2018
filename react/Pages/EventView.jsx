@@ -37,7 +37,7 @@ class EventView extends Component {
     } = this.state;
 
     let deleteBtn;
-    if (host) {
+    if (host && this.props.currentUser) {
       if (host.fbid === this.props.currentUser.fbid) {
         deleteBtn = (
           <Link onClick={this.deleteEvent} className="delete-btn" id="delete-event">
