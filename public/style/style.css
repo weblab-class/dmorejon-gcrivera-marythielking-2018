@@ -422,6 +422,8 @@ h1:hover {
   text-align: right;
   margin-left: 0px;
   display: block;
+  color: #4f4f4f;
+  font-size: 14px;
 }
 .userview-review-greenspace {
   display: flex;
