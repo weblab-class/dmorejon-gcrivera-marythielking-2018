@@ -6,7 +6,7 @@ class LogIn extends Component {
   render(){
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
-        <h1 className="section-header">Welcome to Greenspace!</h1>
+        <h1>Welcome to Greenspace!</h1>
         <div className="form">
           <a
             href="/auth/facebook"

@@ -131,7 +131,7 @@ class EventView extends Component {
         backTo={backLink}
       >
         <div id="event-header">
-          <h1 className="section-header">{name}</h1>
+          <div className="section-header">{name}</div>
           {deleteBtn}
         </div>
         <div>{description}</div>

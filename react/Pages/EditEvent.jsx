@@ -6,7 +6,7 @@ class EditEvent extends Component {
   render(){
     return (
       <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
-        <h1 className="section-header">EditEvent</h1>
+        <div className="section-header">EditEvent</div>
       </Sidebar>
     );
   }
