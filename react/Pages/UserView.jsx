@@ -55,10 +55,16 @@ class UserView extends Component {
 
     reviewDivs(reviews) {
       return reviews.map((r) => {
-        return (<div className="list-item-review" key={r._id}>
-          <ReactStars value={r.rating} edit={false} color2="black" />
-            <div> for: {r.greenspace}</div>
-          {r.body}
+        return (
+          <div className="list-item-review" key={r._id}>
+          <div className='userview-review-greenspace'>
+            <ReactStars value={r.rating} edit={false} color2="black" />
+            <div className = 'userview-greenspace'> {r.greenspace}</div>
+          </div>
+          <div className = 'userview-review-body'>
+            {r.body}
+          </div>
+
         </div>)
       })
     }
@@ -97,14 +103,14 @@ class UserView extends Component {
 
     if (reviews.length === 0) {
       reviews_div = (
-        <div id = 'ratings'>
-          <h1 className="section-header">you haven't written any reviews yet!</h1>
+        <div className = 'userview-ratings'>
+          <h1 className="section-header">You haven't written any reviews yet!</h1>
         </div>
       )
     } else {
       reviews_div = (
-        <div id = 'ratings'>
-          <h1 className="section-header"> reviews you've written:</h1>
+        <div id = 'userview-ratings'>
+          <h1 className="section-header">Your Reviews:</h1>
           <div className="list-items">{reviewDivList}</div>
         </div>
       )
@@ -112,21 +118,21 @@ class UserView extends Component {
 
     if (events.length === 0) {
       events_div = (
-        <div id = 'events'>
-          <h1 className="section-header">you aren't a part of any events yet!</h1>
+        <div className = 'userview-events'>
+          <h1 className="section-header">You aren't a part of any events yet!</h1>
         </div>
       )
     } else {
       events_div = (
-        <div id = 'events'>
-          <h1 className="section-header"> events you're a part of: </h1>
+        <div className = 'userview-events'>
+          <h1 className="section-header">Your events: </h1>
             <div className="list-items">{renderedEvents}</div>
         </div>
       )
     };
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
-        <div id = 'user'>
+        <div className = 'userview-user'>
           <h1 className="section-header">{currentUser}</h1>
               <img src={photo} height="80px" className="profile-icon"/>
         </div>
