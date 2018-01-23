@@ -11,19 +11,44 @@ class EventView extends Component {
     super(props);
     const eventId = props.params.eventId;
 
-    this.state = {};
+    this.state = {bottomButton: null, buttonRendered: false};
 
     eventServices.info(eventId)
       .then((res) => this.setState(res.content))
       .catch((err) => console.log(err));
 
+      this.joinButton = this.joinButton.bind(this);
+      this.leaveButton = this.leaveButton.bind(this);
       this.deleteEvent = this.deleteEvent.bind(this);
+      this.redirect = this.redirect.bind(this);
+  }
+
+  redirect() {
+    if (this.props.params.gid !== 'undefined') {
+      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
+    } else {
+      this.props.router.push(`/user/${this.props.currentUser._id}`);
+    }
+  }
+
+  joinButton() {
+    eventServices.join(this.props.params.eventId)
+    .then((res) => {
+      this.redirect();
+    });
+  }
+
+  leaveButton(){
+    eventServices.leave(this.props.params.eventId, this.props.currentUser)
+    .then((res) => {
+      this.redirect();
+    });
   }
 
   deleteEvent() {
     eventServices.delete(this.state._id)
     .then((res) => {
-      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
+      this.redirect();
     });
   }
 
@@ -33,6 +58,7 @@ class EventView extends Component {
       description,
       starttime,
       endtime,
+      participants,
       host,
     } = this.state;
 
@@ -55,6 +81,8 @@ class EventView extends Component {
       }
     }
 
+    let bottomButton = this.state.bottomButton;
+
     let back_link;
     let user_id;
     if (this.props.params.gid !== 'undefined') {
@@ -63,15 +91,21 @@ class EventView extends Component {
           <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
         </Link>
     } else {
-      userServices.info()
-        .then((res) => {
-          user_id = res.content._id;
-        });
       back_link =
-        <Link to={`/user/${user_id}`} id="back-button">
+        <Link to={`/user/${this.props.currentUser._id}`} id="back-button">
           <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
         </Link>
     }
+    if (participants){
+      const matchedUserArray = participants.filter((u) => u.fbid === this.props.currentUser.fbid);
+      if (!matchedUserArray.length>0 && !this.state.buttonRendered) {
+        bottomButton = <div className="btn" onClick={this.joinButton}>join this event</div>;
+        this.state.buttonRendered = true;
+      } else if (matchedUserArray.length>0 && this.props.currentUser.fbid !== host.fbid){
+        bottomButton = <div className="btn" onClick={this.leaveButton}>leave this event</div>;
+      }
+    }
+
 
     return (
       <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
@@ -82,7 +116,7 @@ class EventView extends Component {
         </div>
         <div>{description}</div>
         <div>{localStart} to {localEnd}</div>
-
+        {bottomButton}
       </Sidebar>
     );
   }
