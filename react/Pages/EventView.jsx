@@ -17,12 +17,20 @@ class EventView extends Component {
       .then((res) => this.setState(res.content))
       .catch((err) => console.log(err));
 
-      this.handleButton = this.handleButton.bind(this);
+      this.joinButton = this.joinButton.bind(this);
+      this.leaveButton = this.leaveButton.bind(this);
       this.deleteEvent = this.deleteEvent.bind(this);
   }
 
-  handleButton() {
+  joinButton() {
     eventServices.join(this.props.params.eventId)
+    .then((res) => {
+      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
+    });
+  }
+
+  leaveButton(){
+    eventServices.leave(this.props.params.eventId, this.props.currentUser)
     .then((res) => {
       this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
     });
@@ -90,10 +98,10 @@ class EventView extends Component {
     if (participants){
       const matchedUserArray = participants.filter((u) => u.fbid === this.props.currentUser.fbid);
       if (!matchedUserArray.length>0 && !this.state.buttonRendered) {
-        bottomButton = <div className="btn" onClick={this.handleButton}>join this event</div>
+        bottomButton = <div className="btn" onClick={this.joinButton}>join this event</div>;
         this.state.buttonRendered = true;
       } else if (matchedUserArray.length>0){
-        bottomButton = <div>You are attending this event</div>
+        bottomButton = <div className="btn" onClick={this.leaveButton}>leave this event</div>;
       }
     }
 
