@@ -89,7 +89,7 @@ class EventView extends Component {
       if (host.fbid === this.props.currentUser.fbid) {
         deleteBtn = (
           <Link onClick={this.deleteEvent} className="delete-btn" id="delete-event">
-            <FontAwesome name="trash" id="delete-event-icon" />
+            <FontAwesome name="trash" id="delete-event-icon" title="Delete"/>
             <div id="delete-event-text">Delete Event</div>
           </Link>
         )
@@ -131,7 +131,7 @@ class EventView extends Component {
         backTo={backLink}
       >
         <div id="event-header">
-          <h1 className="section-header">{name}</h1>
+          <div className="section-header">{name}</div>
           {deleteBtn}
         </div>
         <div>{description}</div>

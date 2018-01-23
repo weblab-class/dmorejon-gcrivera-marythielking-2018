@@ -15,19 +15,19 @@ class Header extends Component {
         <div className="header-btn-content">Welcome, {displayname}</div>
         <Link to={`/user/${currentUser}/${window.location.search}`}>
           <div className="header-btn">
-              <img src={photo} height="40px" className="profile-icon"/>
+              <img src={photo} height="40px" className="profile-icon" title="User Profile"/>
           </div>
         </Link>
         <a href="/logout">
           <div className="header-btn">
-            <FontAwesome name="sign-out" size="2x" />
+            <FontAwesome name="sign-out" size="2x" title="Logout"/>
           </div>
         </a>
       </div>);
     } else {
       headerButtons = (<Link to="/login">
         <div className="header-btn">
-          <FontAwesome name="sign-in" size="2x" />
+          <FontAwesome name="sign-in" size="2x" title="Log in"/>
         </div>
       </Link>);
     }

@@ -89,7 +89,7 @@ class UserSearch extends Component {
         <div key={user.fbid} className="list-item-participant">
           <img src={user.photo} height="30px" className="profile-icon"/>
           {user.displayname}
-          <FontAwesome name="trash" id="delete-participant-icon" onClick={((e) => this.deleteParticipant(e, user))}/>
+          <FontAwesome name="trash" title="Delete" id="delete-participant-icon" onClick={((e) => this.deleteParticipant(e, user))}/>
         </div>
       );
     });
