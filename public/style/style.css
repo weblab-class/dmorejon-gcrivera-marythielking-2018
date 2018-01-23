@@ -110,7 +110,12 @@ h1:hover {
 #header-btns {
   display: flex;
 }
-
+#blurb {
+    text-align: center;
+    width: 450px;
+    padding-bottom: 20px;
+    line-height: 1.5;
+}
 .header-btn {
   padding: 0px 20px;
   display: flex;

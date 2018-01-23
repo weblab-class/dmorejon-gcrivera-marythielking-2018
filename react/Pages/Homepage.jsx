@@ -10,6 +10,11 @@ class Homepage extends Component {
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
         <h1>Welcome to Greenspace!</h1>
+        <div id='blurb'>
+          Greenspace allows you to mark outdoor areas that other users can view.
+           Plan events on these 'greenspaces' (add your friends!), write reviews,
+           and find new natural areas around you to check out!
+        </div>
         <div>
           <a href={`/loading/${window.location.search}`}>
             <div className="btn" id="explore-btn">Explore</div>
