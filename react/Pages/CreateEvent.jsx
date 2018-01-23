@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
-import Sidebar from '../Components/Sidebar.jsx';
+
+import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import UserSearch from '../Components/UserSearch.jsx';
 import eventServices from '../../services/eventServices.js';
 
@@ -17,11 +18,21 @@ class CreateEvent extends Component {
       startVal: '',
       endVal: '',
       participants: [],
+
+      greenspaceName: '',
+      lat: 0,
+      lng: 0,
     };
 
     this.updateFormVal = this.updateFormVal.bind(this);
     this.handleParticipants = this.handleParticipants.bind(this);
     this.create = this.create.bind(this);
+  }
+
+  componentDidMount() {
+    const gid = this.props.params.gid;
+
+    this.props.getGreenspaceInfo(gid, (info) => this.setState(info));
   }
 
   updateFormVal(event){
@@ -62,13 +73,19 @@ class CreateEvent extends Component {
       startVal,
       endVal,
       participants,
+      greenspaceName,
+      lat,
+      lng,
     } = this.state;
 
     return (
-      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
-        <Link to={`/map/${this.props.params.gid}/${window.location.search}`} id="back-button">
-          <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
-        </Link>
+      <GreenspaceSidebar
+        setMapPlaceMarkers={this.props.setMapPlaceMarkers}
+        name={greenspaceName}
+        lat={lat}
+        lng={lng}
+        backTo={`/map/${this.props.params.gid}/${window.location.search}`}
+      >
         <h1 className="section-header">Create Event</h1>
         <div className="form">
           <input autoFocus className='form-input'
@@ -100,13 +117,14 @@ class CreateEvent extends Component {
         <UserSearch handleParticipants={this.handleParticipants}/>
           <div className="btn" onClick={this.create}>Create</div>
         </div>
-      </Sidebar>
+      </GreenspaceSidebar>
     );
   }
 }
 
 CreateEvent.propTypes = {
   setMapPlaceMarkers: PropTypes.func,
+  getGreenspaceInfo: PropTypes.func,
 }
 
 export default withRouter(CreateEvent);

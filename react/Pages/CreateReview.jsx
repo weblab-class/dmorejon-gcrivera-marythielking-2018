@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
 import ReactStars from 'react-stars';
-import Sidebar from '../Components/Sidebar.jsx';
+
+import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import reviewServices from '../../services/reviewServices.js';
 
 class CreateReview extends Component {
@@ -14,12 +15,20 @@ class CreateReview extends Component {
 
       reviewVal: '',
       rating: 0,
+      greenspaceName: '',
+      lat: 0,
+      lng: 0,
     };
 
     this.updateFormVal = this.updateFormVal.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
     this.setRating = this.setRating.bind(this);
     this.create = this.create.bind(this);
+  }
+
+  componentDidMount() {
+    const gid = this.props.params.gid;
+    this.props.getGreenspaceInfo(gid, (info) => this.setState(info));
   }
 
   updateFormVal(event){
@@ -57,13 +66,22 @@ class CreateReview extends Component {
   }
 
   render(){
-    const { reviewVal, rating } = this.state;
+    const {
+      reviewVal,
+      rating,
+      greenspaceName,
+      lat,
+      lng,
+    } = this.state;
 
     return (
-      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
-        <Link to={`/map/${this.props.params.gid}/reviews/${window.location.search}`} id="back-button">
-          <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
-        </Link>
+      <GreenspaceSidebar
+        setMapPlaceMarkers={this.props.setMapPlaceMarkers}
+        name={greenspaceName}
+        lat={lat}
+        lng={lng}
+        backTo={`/map/${this.props.params.gid}/reviews/${window.location.search}`}
+      >
         <h1 className="section-header">Create Review</h1>
         <ReactStars value={rating} onChange={this.setRating} color2="black" />
         <div className="form">
@@ -76,13 +94,14 @@ class CreateReview extends Component {
           />
           <div className="btn" onClick={this.create}>Create</div>
         </div>
-      </Sidebar>
+      </GreenspaceSidebar>
     );
   }
 }
 
 CreateReview.propTypes = {
   setMapPlaceMarkers: PropTypes.func,
+  getGreenspaceInfo: PropTypes.func,
 }
 
 export default withRouter(CreateReview);

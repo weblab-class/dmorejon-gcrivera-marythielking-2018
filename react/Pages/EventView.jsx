@@ -2,25 +2,37 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
-import Sidebar from '../Components/Sidebar.jsx';
+
+import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import eventServices from '../../services/eventServices.js';
 import userServices from '../../services/userServices.js';
 
 class EventView extends Component {
   constructor(props){
     super(props);
-    const eventId = props.params.eventId;
 
-    this.state = {bottomButton: null, buttonRendered: false};
+    this.state = {
+      greenspaceName: '',
+      lat: 0,
+      lng: 0,
+      bottomButton: null,
+      buttonRendered: false,
+    };
+
+    this.joinButton = this.joinButton.bind(this);
+    this.leaveButton = this.leaveButton.bind(this);
+    this.deleteEvent = this.deleteEvent.bind(this);
+    this.redirect = this.redirect.bind(this);
+  }
+
+  componentDidMount() {
+    const { gid, eventId } = this.props.params;
+
+    this.props.getGreenspaceInfo(gid, (info) => this.setState(info));
 
     eventServices.info(eventId)
       .then((res) => this.setState(res.content))
       .catch((err) => console.log(err));
-
-      this.joinButton = this.joinButton.bind(this);
-      this.leaveButton = this.leaveButton.bind(this);
-      this.deleteEvent = this.deleteEvent.bind(this);
-      this.redirect = this.redirect.bind(this);
   }
 
   redirect() {
@@ -38,7 +50,7 @@ class EventView extends Component {
     });
   }
 
-  leaveButton(){
+  leaveButton() {
     eventServices.leave(this.props.params.eventId, this.props.currentUser)
     .then((res) => {
       this.redirect();
@@ -60,6 +72,9 @@ class EventView extends Component {
       endtime,
       participants,
       host,
+      greenspaceName,
+      lat,
+      lng,
     } = this.state;
 
     let localStart = '';
@@ -83,33 +98,38 @@ class EventView extends Component {
 
     let bottomButton = this.state.bottomButton;
 
-    let back_link;
-    let user_id;
+    let backLink;
+    let userId;
     if (this.props.params.gid !== 'undefined') {
-      back_link =
-        <Link to={`/map/${this.props.params.gid}/${window.location.search}`} id="back-button">
-          <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
-        </Link>
+      backLink = `/map/${this.props.params.gid}/${window.location.search}`
     } else {
-      back_link =
-        <Link to={`/user/${this.props.currentUser._id}`} id="back-button">
-          <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
-        </Link>
+      userServices.info()
+        .then((res) => {
+          userId = res.content._id;
+        });
+      backLink = `/user/${this.props.currentUser._id}`
     }
     if (participants){
       const matchedUserArray = participants.filter((u) => u.fbid === this.props.currentUser.fbid);
-      if (!matchedUserArray.length>0 && !this.state.buttonRendered) {
-        bottomButton = <div className="btn" onClick={this.joinButton}>join this event</div>;
+      if (!matchedUserArray.length > 0 && !this.state.buttonRendered) {
+        bottomButton =
+          <div className="btn" onClick={this.joinButton}>join this event</div>;
         this.state.buttonRendered = true;
-      } else if (matchedUserArray.length>0 && this.props.currentUser.fbid !== host.fbid){
-        bottomButton = <div className="btn" onClick={this.leaveButton}>leave this event</div>;
+      } else if (matchedUserArray.length > 0 && this.props.currentUser.fbid !== host.fbid){
+        bottomButton =
+          <div className="btn" onClick={this.leaveButton}>leave this event</div>;
       }
     }
 
 
     return (
-      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
-        {back_link}
+      <GreenspaceSidebar
+        setMapPlaceMarkers={this.props.setMapPlaceMarkers}
+        name={greenspaceName}
+        lat={lat}
+        lng={lng}
+        backTo={backLink}
+      >
         <div id="event-header">
           <h1 className="section-header">{name}</h1>
           {deleteBtn}
@@ -117,13 +137,14 @@ class EventView extends Component {
         <div>{description}</div>
         <div>{localStart} to {localEnd}</div>
         {bottomButton}
-      </Sidebar>
+      </GreenspaceSidebar>
     );
   }
 }
 
 EventView.propTypes = {
   setMapPlaceMarkers: PropTypes.func,
+  getGreenspaceInfo: PropTypes.func,
 }
 
 export default withRouter(EventView);

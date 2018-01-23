@@ -4,14 +4,13 @@ import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
 import ReactStars from 'react-stars';
 
-import Sidebar from '../Components/Sidebar.jsx';
+import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import Services from '../../services';
 import { monthsMap } from '../constants.jsx'
 
 class GreenspaceInfo extends Component {
   constructor(props){
     super(props);
-    const gid = props.params.gid;
 
     this.state = {
       name: '',
@@ -20,6 +19,14 @@ class GreenspaceInfo extends Component {
       events: [],
       rating: null,
     };
+
+    this.renderEvents = this.renderEvents.bind(this);
+    this.renderEvent = this.renderEvent.bind(this);
+    this.renderRating = this.renderRating.bind(this);
+  }
+
+  componentDidMount() {
+    const gid = this.props.params.gid;
 
     Services.greenspace.info(gid)
       .then((res) => this.setState({
@@ -37,9 +44,6 @@ class GreenspaceInfo extends Component {
           this.setState({ rating: res.content.rating })
         }
       });
-
-    this.renderEvents = this.renderEvents.bind(this);
-    this.renderEvent = this.renderEvent.bind(this);
   }
 
   renderEvents() {
@@ -56,8 +60,8 @@ class GreenspaceInfo extends Component {
   }
 
   renderEvent(e) {
-    const { gid } = this.props.params;
     const { name, _id, starttime } = e;
+    const gid = this.props.params.gid
 
     const localStart = new Date(starttime).toString()
     const date = localStart.substring(4,10)
@@ -76,7 +80,7 @@ class GreenspaceInfo extends Component {
 
   renderRating() {
     const { rating } = this.state;
-    const { gid } = this.props.params;
+    const gid = this.props.params.gid
 
     if (rating === null && !this.props.currentUser) {
       return (<Link to={`/map/${gid}/reviews/${window.location.search}`}>
@@ -101,9 +105,9 @@ class GreenspaceInfo extends Component {
   }
 
   render(){
-    const { currentUser } = this.props;
-    const { gid } = this.props.params;
+    const { currentUser, setMapPlaceMarkers } = this.props;
     const { name, lat, lng, rating } = this.state;
+    const gid = this.props.params.gid
 
     const renderedEvents = this.renderEvents();
     const renderedRating = this.renderRating();
@@ -116,17 +120,16 @@ class GreenspaceInfo extends Component {
     );
 
     return (
-      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
-        <div id="greenspace-header">
-          <h1>{name}</h1>
-          <a href={`https://www.google.com/maps?saddr=My+Location&daddr=${lat},${lng}`} target="_blank">
-            <img src="/images/google-maps-icon-2015.png" height="30px" className="gmaps-logo" />
-          </a>
-        </div>
+      <GreenspaceSidebar
+        setMapPlaceMarkers={setMapPlaceMarkers}
+        name={name}
+        lat={lat}
+        lng={lng}
+      >
         { renderedRating }
         { renderedEvents }
         { currentUser ? createEvent : '' }
-      </Sidebar>
+      </GreenspaceSidebar>
     );
   }
 }
