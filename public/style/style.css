@@ -360,6 +360,7 @@ h1:hover {
 
 #explore-btn {
   margin-bottom: 10px;
+  min-width: 186px;
 }
 
 #event-header {
