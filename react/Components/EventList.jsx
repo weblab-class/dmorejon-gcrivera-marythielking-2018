@@ -9,7 +9,7 @@ class EventList extends Component {
   }
 
   renderEvent(e) {
-    const { name, _id, starttime, gid } = e;
+    const { name, _id, starttime, greenspace } = e;
 
     const localStart = new Date(starttime).toString()
     const date = localStart.substring(4,10)
@@ -17,7 +17,7 @@ class EventList extends Component {
       + " at " + localStart.substring(16,21);
 
     return (<Link
-      to={`/map/${gid}/event/${_id}/${window.location.search}`}
+      to={`/map/${greenspace}/event/${_id}/${window.location.search}`}
       className="list-item-event"
       key={_id}
     >
