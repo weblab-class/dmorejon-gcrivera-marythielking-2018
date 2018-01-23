@@ -132,16 +132,15 @@ class UserView extends Component {
     };
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
-        <div className = 'userview-user'>
-          <h1 className="section-header">{currentUser}</h1>
-              <img src={photo} height="80px" className="profile-icon"/>
+        <div id='userview'>
+          <div className = 'userview-user'>
+            <div id ='userview-name'>{currentUser}</div>
+                <img src={photo} height="80px" className="profile-icon"/>
+          </div>
+          {reviews_div}
+          {events_div}
         </div>
-        {reviews_div}
-        {events_div}
-        <Link
-          to={`/map/`}
-          className="btn"
-        >back</Link>
+
       </PopUp>
     );
   }
