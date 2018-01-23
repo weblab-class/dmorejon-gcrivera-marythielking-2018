@@ -431,3 +431,21 @@ h1:hover {
 .userview-review-body {
   text-align: left;
 }
+
+#userview-close-btn {
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+
+#close-btn {
+  float: right;
+  height: 20px;
+  padding-right: 10px;
+  padding-top: 10px;
+  color: #696969;
+}
+
+#close-btn:hover {
+  color: #4f4f4f;
+}

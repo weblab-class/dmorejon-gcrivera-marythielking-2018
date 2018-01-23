@@ -5,6 +5,7 @@ import PopUp from '../Components/PopUp.jsx';
 import ReactStars from 'react-stars';
 import Services from '../../services';
 import Promise from 'bluebird';
+import FontAwesome from 'react-fontawesome';
 
 class UserView extends Component {
   constructor(props) {
@@ -76,10 +77,9 @@ class UserView extends Component {
   }
 
   renderEvent(e) {
-    const { gid } = this.props.params;
-    const { name, _id } = e;
+    const { name, _id, greenspace } = e;
     return (<Link
-      to={`/map/${gid}/event/${_id}/${window.location.search}`}
+      to={`/map/${greenspace}/event/${_id}/${window.location.search}`}
       className="list-item-event"
       key={name}
     >{name}</Link>);
@@ -130,17 +130,23 @@ class UserView extends Component {
         </div>
       )
     };
+
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
+
+        <div id="userview-close-btn">
+          <Link to={`/map/${window.location.search}`} id="close-btn">
+            <FontAwesome name="times" size="lg" title="Close"/>
+          </Link>
+        </div>
         <div id='userview'>
           <div className = 'userview-user'>
-            <div id ='userview-name'>{currentUser}</div>
-                <img src={photo} height="80px" className="profile-icon"/>
+            <h1 id="userview-name">{currentUser}</h1>
+                <img src={photo} height="150px" className="profile-icon"/>
           </div>
           {reviews_div}
           {events_div}
         </div>
-
       </PopUp>
     );
   }
