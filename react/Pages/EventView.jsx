@@ -30,10 +30,18 @@ class EventView extends Component {
   componentDidMount() {
     const { gid, eventId } = this.props.params;
 
-    this.props.getGreenspaceInfo(gid, (info) => this.setState(info));
+    this.props.getGreenspaceInfo(gid, (info) => {
+      if (this.refs.component) {
+        this.setState(info)
+      }
+    });
 
     eventServices.info(eventId)
-      .then((res) => this.setState(res.content))
+      .then((res) => {
+        if (this.refs.component) {
+          this.setState(res.content);
+        }
+      })
       .catch((err) => console.log(err));
   }
 
@@ -150,19 +158,13 @@ class EventView extends Component {
     const joinLeaveBtn = this.renderJoinLeaveBtn();
     const renderedParticipants = this.renderParticipants();
 
-    // let backLink;
-    // if (params.gid !== 'undefined') {
-    //   backLink = `/map/${params.gid}/${window.location.search}`
-    // } else {
-    //   backLink = `/user/${currentUser._id}`
-    // }
-
     return (
       <GreenspaceSidebar
         setMapPlaceMarkers={this.props.setMapPlaceMarkers}
         name={greenspaceName}
         lat={lat}
         lng={lng}
+        ref="component"
       >
         <div id="event-header">
           <div className="section-header" id="event-name">{name}</div>

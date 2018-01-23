@@ -17,13 +17,6 @@ class CreateGreenspace extends Component {
     this.create = this.create.bind(this);
   }
 
-  // componentWillReceiveProps(newProps) {
-  //   if (newProps.params !== this.props.params) {
-  //     this.state.lat = newProps.params.lat;
-  //     this.state.lng = newProps.params.lng;
-  //   }
-  // }
-
   updateFormVal(event){
     const updatedField = event.target.name;
     const updatedValue = event.target.value;

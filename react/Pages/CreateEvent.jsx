@@ -32,7 +32,11 @@ class CreateEvent extends Component {
   componentDidMount() {
     const gid = this.props.params.gid;
 
-    this.props.getGreenspaceInfo(gid, (info) => this.setState(info));
+    this.props.getGreenspaceInfo(gid, (info) => {
+      if (this.refs.component) {
+        this.setState(info)
+      }
+    });
   }
 
   updateFormVal(event){
@@ -84,6 +88,7 @@ class CreateEvent extends Component {
         name={greenspaceName}
         lat={lat}
         lng={lng}
+        ref="component"
       >
         <div className="section-header">Create Event</div>
         <div className="form">
