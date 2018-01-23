@@ -414,9 +414,6 @@ h1:hover {
 
 .userview-user {
   order: 2;
-  flex-grow: 3;
-  width: 50%;
-  flex-basis: content;
 }
 
 .userview-events {
