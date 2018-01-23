@@ -51,14 +51,8 @@ class CreateEvent extends Component {
 
     eventServices.create(nameVal, descriptionVal, gid, startDate, endDate, participants)
       .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        if (err.statusCode == 403) {
-          this.props.router.push(`/login/require/${window.location.search}`);
-        }
+        this.props.router.push(`/map/${gid}/${window.location.search}`);
       });
-    this.props.router.push(`/map/${gid}/${window.location.search}`);
   }
 
   render(){
@@ -77,7 +71,7 @@ class CreateEvent extends Component {
         </Link>
         <h1 className="section-header">Create Event</h1>
         <div className="form">
-          <input className='form-input'
+          <input autoFocus className='form-input'
             name='nameVal'
             placeholder='event name'
             value={nameVal}

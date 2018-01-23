@@ -29,16 +29,14 @@ class GreenspaceInfo extends Component {
       }));
 
     Services.event.getAllByGreenspace(gid)
-      .then((res) => this.setState({ events: res.content }))
-      .catch((err) => console.log(err.error.err));
+      .then((res) => this.setState({ events: res.content }));
 
     Services.review.getAllByGreenspace(gid)
       .then((res) => {
         if (res.content.reviews.length !== 0) {
           this.setState({ rating: res.content.rating })
         }
-      })
-      .catch((err) => console.log(err.error.err));
+      });
 
     this.renderEvents = this.renderEvents.bind(this);
     this.renderEvent = this.renderEvent.bind(this);
@@ -81,9 +79,15 @@ class GreenspaceInfo extends Component {
     const { rating } = this.state;
     const { gid } = this.props.params;
 
-    if (rating === null) {
+    if (rating === null && !this.props.currentUser) {
       return (<Link to={`/map/${gid}/reviews/${window.location.search}`}>
-        <div id="greenspace-rating-text">No Reviews</div>
+        <div id="greenspace-rating-text">No reviews</div>
+      </Link>);
+    }
+
+    if (rating === null) {
+      return (<Link to={`/map/${gid}/reviews/create/${window.location.search}`}>
+        <div id="greenspace-rating-text">Write a Review</div>
       </Link>);
     }
 

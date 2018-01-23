@@ -12,7 +12,7 @@ class Homepage extends Component {
         <h1 className="section-header">Welcome to Greenspace!</h1>
         <div>
           <a href={`/loading/${window.location.search}`}>
-            <div className="btn">Explore</div>
+            <div className="btn" id="explore-btn">Explore</div>
           </a>
           <a
             href="/auth/facebook"

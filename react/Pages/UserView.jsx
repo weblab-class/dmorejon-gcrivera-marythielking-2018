@@ -11,23 +11,13 @@ class UserView extends Component {
     super(props);
 
     this.state = {
-      currentUser: '',
-      photo: '',
+      currentUser: props.currentUser.displayname,
+      photo: props.currentUser.photo,
       reviews: [],
       events: [],
       reviews: [],
       reviewsCorrect: false,
     };
-
-    let {
-      currentUser,
-
-    } = this.props;
-
-    Services.user.info()
-      .then((res) => {
-        this.setState({ currentUser: res.content.displayname , photo: res.content.photo});
-      });
 
     Services.review.getAllByUser()
       .then((res) => {
@@ -90,14 +80,14 @@ class UserView extends Component {
   }
 
   render(){
-    let {
+    const {
       currentUser,
-    } = this.props;
-    currentUser = this.state.currentUser;
-    const photo = this.state.photo;
-    const reviews = this.state.reviews;
-    const events = this.state.events;
-    const reviewsCorrect = this.state.reviewsCorrect;
+      photo,
+      reviews,
+      events,
+      reviewsCorrect
+    } = this.state;
+
     const renderedEvents = this.renderEvents();
     let reviewDivList = null;
     if(reviews.length !== 0 && !reviewsCorrect) {this.renderReviews();}
@@ -152,7 +142,7 @@ class UserView extends Component {
 }
 
 UserView.propTypes = {
-  currentUser: PropTypes.string,
+  currentUser: PropTypes.object,
   setMapViewOnly: PropTypes.func,
 };
 

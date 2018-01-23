@@ -52,13 +52,7 @@ class CreateReview extends Component {
 
     reviewServices.create(gid, rating, reviewVal, time)
       .then((res) => {
-        console.log(res.content);
-        this.props.router.push(`/map/${res.content._id}/reviews/${window.location.search}`);
-      })
-      .catch((err) => {
-        if (err.statusCode == 403) {
-          this.props.router.push(`/login/require/${window.location.search}`);
-        }
+        this.props.router.push(`/map/${res.content.greenspace}/reviews/${window.location.search}`);
       });
   }
 

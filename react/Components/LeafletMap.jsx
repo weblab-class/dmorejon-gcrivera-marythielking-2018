@@ -20,6 +20,7 @@ class LeafletMap extends Component {
       placeMarkers: props.placeMarkers,
       prevPlaceMarkers: true,
       center: center,
+      locImage: null,
     }
 
     this.disableMap = this.disableMap.bind(this);
@@ -33,9 +34,10 @@ class LeafletMap extends Component {
   }
 
   componentDidMount() {
+    let zoom = 16;
     var map = this.map = L.map(ReactDOM.findDOMNode(this), {
       center: this.state.center,
-      zoom: 16,
+      zoom: zoom,
       minZoom: 2,
       zoomControl: false,
     });
@@ -55,17 +57,33 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(newProps) {
+    if(this.props.location.pathname === '/loading') {
+      this.disableMap()
+      this.map.off('click');
+      this.setState({
+        placeMarkers: true,
+        prevPlaceMarkers: true,
+      });
+    }
+    else {
+      this.enableMap();
+      this.map.on('click', this.onMapClick);
+    }
+
     if (newProps.resetMarkers && this.state.marker) {
       this.state.marker.remove(this.map);
       this.setState({ marker: null });
     }
+
     if (newProps.viewOnly !== this.props.viewOnly) {
       if (newProps.viewOnly) { this.disableMap(); }
       else { this.enableMap(); }
     }
+
     if (newProps.newMarker) {
       this.setMarkers();
     }
+
     if (newProps.placeMarkers !== this.state.placeMarkers) {
       this.setState({
         placeMarkers: newProps.placeMarkers,
@@ -109,6 +127,9 @@ class LeafletMap extends Component {
   }
 
   placeNewMarker(latlng, id="temp") {
+    if (!this.props.currentUser) {
+      return;
+    }
     const marker = L.marker(latlng).addTo(this.map);
     this.setState({ marker: marker });
     this.onNewMarker({latlng: latlng, target: {gid: marker.gid}});
@@ -141,12 +162,14 @@ class LeafletMap extends Component {
       prevPlaceMarkers,
     } = this.state;
 
-    if (this.props.viewOnly) { return; }
-
     if (!placeMarkers) {
       this.setState({ placeMarkers: true });
       return;
     } else if (prevPlaceMarkers === false) {
+      if (marker) {
+        marker.remove(this.map);
+        this.setState({ marker: null });
+      }
       this.setState({ prevPlaceMarkers: true });
       return;
     }
@@ -187,6 +210,10 @@ class LeafletMap extends Component {
       var center = window.location.search.split('=')[1].split(',');
       map.setView([parseFloat(center[0]), parseFloat(center[1])]);
       this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
+      const bounds = [this.state.center, this.state.center];
+      const locImage = L.imageOverlay('/images/pulse_dot.gif', bounds);
+      locImage.addTo(this.map);
+      this.setState({ locImage: locImage });
       return;
     }
     if (navigator.geolocation && this.props.location.pathname.startsWith('/loading')) {
@@ -194,6 +221,10 @@ class LeafletMap extends Component {
         this.setState({ center: [position.coords.latitude, position.coords.longitude] });
         map.setView(this.state.center);
         this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
+        const bounds = [this.state.center, this.state.center];
+        const locImage = L.imageOverlay('/images/pulse_dot.gif', bounds);
+        locImage.addTo(this.map);
+        this.setState({ locImage: locImage });
         return;
       });
     }
