@@ -13,7 +13,7 @@ let eventModel = mongoose.model('Event', mongoose.Schema({
   endtime: {type: Date, required: true, expires: '10s'},
   greenspace: {type: String, required: true},
   host: {type: userSchema, required: true},
-  participants: {type: [{type: userSchema, required: true}], required: true}
+  participants: {type: [{type: userSchema, required: true, unique: true}], required: true}
 }));
 
 const event = ((eventModel) => {
