@@ -86,7 +86,7 @@ class CreateEvent extends Component {
         lng={lng}
         backTo={`/map/${this.props.params.gid}/${window.location.search}`}
       >
-        <h1 className="section-header">Create Event</h1>
+        <div className="section-header">Create Event</div>
         <div className="form">
           <input autoFocus className='form-input'
             name='nameVal'
