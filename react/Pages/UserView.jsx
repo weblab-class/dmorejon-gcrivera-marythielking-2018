@@ -77,10 +77,9 @@ class UserView extends Component {
   }
 
   renderEvent(e) {
-    const { gid } = this.props.params;
-    const { name, _id } = e;
+    const { name, _id, greenspace } = e;
     return (<Link
-      to={`/map/${gid}/event/${_id}/${window.location.search}`}
+      to={`/map/${greenspace}/event/${_id}/${window.location.search}`}
       className="list-item-event"
       key={name}
     >{name}</Link>);
