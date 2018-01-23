@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
 import ReactStars from 'react-stars';
 
-import Sidebar from '../Components/Sidebar.jsx';
+import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import Services from '../../services';
 import { monthsMap } from '../constants.jsx'
 
@@ -42,6 +42,7 @@ class GreenspaceInfo extends Component {
 
     this.renderEvents = this.renderEvents.bind(this);
     this.renderEvent = this.renderEvent.bind(this);
+    this.renderRating = this.renderRating.bind(this);
   }
 
   renderEvents() {
@@ -59,7 +60,6 @@ class GreenspaceInfo extends Component {
 
   renderEvent(e) {
     const { gid } = this.props.params;
-    console.log(e);
     const { name, _id, starttime } = e;
 
     const date = monthsMap[starttime.substring(5,7)]
@@ -98,7 +98,7 @@ class GreenspaceInfo extends Component {
   }
 
   render(){
-    const { currentUser } = this.props;
+    const { currentUser, setMapPlaceMarkers } = this.props;
     const { gid } = this.props.params;
     const { name, lat, lng, rating } = this.state;
 
@@ -113,17 +113,16 @@ class GreenspaceInfo extends Component {
     );
 
     return (
-      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
-        <div id="greenspace-header">
-          <h1>{name}</h1>
-          <a href={`https://www.google.com/maps?saddr=My+Location&daddr=${lat},${lng}`} target="_blank">
-            <img src="/images/google-maps-icon-2015.png" height="30px" className="gmaps-logo" />
-          </a>
-        </div>
+      <GreenspaceSidebar
+        setMapPlaceMarkers={setMapPlaceMarkers}
+        name={name}
+        lat={lat}
+        lng={lng}
+      >
         { renderedRating }
         { renderedEvents }
         { currentUser ? createEvent : '' }
-      </Sidebar>
+      </GreenspaceSidebar>
     );
   }
 }

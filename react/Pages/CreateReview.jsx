@@ -67,7 +67,7 @@ class CreateReview extends Component {
 
     return (
       <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
-        <Link to={`/map/${this.props.params.gid}/${window.location.search}`} id="back-button">
+        <Link to={`/map/${this.props.params.gid}/reviews/${window.location.search}`} id="back-button">
           <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
         </Link>
         <h1 className="section-header">Create Review</h1>

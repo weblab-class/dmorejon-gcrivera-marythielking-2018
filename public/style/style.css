@@ -219,6 +219,17 @@ h1:hover {
   cursor: default;
 }
 
+#back-button {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  color: #696969;
+}
+
+#back-button:hover {
+  color: #4f4f4f;
+}
+
 #greenspace-header {
   display: flex;
   align-items: center;
