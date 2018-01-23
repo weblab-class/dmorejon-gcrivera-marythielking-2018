@@ -5,6 +5,7 @@ import PopUp from '../Components/PopUp.jsx';
 import ReactStars from 'react-stars';
 import Services from '../../services';
 import Promise from 'bluebird';
+import FontAwesome from 'react-fontawesome';
 
 class UserView extends Component {
   constructor(props) {
@@ -130,18 +131,20 @@ class UserView extends Component {
         </div>
       )
     };
+
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
+        <div id="userview-close-btn">
+          <Link to={`/map/${window.location.search}`} id="close-btn">
+            <FontAwesome name="times" size="lg" title="Close"/>
+          </Link>
+        </div>
         <div className = 'userview-user'>
           <h1 className="section-header">{currentUser}</h1>
               <img src={photo} height="80px" className="profile-icon"/>
         </div>
         {reviews_div}
         {events_div}
-        <Link
-          to={`/map/`}
-          className="btn"
-        >back</Link>
       </PopUp>
     );
   }
