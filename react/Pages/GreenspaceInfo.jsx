@@ -6,7 +6,6 @@ import ReactStars from 'react-stars';
 
 import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import Services from '../../services';
-import { monthsMap } from '../constants.jsx'
 
 class GreenspaceInfo extends Component {
   constructor(props){

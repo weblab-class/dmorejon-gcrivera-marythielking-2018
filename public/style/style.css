@@ -92,10 +92,6 @@ h1:hover {
   width: 20px !important;
 }
 
-.delete-btn {
-  cursor: pointer;
-}
-
 #content {
   position: relative;
   height: calc(100vh - 80px);
@@ -246,6 +242,10 @@ h1:hover {
   background-color: rgba(183, 183, 183, 0.5);
 }
 
+.event-participant {
+  justify-content: flex-start;
+}
+
 .list-item-review {
   padding: 10px 15px;
   margin: 2px 0px;
@@ -326,6 +326,7 @@ h1:hover {
 #add-event:hover {
   background-color: rgba(88, 155, 57, 0.5);
   border-radius: 5px;
+  cursor: pointer;
 }
 
 #add-event-icon {
@@ -337,32 +338,26 @@ h1:hover {
   font-size: 20px;
 }
 
+#calendar-icon {
+  margin-right: 10px;
+}
+
 #delete-event {
-  display: flex;
-  align-items: center;
-  margin: 10px 0px;
-  padding: 5px 5px;
+  color: #696969;
 }
 
 #delete-event:hover {
-  background-color: rgba(88, 155, 57, 0.5);
-  border-radius: 5px;
+  color: #4f4f4f;
 }
 
-#delete-event-icon {
-  margin-right: 10px;
-  margin-bottom: -5px;
+.delete-btn {
+  cursor: pointer;
 }
 
 #delete-participant-icon {
   margin-left: 75px;
   cursor: pointer;
 }
-
-#delete-event-text {
-  font-size: 15px;
-}
-
 
 #explore-btn {
   margin-bottom: 10px;
@@ -372,4 +367,19 @@ h1:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+#event-name {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+#event-time {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #4f4f4f;
+}
+
+#event-description {
+  margin-bottom: 10px;
 }
