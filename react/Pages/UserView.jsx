@@ -20,20 +20,26 @@ class UserView extends Component {
       reviewsCorrect: false,
     };
 
-    Services.review.getAllByUser()
-      .then((res) => {
-        this.setState({ reviews: res.content});
-      });
-
-    Services.event.getAllByUser()
-    .then((res) => {
-      this.setState({ events: res.content});
-    });
-
     this.renderEvents = this.renderEvents.bind(this);
     this.renderEvent = this.renderEvent.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
     this.renderReview = this.renderReview.bind(this);
+    }
+
+    componentDidMount() {
+      Services.review.getAllByUser()
+        .then((res) => {
+          if (this.refs.component) {
+            this.setState({ reviews: res.content});
+          }
+        });
+
+      Services.event.getAllByUser()
+        .then((res) => {
+          if (this.refs.component) {
+            this.setState({ events: res.content});
+          }
+        });
     }
 
     componentWillReceiveProps(newProps) {
@@ -138,7 +144,7 @@ class UserView extends Component {
     };
 
     return (
-      <PopUp setMapViewOnly={this.props.setMapViewOnly}>
+      <PopUp setMapViewOnly={this.props.setMapViewOnly} ref="component">
 
         <div id="userview-close-btn">
           <Link to={`/map/${window.location.search}`} id="close-btn">
