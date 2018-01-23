@@ -383,17 +383,41 @@ h1:hover {
   margin-bottom: 10px;
 }
 
-.userview-ratings {
+#userview {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+  width: 100%;
+}
+
+#userview-name {
+  font-size: 30px;
+  width: 25%;
+  align-self: center;
 
 }
 
-.userview-events {
+#userview-photo {
+  height: 150px;
+}
 
+.userview-ratings {
+  order:1
 }
 
 .userview-user {
-
+  order: 2;
+  flex-grow: 3;
+  width: 50%;
+  flex-basis: content;
 }
+
+.userview-events {
+  order:3
+}
+
+
 
 .userview-greenspace {
   flex: 50%;
@@ -403,7 +427,7 @@ h1:hover {
 }
 .userview-review-greenspace {
   display: flex;
-  padding-bottom: 5;
+  padding-bottom: 6;
 }
 .userview-review-body {
   text-align: left;

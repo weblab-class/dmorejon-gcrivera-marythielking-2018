@@ -133,17 +133,20 @@ class UserView extends Component {
 
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
+
         <div id="userview-close-btn">
           <Link to={`/map/${window.location.search}`} id="close-btn">
             <FontAwesome name="times" size="lg" title="Close"/>
           </Link>
         </div>
-        <div className = 'userview-user'>
-          <h1 className="section-header">{currentUser}</h1>
-              <img src={photo} height="80px" className="profile-icon"/>
+        <div id='userview'>
+          <div className = 'userview-user'>
+            <h1 id="userview-name">{currentUser}</h1>
+                <img src={photo} height="150px" className="profile-icon"/>
+          </div>
+          {reviews_div}
+          {events_div}
         </div>
-        {reviews_div}
-        {events_div}
       </PopUp>
     );
   }
