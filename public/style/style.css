@@ -393,13 +393,11 @@ h1:hover {
 
 #userview-name {
   font-size: 30px;
-  width: 25%;
   align-self: center;
-
 }
 
-#userview-photo {
-  height: 150px;
+.userview {
+  width: 250px;
 }
 
 .userview-ratings {

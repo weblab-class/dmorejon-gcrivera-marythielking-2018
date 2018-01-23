@@ -13,7 +13,7 @@ class Header extends Component {
       const { displayname, photo } = currentUser;
       headerButtons = (<div id="header-btns">
         <div className="header-btn-content">Welcome, {displayname}</div>
-        <Link to={`/user/${currentUser}/${window.location.search}`}>
+        <Link to={`/user/${currentUser.displayname}/${window.location.search}`}>
           <div className="header-btn">
               <img src={photo} height="40px" className="profile-icon" title="User Profile"/>
           </div>

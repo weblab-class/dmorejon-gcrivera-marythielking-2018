@@ -57,7 +57,7 @@ class UserView extends Component {
     reviewDivs(reviews) {
       return reviews.map((r) => {
         return (
-          <div className="list-item-review" key={r._id}>
+          <div className="list-item-review userview" key={r._id}>
           <div className='userview-review-greenspace'>
             <ReactStars value={r.rating} edit={false} color2="black" />
             <div className = 'userview-greenspace'> {r.greenspace}</div>
@@ -80,7 +80,7 @@ class UserView extends Component {
     const { name, _id, greenspace } = e;
     return (<Link
       to={`/map/${greenspace}/event/${_id}/${window.location.search}`}
-      className="list-item-event"
+      className="list-item-event userview"
       key={name}
     >{name}</Link>);
   }
@@ -142,7 +142,7 @@ class UserView extends Component {
         <div id='userview'>
           <div className = 'userview-user'>
             <h1 id="userview-name">{currentUser}</h1>
-                <img src={photo} height="150px" className="profile-icon"/>
+                <img src={photo} height="100px" className="profile-icon"/>
           </div>
           {reviews_div}
           {events_div}
