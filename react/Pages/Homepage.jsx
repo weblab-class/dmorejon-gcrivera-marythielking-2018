@@ -6,7 +6,25 @@ import FontAwesome from 'react-fontawesome';
 import PopUp from '../Components/PopUp.jsx';
 
 class Homepage extends Component {
+  constructor(props){
+    super(props);
+  }
+
   render(){
+    let fbLogIn;
+    if (!this.props.currentUser) {
+      fbLogIn = (
+        <a
+          href="/auth/facebook"
+          className="fb-btn btn"
+          onClick={this.props.logInUser}
+        >
+          <img src="images/FB-f-Logo__white_1024.png" height="20px" className="fb-logo" />
+          Log in with Facebook
+        </a>
+      );
+    }
+
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
         <h1>Welcome to Greenspace!</h1>
@@ -19,14 +37,7 @@ class Homepage extends Component {
           <a href={`/loading/${window.location.search}`}>
             <div className="btn" id="explore-btn">Explore</div>
           </a>
-          <a
-            href="/auth/facebook"
-            className="fb-btn btn"
-            onClick={this.props.logInUser}
-          >
-            <img src="images/FB-f-Logo__white_1024.png" height="20px" className="fb-logo" />
-            Log in with Facebook
-          </a>
+          {fbLogIn}
         </div>
       </PopUp>
     );

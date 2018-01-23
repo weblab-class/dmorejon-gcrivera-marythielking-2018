@@ -5,6 +5,7 @@ import FontAwesome from 'react-fontawesome';
 import ReactStars from 'react-stars';
 
 import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
+import EventList from '../Components/EventList.jsx';
 import Services from '../../services';
 
 class GreenspaceInfo extends Component {
@@ -20,7 +21,6 @@ class GreenspaceInfo extends Component {
     };
 
     this.renderEvents = this.renderEvents.bind(this);
-    this.renderEvent = this.renderEvent.bind(this);
     this.renderRating = this.renderRating.bind(this);
   }
 
@@ -60,29 +60,8 @@ class GreenspaceInfo extends Component {
     }
     return (<div id="upcoming-events">
       <div id="upcoming-events-text">Upcoming Events:</div>
-      <div className="list-items">
-        {events.map((e) => this.renderEvent(e))}
-      </div>
+      <EventList events={events} />
     </div>);
-  }
-
-  renderEvent(e) {
-    const { name, _id, starttime } = e;
-    const gid = this.props.params.gid
-
-    const localStart = new Date(starttime).toString()
-    const date = localStart.substring(4,10)
-      + ", " + localStart.substring(11,15)
-      + " at " + localStart.substring(16,21);
-
-    return (<Link
-      to={`/map/${gid}/event/${_id}/${window.location.search}`}
-      className="list-item-event"
-      key={_id}
-    >
-      <div className="event-name">{name}</div>
-      <div className="event-date">{date}</div>
-    </Link>);
   }
 
   renderRating() {
