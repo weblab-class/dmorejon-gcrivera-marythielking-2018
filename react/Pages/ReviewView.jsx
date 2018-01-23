@@ -11,29 +11,28 @@ import greenspaceServices from '../../services/greenspaceServices.js';
 class ReviewView extends Component {
   constructor(props){
     super(props);
-    const gid = props.params.gid;
 
     this.state = {
       reviews: [],
       rating: 0,
+
       greenspaceName: '',
       lat: 0,
       lng: 0,
     };
 
-    greenspaceServices.info(gid)
-      .then((res) => this.setState({
-        greenspaceName: res.content.name,
-        lat: res.content.location[0],
-        lng: res.content.location[1],
-      }));
+    this.renderReviews = this.renderReviews.bind(this);
+    this.renderReview = this.renderReview.bind(this);
+  }
+
+  componentDidMount() {
+    const gid = this.props.params.gid;
+
+    this.props.getGreenspaceInfo(gid, (info) => this.setState(info));
 
     reviewServices.getAllByGreenspace(gid)
       .then((res) => this.setState(res.content))
       .catch((err) => console.log(err));
-
-    this.renderReviews = this.renderReviews.bind(this);
-    this.renderReview = this.renderReview.bind(this);
   }
 
   renderReviews() {
@@ -58,6 +57,7 @@ class ReviewView extends Component {
     const { currentUser } = this.props;
     const { gid } = this.props.params;
     const { greenspaceName, lat, lng } = this.state;
+
     const renderedReviews = this.renderReviews();
 
     const writeReview = (
@@ -85,6 +85,7 @@ class ReviewView extends Component {
 
 ReviewView.propTypes = {
   currentUser: PropTypes.object,
+  getGreenspaceInfo: PropTypes.func,
 }
 
 export default withRouter(ReviewView);

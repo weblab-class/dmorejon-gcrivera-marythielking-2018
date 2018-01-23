@@ -28,6 +28,7 @@ class App extends Component {
       });
 
     this.createGreenspace = this.createGreenspace.bind(this);
+    this.getGreenspaceInfo = this.getGreenspaceInfo.bind(this);
     this.setMapPlaceMarkers = this.setMapPlaceMarkers.bind(this);
     this.setMapViewOnly = this.setMapViewOnly.bind(this);
   }
@@ -38,6 +39,18 @@ class App extends Component {
         this.setState({newMarker: true});
         this.props.router.push(`/map/${res.content._id}/${window.location.search}`);
       });
+  }
+
+  getGreenspaceInfo(gid, callback) {
+    Services.greenspace.info(gid)
+      .then((res) => {
+        callback({
+          greenspaceName: res.content.name,
+          lat: res.content.location[0],
+          lng: res.content.location[1],
+        });
+      })
+      .catch((err) => console.log(err.error.err));
   }
 
   setMapPlaceMarkers(placeMarkers) {
@@ -79,6 +92,7 @@ class App extends Component {
           {React.cloneElement(this.props.children, {
             currentUser: currentUser,
             createGreenspace: this.createGreenspace,
+            getGreenspaceInfo: this.getGreenspaceInfo,
             setMapViewOnly: this.setMapViewOnly,
             setMapPlaceMarkers: this.setMapPlaceMarkers,
           })}

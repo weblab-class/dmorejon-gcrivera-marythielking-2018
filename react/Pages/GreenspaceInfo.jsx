@@ -11,7 +11,6 @@ import { monthsMap } from '../constants.jsx'
 class GreenspaceInfo extends Component {
   constructor(props){
     super(props);
-    const gid = props.params.gid;
 
     this.state = {
       name: '',
@@ -20,6 +19,14 @@ class GreenspaceInfo extends Component {
       events: [],
       rating: null,
     };
+
+    this.renderEvents = this.renderEvents.bind(this);
+    this.renderEvent = this.renderEvent.bind(this);
+    this.renderRating = this.renderRating.bind(this);
+  }
+
+  componentDidMount() {
+    const gid = this.props.params.gid;
 
     Services.greenspace.info(gid)
       .then((res) => this.setState({
@@ -37,10 +44,6 @@ class GreenspaceInfo extends Component {
           this.setState({ rating: res.content.rating })
         }
       });
-
-    this.renderEvents = this.renderEvents.bind(this);
-    this.renderEvent = this.renderEvent.bind(this);
-    this.renderRating = this.renderRating.bind(this);
   }
 
   renderEvents() {
@@ -57,8 +60,8 @@ class GreenspaceInfo extends Component {
   }
 
   renderEvent(e) {
-    const { gid } = this.props.params;
     const { name, _id, starttime } = e;
+    const gid = this.props.params.gid
 
     const date = monthsMap[starttime.substring(5,7)]
       + " " + starttime.substring(8,10)
@@ -77,7 +80,7 @@ class GreenspaceInfo extends Component {
 
   renderRating() {
     const { rating } = this.state;
-    const { gid } = this.props.params;
+    const gid = this.props.params.gid
 
     if (rating === null && !this.props.currentUser) {
       return (<Link to={`/map/${gid}/reviews/${window.location.search}`}>
@@ -103,8 +106,8 @@ class GreenspaceInfo extends Component {
 
   render(){
     const { currentUser, setMapPlaceMarkers } = this.props;
-    const { gid } = this.props.params;
     const { name, lat, lng, rating } = this.state;
+    const gid = this.props.params.gid
 
     const renderedEvents = this.renderEvents();
     const renderedRating = this.renderRating();

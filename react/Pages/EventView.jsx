@@ -2,22 +2,32 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
-import Sidebar from '../Components/Sidebar.jsx';
+
+import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import eventServices from '../../services/eventServices.js';
 import userServices from '../../services/userServices.js';
 
 class EventView extends Component {
   constructor(props){
     super(props);
-    const eventId = props.params.eventId;
 
-    this.state = {};
+    this.state = {
+      greenspaceName: '',
+      lat: 0,
+      lng: 0,
+    };
+
+    this.deleteEvent = this.deleteEvent.bind(this);
+  }
+
+  componentDidMount() {
+    const { gid, eventId } = this.props.params;
+
+    this.props.getGreenspaceInfo(gid, (info) => this.setState(info));
 
     eventServices.info(eventId)
       .then((res) => this.setState(res.content))
       .catch((err) => console.log(err));
-
-      this.deleteEvent = this.deleteEvent.bind(this);
   }
 
   deleteEvent() {
@@ -34,6 +44,9 @@ class EventView extends Component {
       starttime,
       endtime,
       host,
+      greenspaceName,
+      lat,
+      lng,
     } = this.state;
 
     let deleteBtn;
@@ -60,27 +73,26 @@ class EventView extends Component {
       endHour = endtime.substring(11,16);
     }
 
-    let back_link;
-    let user_id;
+    let backLink;
+    let userId;
     if (this.props.params.gid !== 'undefined') {
-      back_link =
-        <Link to={`/map/${this.props.params.gid}/${window.location.search}`} id="back-button">
-          <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
-        </Link>
+      backLink = `/map/${this.props.params.gid}/${window.location.search}`
     } else {
       userServices.info()
         .then((res) => {
-          user_id = res.content._id;
+          userId = res.content._id;
         });
-      back_link =
-        <Link to={`/user/${user_id}`} id="back-button">
-          <FontAwesome name="chevron-left" size="2x" id="back-button-icon" />
-        </Link>
+      backLink = `/user/${userId}`
     }
 
     return (
-      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
-        {back_link}
+      <GreenspaceSidebar
+        setMapPlaceMarkers={this.props.setMapPlaceMarkers}
+        name={greenspaceName}
+        lat={lat}
+        lng={lng}
+        backTo={backLink}
+      >
         <div id="event-header">
           <h1 className="section-header">{name}</h1>
           {deleteBtn}
@@ -88,13 +100,14 @@ class EventView extends Component {
         <div>{description}</div>
         <div>{startDate} {startHour} to {endDate} {endHour}</div>
 
-      </Sidebar>
+      </GreenspaceSidebar>
     );
   }
 }
 
 EventView.propTypes = {
   setMapPlaceMarkers: PropTypes.func,
+  getGreenspaceInfo: PropTypes.func,
 }
 
 export default withRouter(EventView);
