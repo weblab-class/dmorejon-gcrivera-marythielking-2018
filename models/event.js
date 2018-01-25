@@ -6,12 +6,18 @@ const userSchema = mongoose.Schema({
   photo: {type: String, required: true}
 });
 
+const greenspaceSchema = mongoose.Schema({
+  location: {type: [{type: Number, required: true}], required: true},
+  _arraySignature: { type: String},
+  name: {type: String, required: true}
+});
+
 let eventModel = mongoose.model('Event', mongoose.Schema({
   name: {type: String, required: true},
   description: {type: String},
   starttime: {type: Date, required: true},
   endtime: {type: Date, required: true, expires: '10s'},
-  greenspace: {type: String, required: true},
+  greenspace: {type: greenspaceSchema, required: true},
   host: {type: userSchema, required: true},
   participants: {type: [{type: userSchema, required: true, unique: true}], required: true}
 }));
@@ -33,7 +39,7 @@ const event = ((eventModel) => {
 
   that.getEventsByGreenspace = async (greenspaceid) => {
     try {
-      const events = await eventModel.find({greenspace: greenspaceid});
+      const events = await eventModel.find({'greenspace._id' : greenspaceid});
       return events.sort((a, b) => {
         if (a.starttime.getTime() > b.starttime.getTime()) {
           return 1;
