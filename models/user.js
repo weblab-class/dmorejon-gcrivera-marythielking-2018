@@ -42,6 +42,34 @@ const user = ((userModel) => {
       }
     }
 
+    that.addTag = async (user, name) => {
+      if(!name) {throw {message: 'Tag name is required.', errorCode: 400}}
+      name = name.toLowerCase();
+      try {
+        const userData = await userModel.findOneAndUpdate({fbid: user}, {$addToSet: {tags: name}}, {new: true});
+        if (!userData) {
+          throw {message: 'User not found.', errorCode: 404};
+        }
+        return userData;
+      } catch(e) {
+        throw e;
+      }
+    }
+
+    that.deleteTag = async (user, name) => {
+      if(!name) {throw {message: 'Tag name is required.', errorCode: 400}}
+      name = name.toLowerCase();
+      try {
+        const userData = await userModel.findOneAndUpdate({fbid: user}, {$pull: {tags: name}}, {new: true});
+        if (!userData) {
+          throw {message: 'User not found.', errorCode: 404};
+        }
+        return userData;
+      } catch(e) {
+        throw e;
+      }
+    }
+
     Object.freeze(that);
     return that;
 })(userModel);
