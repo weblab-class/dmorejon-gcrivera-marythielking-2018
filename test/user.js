@@ -35,6 +35,7 @@ describe('User API', () => {
         await newUser.save()
         return;
       } catch(e) {
+        console.log(e)
         return e;
       }
     });

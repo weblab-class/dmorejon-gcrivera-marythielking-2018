@@ -4,7 +4,8 @@ const utils = require('../utils');
 const userSchema = mongoose.Schema({
   fbid: {type: Number, required: true, unique: true},
   displayname: {type: String, required: true},
-  photo: {type: String, required: true}
+  photo: {type: String, required: true},
+  tags: {type: [{type: String}], default: []},
 });
 const userModel = mongoose.model('User', userSchema );
 
