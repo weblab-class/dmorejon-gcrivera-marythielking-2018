@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
 
+const tagSchema = mongoose.Schema({
+  name: {type: String, required: true}
+});
+
 const greenspaceModel = mongoose.model('Greenspace', mongoose.Schema({
   location: {type: [{type: Number, required: true}], required: true},
   _arraySignature: { type: String, unique: true },
-  name: {type: String, required: true}
+  name: {type: String, required: true},
+  tags: {type: [{type: String}], default: []},
 }));
 
 const greenspace = ((greenspaceModel) => {
@@ -30,14 +35,15 @@ const greenspace = ((greenspaceModel) => {
     }
   }
 
-  that.createGreenspace = async (name, location) => {
+  that.createGreenspace = async (name, location, tags) => {
     if (!location) {
       throw {message: 'Greenspace validation failed: location: Path `location` is required.', errorCode: 400};
     }
     const _arraySignature = location.join('.');
     const newGreenspace = new greenspaceModel({location: location,
                                                 name: name,
-                                                _arraySignature: _arraySignature});
+                                                _arraySignature: _arraySignature,
+                                                tags: tags});
     try {
       return await newGreenspace.save();
     } catch(e) {
