@@ -203,7 +203,7 @@ describe('Greenspace API', () => {
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
           assert.equal(res.body.success, false);
-          assert.equal(res.body.err, 'E11000 duplicate key error index: greenspace.greenspaces.$_arraySignature_1 dup key: { : "-73.240813.-62.83379" }');
+          assert.isDefined(res.body.err);
         })
         .end((err, res) => {
           if (err) done(err);
