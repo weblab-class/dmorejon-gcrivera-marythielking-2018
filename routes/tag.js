@@ -3,7 +3,7 @@ const passport = require('./passport');
 const utils = require('../utils');
 const tag = require('../models/tag');
 
-const tag = express.Router();
+const router = express.Router();
 
 
 // GET /tag/:name
