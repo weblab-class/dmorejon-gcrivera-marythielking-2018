@@ -11,6 +11,7 @@ const greenspace = require('./routes/greenspace');
 const review = require('./routes/review');
 const event = require('./routes/event');
 const user = require('./routes/user');
+const tag = require('./routes/tag');
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/greenspace', {
@@ -99,6 +100,7 @@ app.use('/greenspace', greenspace);
 app.use('/review', review);
 app.use('/event', event);
 app.use('/user', user);
+app.use('/tag', tag);
 
 // Auto direct to homepage
 app.get('*', (req, res) => {
