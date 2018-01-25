@@ -40,13 +40,14 @@ router.get('/:minLat/:maxLat/:minLong/:maxLong', async (req, res) => {
   // Request Body:
     // name
     // location
+    // tags
   // Response Body:
     // success: true if green space added to database; false otherwise
     // err: on error, an error message
     // greenspace: greenspace object (see schema)
 router.post('/', async (req, res) => {
   try {
-    const newGreenspace = await greenspace.createGreenspace(req.body.name, req.body.location);
+    const newGreenspace = await greenspace.createGreenspace(req.body.name, req.body.location, req.body.tags);
     utils.sendSuccessResponse(res, newGreenspace);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
