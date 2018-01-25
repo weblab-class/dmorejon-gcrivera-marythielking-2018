@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const utils = require('../utils');
 
 const tagSchema = mongoose.Schema({
   name: {type: String, required: true, unique: true}
@@ -27,6 +28,7 @@ const tag = ((tagModel) => {
     }
 
     that.createTag = async (name) => {
+      if(!name) {throw {message: 'Tag validation failed: name: Path `name` is required.', errorCode: 400}}
       name = name.toLowerCase();
       const duplicateTag = await tagModel.findOne({name: name});
       if (duplicateTag) {
