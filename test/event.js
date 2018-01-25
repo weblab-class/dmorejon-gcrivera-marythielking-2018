@@ -10,8 +10,6 @@ for (let i in mongoose.connection.collections) {
   mongoose.connection.collections[i].remove(function() {});
 }
 
-const greenspaceID = mongoose.Types.ObjectId("112222222222");
-const emptyGreenspaceID = mongoose.Types.ObjectId("112222222223");
 const user1 = { _id: '5a63c29174d39b08342a5969',
   fbid: 10211342727149269,
   displayname: 'Cody Maverick',
@@ -25,13 +23,18 @@ const user2 = { _id: '5a63c29174d39b08342a5420',
 const badID = mongoose.Types.ObjectId("222222222222");
 let snowballFightID;
 let africanSafariID;
+const greenspace1 = {location: [29.004612, 35.277791], name: 'Barely Green', _id: mongoose.Types.ObjectId('besttestid12'), _arraySignature: '123'};
+const greenspace2 = {location: [32.015199, 35.277791], name: 'Disputed Turf', _id: mongoose.Types.ObjectId('testtestid23'), _arraySignature: '456'};
+const greenspace3 = {location: [30.696969, 21.696969], name: 'Happy Greenspace', _id: mongoose.Types.ObjectId('456id1234567'), _arraySignature: '567'};
+const greenspace4 = {location: [15.123456, 17.123480], name: 'Sad Greenspace', _id: mongoose.Types.ObjectId('123id4567890'), _arraySignature: '789'};
+
 
 describe('Event API', () => {
 
   before((done) => {
     request(app)
       .post('/event')
-      .send({name: 'Snowball Fight', greenspace: greenspaceID, starttime: Date.now(),
+      .send({name: 'Snowball Fight', greenspace: greenspace1, starttime: Date.now(),
               endtime: Date.now() + 180000, participants: [user1, user2]})
       .end((err, res) => {
         if (err) done(err);
@@ -45,7 +48,7 @@ describe('Event API', () => {
   before((done) => {
     request(app)
       .post('/event')
-      .send({name: 'Penguin Party', greenspace: greenspaceID, starttime: Date.now() + 1800000,
+      .send({name: 'Penguin Party', greenspace: greenspace1, starttime: Date.now() + 1800000,
               endtime: Date.now() + 1803000, participants: [user1, user2],
               description: 'Come party with the penguins.'})
       .end((err, res) => {
@@ -67,7 +70,7 @@ describe('Event API', () => {
           assert.equal(res.body.success, true);
           assert.isDefined(res.body.content);
           assert.equal(res.body.content.name, 'Snowball Fight');
-          assert.equal(res.body.content.greenspace, greenspaceID);
+          assert.equal(res.body.content.greenspace.name, 'Barely Green');
         })
         .end((err, res) => {
           if (err) done(err);
@@ -92,16 +95,16 @@ describe('Event API', () => {
 
     it('Get events for valid greenspace and check sorting', (done) => {
       request(app)
-        .get('/event/greenspace/' + greenspaceID)
+        .get('/event/greenspace/' + 'besttestid12')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
           assert.equal(res.body.success, true);
           assert.equal(res.body.content.length, 2);
           assert.equal(res.body.content[0].name, 'Snowball Fight');
-          assert.equal(res.body.content[0].greenspace, greenspaceID);
+          assert.equal(res.body.content[0].greenspace.name, 'Barely Green');
           assert.equal(res.body.content[1].name, 'Penguin Party');
-          assert.equal(res.body.content[1].greenspace, greenspaceID);
+          assert.equal(res.body.content[1].greenspace.name, 'Barely Green');
         })
         .end((err, res) => {
           if (err) done(err);
@@ -111,7 +114,7 @@ describe('Event API', () => {
 
     it('Get events for greenspace with no events', (done) => {
       request(app)
-        .get('/event/greenspace/' + emptyGreenspaceID)
+        .get('/event/greenspace/' + '121314151617')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
@@ -126,7 +129,7 @@ describe('Event API', () => {
 
     it('Get events for invalid greenspace', (done) => {
       request(app)
-        .get('/event/greenspace/1')
+        .get('/event/greenspace/121314151617')
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
@@ -148,9 +151,9 @@ describe('Event API', () => {
           assert.equal(res.body.success, true);
           assert.equal(res.body.content.length, 2);
           assert.equal(res.body.content[0].name, 'Snowball Fight');
-          assert.equal(res.body.content[0].greenspace, greenspaceID);
+          assert.equal(res.body.content[0].greenspace.name, 'Barely Green');
           assert.equal(res.body.content[1].name, 'Penguin Party');
-          assert.equal(res.body.content[1].greenspace, greenspaceID);
+          assert.equal(res.body.content[1].greenspace.name, 'Barely Green');
         })
         .end((err, res) => {
           if (err) done(err);
@@ -164,7 +167,7 @@ describe('Event API', () => {
     it('Create a valid event and optionally test expiry *BE PREPARED TO WAIT*', (done) => {
       request(app)
         .post('/event')
-        .send({name: 'African Safari', greenspace: greenspaceID, starttime: Date.now(),
+        .send({name: 'African Safari', greenspace: greenspace2, starttime: Date.now(),
                 endtime: Date.now() + 2000, participants: [user1, user2],
                 description: 'Avoid the hippos.'})
         .expect(200)
@@ -174,7 +177,7 @@ describe('Event API', () => {
           assert.equal(res.body.success, true);
           assert.isDefined(res.body.content);
           assert.equal(res.body.content.name, 'African Safari');
-          assert.equal(res.body.content.greenspace, greenspaceID);
+          assert.equal(res.body.content.greenspace.name, 'Disputed Turf');
           assert.equal(res.body.content.participants.length, 3);
         })
         .end((err, res) => {
@@ -204,7 +207,7 @@ describe('Event API', () => {
     it('Create an event without a name', (done) => {
       request(app)
         .post('/event')
-        .send({greenspace: greenspaceID, starttime: Date.now(),
+        .send({greenspace: greenspace3, starttime: Date.now(),
                 endtime: Date.now() + 2000, participants: [user1, user2]})
         .expect(400)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -224,7 +227,7 @@ describe('Event API', () => {
     it('Edit a valid event', (done) => {
       request(app)
         .put('/event/' + snowballFightID)
-        .send({name: 'Snowball Fight', greenspace: greenspaceID, starttime: Date.now(),
+        .send({name: 'Snowball Fight', greenspace: greenspace2, starttime: Date.now(),
                 endtime: Date.now() + 180000, participants: [user1, user2],
                 description: 'Icy'})
         .expect(200)
@@ -243,7 +246,7 @@ describe('Event API', () => {
     it('Edit an invalid event', (done) => {
       request(app)
         .put('/event/' + badID)
-        .send({name: 'Snowball Fight', greenspace: greenspaceID, starttime: Date.now(),
+        .send({name: 'Snowball Fight', greenspace: greenspace4, starttime: Date.now(),
                 endtime: Date.now() + 180000, participants: [user1, user2],
                 description: 'Icy'})
         .expect(404)
