@@ -6,6 +6,7 @@ import FontAwesome from 'react-fontawesome';
 import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import UserSearch from '../Components/UserSearch.jsx';
 import eventServices from '../../services/eventServices.js';
+import greenspaceServices from '../../services/greenspaceServices.js';
 
 class CreateEvent extends Component {
   constructor(props){
@@ -64,9 +65,13 @@ class CreateEvent extends Component {
     const startDate = new Date(this.state.startVal);
     const endDate = new Date(this.state.endVal);
 
-    eventServices.create(nameVal, descriptionVal, gid, startDate, endDate, participants)
+    greenspaceServices.info(gid)
       .then((res) => {
-        this.props.router.push(`/map/${gid}/${window.location.search}`);
+        const greenspace = res.content;
+        eventServices.create(nameVal, descriptionVal, greenspace, startDate, endDate, participants)
+          .then((res) => {
+            this.props.router.push(`/map/${gid}/${window.location.search}`);
+          });
       });
   }
 

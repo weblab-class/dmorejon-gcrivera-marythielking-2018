@@ -6,6 +6,7 @@ import ReactStars from 'react-stars';
 
 import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import reviewServices from '../../services/reviewServices.js';
+import greenspaceServices from '../../services/greenspaceServices.js';
 
 class CreateReview extends Component {
   constructor(props){
@@ -63,9 +64,13 @@ class CreateReview extends Component {
 
     const time = new Date();
 
-    reviewServices.create(gid, rating, reviewVal, time)
+    greenspaceServices.info(gid)
       .then((res) => {
-        this.props.router.push(`/map/${res.content.greenspace}/reviews/${window.location.search}`);
+        const greenspace = res.content;
+        reviewServices.create(greenspace, rating, reviewVal, time)
+          .then((res) => {
+            this.props.router.push(`/map/${gid}/reviews/${window.location.search}`);
+          });
       });
   }
 

@@ -19,12 +19,8 @@ class UserView extends Component {
       reviews: [],
       events: [],
       reviews: [],
-      reviewsCorrect: false,
     };
-    
-    this.renderReviews = this.renderReviews.bind(this);
-    this.renderReview = this.renderReview.bind(this);
-    }
+  }
 
     componentDidMount() {
       Services.review.getAllByUser()
@@ -36,7 +32,7 @@ class UserView extends Component {
 
       Services.event.getAllByUser()
         .then((res) => {
-          if (this.refs.component) {
+          if (this.refs.component && res.content) {
             this.setState({ events: res.content});
           }
         });
@@ -48,31 +44,13 @@ class UserView extends Component {
       }
     }
 
-    renderReviews() {
-      const reviews = this.state.reviews;
-      const renderedReviews = reviews.map((r) => this.renderReview(r));
-      Promise.all(renderedReviews).then((renderedReviews) => {
-        this.setState({ reviews: renderedReviews , reviewsCorrect: true });
-        return;
-      });
-    }
-
-    renderReview(r) {
-      return Services.greenspace.info(r.greenspace)
-      .then((res) => {
-        const greenspaceName = res.content.name;
-        r.greenspace = greenspaceName;
-        return r;
-      });
-    }
-
     reviewDivs(reviews) {
       return reviews.map((r) => {
         return (
           <div className="list-item-review userview" key={r._id}>
           <div className='userview-review-greenspace'>
             <ReactStars value={r.rating} edit={false} color2="black" />
-            <div className = 'userview-greenspace'> {r.greenspace}</div>
+            <div className = 'userview-greenspace'> {r.greenspace.name}</div>
           </div>
           <div className = 'userview-review-body'>
             {r.body}
@@ -92,8 +70,7 @@ class UserView extends Component {
     } = this.state;
 
     let reviewDivList = null;
-    if(reviews.length !== 0 && !reviewsCorrect) {this.renderReviews();}
-    else if (reviews.length !== 0) {reviewDivList = this.reviewDivs(this.state.reviews);}
+    if (reviews.length !== 0) {reviewDivList = this.reviewDivs(this.state.reviews);}
     let reviews_div;
     let events_div;
 

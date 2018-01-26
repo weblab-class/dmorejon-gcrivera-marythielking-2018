@@ -17,7 +17,7 @@ class EventList extends Component {
       + " at " + localStart.substring(16,21);
 
     return (<Link
-      to={`/map/${greenspace}/event/${_id}/${window.location.search}`}
+      to={`/map/${greenspace._id}/event/${_id}/${window.location.search}`}
       className="list-item-event"
       key={_id}
     >
