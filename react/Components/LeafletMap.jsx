@@ -20,7 +20,7 @@ class LeafletMap extends Component {
       placeMarkers: props.placeMarkers,
       prevPlaceMarkers: true,
       center: center,
-      locImage: null,
+      icon: null,
     }
 
     this.disableMap = this.disableMap.bind(this);
@@ -206,14 +206,16 @@ class LeafletMap extends Component {
   }
 
   setMapCenter(map) {
+    var locIcon = L.icon({
+      iconUrl: '/images/pulse_dot.gif',
+      iconSize: [20, 20]
+    });
     if (window.location.search) {
       var center = window.location.search.split('=')[1].split(',');
       map.setView([parseFloat(center[0]), parseFloat(center[1])]);
       this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
-      const bounds = [this.state.center, this.state.center];
-      const locImage = L.imageOverlay('/images/pulse_dot.gif', bounds);
-      locImage.addTo(this.map);
-      this.setState({ locImage: locImage });
+      L.marker(this.state.center, {icon: locIcon}).addTo(this.map);
+      this.setState({ icon: locIcon });
       return;
     }
     if (navigator.geolocation && this.props.location.pathname.startsWith('/loading')) {
@@ -221,10 +223,8 @@ class LeafletMap extends Component {
         this.setState({ center: [position.coords.latitude, position.coords.longitude] });
         map.setView(this.state.center);
         this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
-        const bounds = [this.state.center, this.state.center];
-        const locImage = L.imageOverlay('/images/pulse_dot.gif', bounds);
-        locImage.addTo(this.map);
-        this.setState({ locImage: locImage });
+        L.marker(this.state.center, {icon: locIcon}).addTo(this.map);
+        this.setState({ icon: locIcon });
         return;
       });
     }
