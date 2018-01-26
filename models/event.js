@@ -19,7 +19,8 @@ let eventModel = mongoose.model('Event', mongoose.Schema({
   endtime: {type: Date, required: true, expires: '10s'},
   greenspace: {type: greenspaceSchema, required: true},
   host: {type: userSchema, required: true},
-  participants: {type: [{type: userSchema, required: true, unique: true}], required: true}
+  participants: {type: [{type: userSchema, required: true, unique: true}], required: true},
+  tags: {type: [{type: String}], default: []},
 }));
 
 const event = ((eventModel) => {
@@ -80,7 +81,9 @@ const event = ((eventModel) => {
                                       starttime: eventData.starttime,
                                       endtime: eventData.endtime,
                                       participants: eventData.participants,
-                                      host: host});
+                                      tags: eventData.tags,
+                                      host: host
+                                      });
     try {
       return await newEvent.save();
     } catch(e) {
