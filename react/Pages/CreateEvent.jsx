@@ -18,7 +18,7 @@ class CreateEvent extends Component {
       descriptionVal: '',
       startVal: '',
       endVal: '',
-      participants: [],
+      pending: [],
 
       greenspaceName: '',
       lat: 0,
@@ -50,7 +50,7 @@ class CreateEvent extends Component {
   }
 
   handleParticipants(participants) {
-    this.setState({ participants: participants});
+    this.setState({ pending: participants});
   }
 
   create() {
@@ -60,7 +60,7 @@ class CreateEvent extends Component {
       descriptionVal,
       startVal,
       endVal,
-      participants,
+      pending,
     } = this.state;
     const startDate = new Date(this.state.startVal);
     const endDate = new Date(this.state.endVal);
@@ -68,7 +68,7 @@ class CreateEvent extends Component {
     greenspaceServices.info(gid)
       .then((res) => {
         const greenspace = res.content;
-        eventServices.create(nameVal, descriptionVal, greenspace, startDate, endDate, participants)
+        eventServices.create(nameVal, descriptionVal, greenspace, startDate, endDate, pending)
           .then((res) => {
             this.props.router.push(`/map/${gid}/${window.location.search}`);
           });
@@ -81,7 +81,7 @@ class CreateEvent extends Component {
       descriptionVal,
       startVal,
       endVal,
-      participants,
+      pending,
       greenspaceName,
       lat,
       lng,
