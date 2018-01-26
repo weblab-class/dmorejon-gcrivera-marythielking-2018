@@ -12,10 +12,9 @@ class Header extends Component {
     if (currentUser) {
       const { displayname, photo } = currentUser;
       headerButtons = (<div id="header-btns">
-        <div className="header-btn-content">Welcome, {displayname}</div>
         <Link to={`/user/view/${currentUser.fbid}/${window.location.search}`}>
           <div className="header-btn">
-              <img src={photo} height="40px" className="profile-icon" title="User Profile"/>
+              <img src={photo} height="40px" className="profile-icon" id="header-profile-icon" title="User Profile"/>
           </div>
         </Link>
         <a href="/logout">
