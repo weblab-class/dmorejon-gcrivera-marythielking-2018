@@ -21,6 +21,14 @@ export default {
     });
   },
 
+  getAllPendingByUser : () => {
+    return request({
+      uri : BASE_URL + '/user/pending',
+      method: 'GET',
+      json : true
+    });
+  },
+
   getAllByGreenspace : (greenspaceid) => {
     return request({
       uri : BASE_URL + `/greenspace/${greenspaceid}`,
@@ -29,7 +37,7 @@ export default {
     });
   },
 
-  create : (name, description, greenspace, starttime, endtime, participants) => {
+  create : (name, description, greenspace, starttime, endtime, pending) => {
     return request({
       uri : BASE_URL,
       method: 'POST',
@@ -40,12 +48,12 @@ export default {
         greenspace,
         starttime,
         endtime,
-        participants,
+        pending,
       }
     });
   },
 
-  edit : (eventid, name, description, greenspace, starttime, endtime, participants) => {
+  edit : (eventid, name, description, greenspace, starttime, endtime, pending, participants) => {
     return request({
       uri : BASE_URL + `/${eventid}`,
       method: 'PUT',
@@ -56,6 +64,7 @@ export default {
         greenspace,
         starttime,
         endtime,
+        pending,
         participants,
       }
     });
@@ -77,6 +86,22 @@ export default {
       body : {
         target,
       }
+    });
+  },
+
+  accept : (eventid) => {
+    return request({
+      uri : BASE_URL + `/accept/${eventid}`,
+      method: 'PUT',
+      json : true
+    });
+  },
+
+  decline : (eventid) => {
+    return request({
+      uri : BASE_URL + `/decline/${eventid}`,
+      method: 'PUT',
+      json : true
     });
   },
 

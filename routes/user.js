@@ -37,4 +37,36 @@ router.get('/:name', async (req, res) => {
   }
 });
 
+// PUT /user/tag/create
+  // Request Body:
+    // name: name of tag to be added to current user
+  // Response body:
+    // success: true if user info retrieved from database; false otherwise
+    // err: on error, an error message
+    // user: user object (see above schema)
+router.put('/tag/create', async (req, res) => {
+  try {
+    const userData = await user.addTag(req.user.fbid, req.body.name);
+    utils.sendSuccessResponse(res, userData);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
+// PUT /user/tag/delete
+  // Request Body:
+    // name: name of tag to be added to current user
+  // Response body:
+    // success: true if user info retrieved from database; false otherwise
+    // err: on error, an error message
+    // user: user object (see above schema)
+router.put('/tag/delete', async (req, res) => {
+  try {
+    const userData = await user.deleteTag(req.user.fbid, req.body.name);
+    utils.sendSuccessResponse(res, userData);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
 module.exports = router;

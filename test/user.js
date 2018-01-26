@@ -35,6 +35,7 @@ describe('User API', () => {
         await newUser.save()
         return;
       } catch(e) {
+        console.log(e)
         return e;
       }
     });
@@ -103,7 +104,7 @@ describe('User API', () => {
         .expect((res) => {
           assert.equal(res.body.success, true);
           assert.isDefined(res.body.content);
-          assert.equal(res.body.content.length, 4)
+          assert.equal(res.body.content.length, 4);
         })
         .end((err, res) => {
           if (err) done(err);
@@ -119,7 +120,7 @@ describe('User API', () => {
         .expect((res) => {
           assert.equal(res.body.success, true);
           assert.isDefined(res.body.content);
-          assert.equal(res.body.content.length, 2)
+          assert.equal(res.body.content.length, 2);
         })
         .end((err, res) => {
           if (err) done(err);
@@ -135,7 +136,7 @@ describe('User API', () => {
         .expect((res) => {
           assert.equal(res.body.success, true);
           assert.isDefined(res.body.content);
-          assert.equal(res.body.content.length, 2)
+          assert.equal(res.body.content.length, 2);
         })
         .end((err, res) => {
           if (err) done(err);
@@ -143,4 +144,91 @@ describe('User API', () => {
         });
     });
   });
+
+  describe('PUT /user', () => {
+
+    it('Add a tag to a user', (done) => {
+      request(app)
+        .put('/user/tag/create')
+        .send({name: 'Hiking'})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+          assert.equal(res.body.content.fbid, 10211342727149288);
+          assert.equal(res.body.content.tags[0], 'hiking');
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Add a tag to a user', (done) => {
+      request(app)
+        .put('/user/tag/create')
+        .send({name: 'soccer'})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+          assert.equal(res.body.content.fbid, 10211342727149288);
+          assert.equal(res.body.content.tags.length, 2);
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Add a tag without a name to a user', (done) => {
+      request(app)
+        .put('/user/tag/create')
+        .send()
+        .expect(400)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, false);
+          assert.equal(res.body.err, 'Tag name is required.');
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Remove a tag from a user', (done) => {
+      request(app)
+        .put('/user/tag/delete')
+        .send({name: 'hiking'})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+          assert.equal(res.body.content.fbid, 10211342727149288);
+          assert.equal(res.body.content.tags.length, 1);
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Remove a tag without a name from a user', (done) => {
+      request(app)
+        .put('/user/tag/delete')
+        .send()
+        .expect(400)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, false);
+          assert.equal(res.body.err, 'Tag name is required.');
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+  });
+
 });

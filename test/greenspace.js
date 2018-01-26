@@ -18,7 +18,7 @@ describe('Greenspace API', () => {
   before((done) => {
     request(app)
       .post('/greenspace')
-      .send({location: [29.004612, 35.277791], name: 'Barely Green'})
+      .send({location: [29.004612, 35.277791], name: 'Barely Green', tags: ['pond', 'water', 'lake']})
       .end((err, res) => {
         if (err) done(err);
         else {
@@ -31,7 +31,7 @@ describe('Greenspace API', () => {
   before((done) => {
     request(app)
       .post('/greenspace')
-      .send({location: [32.015199, 35.277791], name: 'Disputed Turf'})
+      .send({location: [32.015199, 35.277791], name: 'Disputed Turf', tags: ['bullets', 'shells', 'hearts']})
       .end((err, res) => {
         if (err) done(err);
         else done();
@@ -41,7 +41,7 @@ describe('Greenspace API', () => {
   before((done) => {
     request(app)
       .post('/greenspace')
-      .send({location: [36.136800, 37.155779], name: 'Johnson Field'})
+      .send({location: [36.136800, 37.155779], name: 'Johnson Field', tags: ['flat', 'grass', 'field']})
       .end((err, res) => {
         if (err) done(err);
         else done();
@@ -59,6 +59,7 @@ describe('Greenspace API', () => {
           assert.equal(res.body.success, true);
           assert.isDefined(res.body.content);
           assert.deepEqual(res.body.content.location, [29.004612, 35.277791]);
+          assert.deepEqual(res.body.content.tags, ['pond', 'water', 'lake']);
           assert.equal(res.body.content.name, 'Barely Green');
         })
         .end((err, res) => {
@@ -148,13 +149,14 @@ describe('Greenspace API', () => {
     it('Create a valid greenspace', (done) => {
       request(app)
         .post('/greenspace')
-        .send({location: [-73.240813, -62.833790], name: 'Penguin Party Space'})
+        .send({location: [-73.240813, -62.833790], name: 'Penguin Party Space', tags: ['frozen', 'ice', 'snow']})
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
           assert.equal(res.body.success, true);
           assert.isDefined(res.body.content);
           assert.deepEqual(res.body.content.location, [-73.240813, -62.833790]);
+          assert.deepEqual(res.body.content.tags, ['frozen', 'ice', 'snow']);
           assert.equal(res.body.content.name, 'Penguin Party Space');
         })
         .end((err, res) => {
@@ -198,12 +200,12 @@ describe('Greenspace API', () => {
     it('Create a greenspace without a unique location', (done) => {
       request(app)
         .post('/greenspace')
-        .send({name: 'Penguinz Party Space', location: [-73.240813, -62.833790]})
+        .send({name: 'Penguinz Party Space', location: [-73.240813, -62.833790], tags: ['pond', 'water', 'lake']})
         .expect(400)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
           assert.equal(res.body.success, false);
-          assert.equal(res.body.err, 'E11000 duplicate key error index: greenspace.greenspaces.$_arraySignature_1 dup key: { : "-73.240813.-62.83379" }');
+          assert.isDefined(res.body.err);
         })
         .end((err, res) => {
           if (err) done(err);

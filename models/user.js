@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
+const utils = require('../utils');
 
 const userSchema = mongoose.Schema({
   fbid: {type: Number, required: true, unique: true},
   displayname: {type: String, required: true},
-  photo: {type: String, required: true}
+  photo: {type: String, required: true},
+  tags: {type: [{type: String}], default: []},
 });
 const userModel = mongoose.model('User', userSchema );
 
@@ -29,8 +31,8 @@ const user = ((userModel) => {
           throw {message: 'No users found.', errorCode: 404};
         }
         potentialUsers.sort((a, b) => {
-          const a_dist = _similarity(a.displayname, name);
-          const b_dist = _similarity(b.displayname, name);
+          const a_dist = utils.similarity(a.displayname, name);
+          const b_dist = utils.similarity(b.displayname, name);
           if (a_dist < b_dist) {return -1}
           else {return 1}
         });
@@ -40,45 +42,32 @@ const user = ((userModel) => {
       }
     }
 
-    const _similarity = (s1, s2) => {
-      const longer = s1;
-      const shorter = s2;
-      if (s1.length < s2.length) {
-        longer = s2;
-        shorter = s1;
+    that.addTag = async (user, name) => {
+      if(!name) {throw {message: 'Tag name is required.', errorCode: 400}}
+      name = name.toLowerCase();
+      try {
+        const userData = await userModel.findOneAndUpdate({fbid: user}, {$addToSet: {tags: name}}, {new: true});
+        if (!userData) {
+          throw {message: 'User not found.', errorCode: 404};
+        }
+        return userData;
+      } catch(e) {
+        throw e;
       }
-      const longerLength = longer.length;
-      if (longerLength == 0) {
-        return 1.0;
-      }
-      return (longerLength - _editDistance(longer, shorter)) / parseFloat(longerLength);
     }
 
-    const _editDistance = (s1, s2) => {
-      s1 = s1.toLowerCase();
-      s2 = s2.toLowerCase();
-
-      let costs = new Array();
-      for (let i = 0; i <= s1.length; i++) {
-        let lastValue = i;
-        for (let j = 0; j <= s2.length; j++) {
-          if (i == 0)
-            costs[j] = j;
-          else {
-            if (j > 0) {
-              let newValue = costs[j - 1];
-              if (s1.charAt(i - 1) != s2.charAt(j - 1))
-                newValue = Math.min(Math.min(newValue, lastValue),
-                  costs[j]) + 1;
-              costs[j - 1] = lastValue;
-              lastValue = newValue;
-            }
-          }
+    that.deleteTag = async (user, name) => {
+      if(!name) {throw {message: 'Tag name is required.', errorCode: 400}}
+      name = name.toLowerCase();
+      try {
+        const userData = await userModel.findOneAndUpdate({fbid: user}, {$pull: {tags: name}}, {new: true});
+        if (!userData) {
+          throw {message: 'User not found.', errorCode: 404};
         }
-        if (i > 0)
-          costs[s2.length] = lastValue;
+        return userData;
+      } catch(e) {
+        throw e;
       }
-      return costs[s2.length];
     }
 
     Object.freeze(that);

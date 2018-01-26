@@ -19,4 +19,26 @@ export default {
       json : true
     });
   },
+
+  addTag : (name) => {
+    return request({
+      uri : BASE_URL + '/tag/create',
+      method: 'PUT',
+      json : true,
+      body : {
+        name,
+      }
+    });
+  },
+
+  deleteTag : (name) => {
+    return request({
+      uri : BASE_URL + '/tag/delete',
+      method: 'PUT',
+      json : true,
+      body : {
+        name,
+      }
+    });
+  },
 }

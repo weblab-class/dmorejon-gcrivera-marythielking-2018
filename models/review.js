@@ -6,8 +6,14 @@ const userSchema = mongoose.Schema({
   photo: {type: String, required: true}
 });
 
+const greenspaceSchema = mongoose.Schema({
+  location: {type: [{type: Number, required: true}], required: true},
+  _arraySignature: { type: String, unique: true },
+  name: {type: String, required: true}
+});
+
 const reviewModel = mongoose.model('Review', mongoose.Schema({
-  greenspace: {type: String, required: true},
+  greenspace: {type: greenspaceSchema, required: true},
   user: {type: userSchema, required: true},
   body: {type: String, required: true},
   rating: {type: Number, required: true},
@@ -21,7 +27,7 @@ const review = ((reviewModel) => {
     const newReview = new reviewModel({greenspace: greenspace, rating: rating,
                                         body: body, time: time, user: user});
     try {
-      const query = await reviewModel.findOne({'user.fbid': user.fbid, greenspace: greenspace});
+      const query = await reviewModel.findOne({'user.fbid': user.fbid, 'greenspace._id': greenspace._id});
       if (!query) {
         return await newReview.save();
       } else {
@@ -32,9 +38,9 @@ const review = ((reviewModel) => {
     }
   }
 
-  that.deleteReview = async (greenspace, user) => {
+  that.deleteReview = async (greenspaceid, user) => {
     try {
-      const oldReview = await reviewModel.findOneAndRemove({'user.fbid': user.fbid, greenspace: greenspace});
+      const oldReview = await reviewModel.findOneAndRemove({'user.fbid': user.fbid, 'greenspace._id': greenspaceid});
       if (!oldReview) {
         throw {message: 'Review does not exist for this user', errorCode: 404};
       }
@@ -43,9 +49,9 @@ const review = ((reviewModel) => {
     }
   }
 
-  that.getReviewByGreenspace = async (greenspace) => {
+  that.getReviewByGreenspace = async (greenspaceid) => {
     try {
-      let reviews = await reviewModel.find({greenspace: greenspace});
+      let reviews = await reviewModel.find({'greenspace._id': greenspaceid});
       if (reviews.length == 0) {return {reviews: reviews, rating: 0.0};}
       reviews = reviews.sort((a, b) => {
         if (a.time.getTime() > b.time.getTime()) {
