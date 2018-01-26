@@ -53,7 +53,7 @@ router.get('/greenspace/:greenspaceid', async (req, res) => {
     // greenspace
     // starttime
     // endtime
-    // participants (**[userid])
+    // pending (**[userid])
   // Response body:
     // success: true if event added to database; false otherwise
     // err: on error, an error message

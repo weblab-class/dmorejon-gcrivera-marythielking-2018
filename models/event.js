@@ -20,6 +20,7 @@ let eventModel = mongoose.model('Event', mongoose.Schema({
   greenspace: {type: greenspaceSchema, required: true},
   host: {type: userSchema, required: true},
   participants: {type: [{type: userSchema, required: true, unique: true}], required: true},
+  pending: {type: [{type: userSchema, unique: true}], default: []},
   tags: {type: [{type: String}], default: []},
 }));
 
@@ -69,18 +70,13 @@ const event = ((eventModel) => {
   }
 
   that.createEvent = async (eventData, host) => {
-    const duplicates = eventData.participants.filter((participant) => {
-      return participant.fbid == host.fbid
-    });
-    if (duplicates.length == 0) {
-      eventData.participants.push(host);
-    }
     const newEvent = new eventModel({name: eventData.name,
                                       description: eventData.description,
                                       greenspace: eventData.greenspace,
                                       starttime: eventData.starttime,
                                       endtime: eventData.endtime,
-                                      participants: eventData.participants,
+                                      participants: [host],
+                                      pending: eventData.pending,
                                       tags: eventData.tags,
                                       host: host
                                       });

@@ -35,7 +35,7 @@ describe('Event API', () => {
     request(app)
       .post('/event')
       .send({name: 'Snowball Fight', greenspace: greenspace1, starttime: Date.now(),
-              endtime: Date.now() + 180000, participants: [user1, user2], tags: ['ice', 'cold']})
+              endtime: Date.now() + 180000, pending: [user1, user2], tags: ['ice', 'cold']})
       .end((err, res) => {
         if (err) done(err);
         else {
@@ -49,7 +49,7 @@ describe('Event API', () => {
     request(app)
       .post('/event')
       .send({name: 'Penguin Party', greenspace: greenspace1, starttime: Date.now() + 1800000,
-              endtime: Date.now() + 1803000, participants: [user1, user2], tags: ['birds', 'flightless'],
+              endtime: Date.now() + 1803000, pending: [user1, user2], tags: ['birds', 'flightless'],
               description: 'Come party with the penguins.'})
       .end((err, res) => {
         if (err) done(err);
@@ -172,7 +172,7 @@ describe('Event API', () => {
       request(app)
         .post('/event')
         .send({name: 'African Safari', greenspace: greenspace2, starttime: Date.now(),
-                endtime: Date.now() + 2000, participants: [user1, user2],
+                endtime: Date.now() + 2000, pending: [user1, user2],
                 description: 'Avoid the hippos.'})
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
@@ -182,7 +182,8 @@ describe('Event API', () => {
           assert.isDefined(res.body.content);
           assert.equal(res.body.content.name, 'African Safari');
           assert.equal(res.body.content.greenspace.name, 'Disputed Turf');
-          assert.equal(res.body.content.participants.length, 3);
+          assert.equal(res.body.content.pending.length, 2);
+          assert.equal(res.body.content.participants.length, 1);
           assert.equal(res.body.content.tags.length, 0);
         })
         .end((err, res) => {

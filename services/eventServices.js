@@ -29,7 +29,7 @@ export default {
     });
   },
 
-  create : (name, description, greenspace, starttime, endtime, participants) => {
+  create : (name, description, greenspace, starttime, endtime, pending) => {
     return request({
       uri : BASE_URL,
       method: 'POST',
@@ -40,12 +40,12 @@ export default {
         greenspace,
         starttime,
         endtime,
-        participants,
+        pending,
       }
     });
   },
 
-  edit : (eventid, name, description, greenspace, starttime, endtime, participants) => {
+  edit : (eventid, name, description, greenspace, starttime, endtime, pending, participants) => {
     return request({
       uri : BASE_URL + `/${eventid}`,
       method: 'PUT',
@@ -56,6 +56,7 @@ export default {
         greenspace,
         starttime,
         endtime,
+        pending,
         participants,
       }
     });
