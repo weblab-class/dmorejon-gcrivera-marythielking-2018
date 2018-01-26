@@ -67,6 +67,24 @@ if (process.env.TEST) {
   });
 
   app.use('/event/join/*', (req, res, next) => {
+    req.user = { _id: '5a63c29174d39b08342a1038',
+      fbid: 10211342727149298,
+      displayname: 'Chicken Joe',
+      photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901',
+      };
+    next();
+  });
+
+  app.use('/event/leave/*', (req, res, next) => {
+    req.user = { _id: '5a63c29174d39b08342a1038',
+      fbid: 10211342727149298,
+      displayname: 'Chicken Joe',
+      photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901',
+      };
+    next();
+  });
+
+  app.use('/event/user/pending', (req, res, next) => {
     req.user = { _id: '5a63c29174d39b08342a5969',
       fbid: 10211342727149269,
       displayname: 'Cody Maverick',
@@ -75,10 +93,19 @@ if (process.env.TEST) {
     next();
   });
 
-  app.use('/event/leave/*', (req, res, next) => {
+  app.use('/event/accept/*', (req, res, next) => {
     req.user = { _id: '5a63c29174d39b08342a5420',
       fbid: 10211342727149420,
       displayname: 'Tank Evans',
+      photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901',
+      };
+    next();
+  });
+
+  app.use('/event/decline/*', (req, res, next) => {
+    req.user = { _id: '5a63c29174d39b08342a5969',
+      fbid: 10211342727149269,
+      displayname: 'Cody Maverick',
       photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901',
       };
     next();

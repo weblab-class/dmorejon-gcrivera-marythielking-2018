@@ -69,6 +69,21 @@ const event = ((eventModel) => {
     }
   }
 
+  that.getPendingEventsByUser = async (user) => {
+    try {
+      const events = await eventModel.find({'pending.fbid': user});
+      return events.sort((a, b) => {
+        if (a.starttime.getTime() > b.starttime.getTime()) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    } catch(e) {
+      throw e;
+    }
+  }
+
   that.createEvent = async (eventData, host) => {
     const newEvent = new eventModel({name: eventData.name,
                                       description: eventData.description,
@@ -105,6 +120,10 @@ const event = ((eventModel) => {
 
   that.joinEvent = async (eventid, user) => {
     try {
+      const inPending = eventModel.findOne({'pending': user});
+      if (inPending) {
+        await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {pending: user}});
+      }
       const editedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$push: {participants: user}}, {new: true});
       if (!editedEvent) {throw {message: 'Event does not exist.', errorCode: 404}}
       return editedEvent;
@@ -123,6 +142,27 @@ const event = ((eventModel) => {
       } else {
         throw {message: 'User does not have permission to remove specified user from event.', errorCode: 403};
       }
+    } catch(e) {
+      throw e;
+    }
+  }
+
+  that.acceptEvent = async (eventid, user) => {
+    try {
+      await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {pending: user}});
+      const editedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$push: {participants: user}}, {new: true});
+      if (!editedEvent) {throw {message: 'Event or user not found.', errorCode: 404}}
+      return editedEvent;
+    } catch(e) {
+      throw e;
+    }
+  }
+
+  that.declineEvent = async (eventid, user) => {
+    try {
+      const editedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {pending: user}}, {new: true});
+      if (!editedEvent) {throw {message: 'Event or user not found.', errorCode: 404}}
+      return editedEvent;
     } catch(e) {
       throw e;
     }

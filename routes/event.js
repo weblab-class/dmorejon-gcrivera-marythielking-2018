@@ -18,6 +18,20 @@ router.get('/user', async (req, res) => {
   }
 });
 
+// GET /event/user/pending
+  // Response Body:
+    // success: true if events retrieved from the database; false otherwise
+    // err: on error, an error message
+    // events: list of event objects (see above schema)
+router.get('/user/pending', async (req, res) => {
+  try {
+    const events = await event.getPendingEventsByUser(req.user.fbid);
+    utils.sendSuccessResponse(res, events);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
 // GET /event/:eventid
   // Response Body:
     // success: true if event retrieved from the database; false otherwise
@@ -95,6 +109,7 @@ router.put('/join/:eventid', async (req, res) => {
     const edditedEvent = await event.joinEvent(req.params.eventid, req.user);
     utils.sendSuccessResponse(res, edditedEvent);
   } catch(e) {
+    console.log(e.message)
     utils.sendErrorResponse(res, e.errorCode, e.message);
   }
 });
@@ -109,6 +124,34 @@ router.put('/join/:eventid', async (req, res) => {
 router.put('/leave/:eventid', async (req, res) => {
   try {
     const edditedEvent = await event.leaveEvent(req.params.eventid, req.user, req.body.target);
+    utils.sendSuccessResponse(res, edditedEvent);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
+// PUT /event/accept/:eventid
+  // Response body:
+    // success: true if user added to event participants in database; false otherwise
+    // err: on error, an error message
+    // event: event object (see schema)
+router.put('/accept/:eventid', async (req, res) => {
+  try {
+    const edditedEvent = await event.acceptEvent(req.params.eventid, req.user);
+    utils.sendSuccessResponse(res, edditedEvent);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
+// PUT /event/decline/:eventid
+  // Response body:
+    // success: true if user removed from event pending in database; false otherwise
+    // err: on error, an error message
+    // event: event object (see schema)
+router.put('/decline/:eventid', async (req, res) => {
+  try {
+    const edditedEvent = await event.declineEvent(req.params.eventid, req.user);
     utils.sendSuccessResponse(res, edditedEvent);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
