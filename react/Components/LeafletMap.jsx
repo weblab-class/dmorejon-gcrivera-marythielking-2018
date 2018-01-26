@@ -214,7 +214,7 @@ class LeafletMap extends Component {
       var center = window.location.search.split('=')[1].split(',');
       map.setView([parseFloat(center[0]), parseFloat(center[1])]);
       this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
-      L.marker(this.state.center, {icon: locIcon}).addTo(this.map);
+      L.marker(this.state.center, {icon: locIcon}).addTo(map);
       this.setState({ icon: locIcon });
       return;
     }
@@ -223,7 +223,7 @@ class LeafletMap extends Component {
         this.setState({ center: [position.coords.latitude, position.coords.longitude] });
         map.setView(this.state.center);
         this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
-        L.marker(this.state.center, {icon: locIcon}).addTo(this.map);
+        L.marker(this.state.center, {icon: locIcon}).addTo(map);
         this.setState({ icon: locIcon });
         return;
       });
