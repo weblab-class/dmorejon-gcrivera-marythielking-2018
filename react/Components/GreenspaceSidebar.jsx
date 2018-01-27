@@ -6,6 +6,20 @@ import FontAwesome from 'react-fontawesome';
 import Sidebar from '../Components/Sidebar.jsx';
 
 class GreenspaceSidebar extends Component {
+  constructor(props){
+    super(props);
+
+    this.onBackClick = this.onBackClick.bind(this);
+  }
+
+  onBackClick() {
+    if (this.props.location.pathname.includes('/reviews/')) {
+      this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
+    } else {
+      this.props.router.goBack();
+    }
+    return;
+  }
 
   render(){
     const {
@@ -27,7 +41,7 @@ class GreenspaceSidebar extends Component {
           size="2x"
           id="back-button"
           title="Back"
-          onClick={router.goBack}
+          onClick={this.onBackClick}
         />
       );
     }
