@@ -11,14 +11,36 @@ import greenspaceServices from '../../services/greenspaceServices.js';
 class CreateEvent extends Component {
   constructor(props){
     super(props);
+
+    // const current = new Date();
+    // const startTime = current.toISOString().substring(0,16);
+    // const hour = startTime.substring(11,13);
+    // console.log(startTime);
+
+    const current = new Date();
+    const date = current.toISOString().substring(0,8) + current.getDate();
+
+    const startVal = `${date}T17:00`;
+    const endVal = `${date}T18:00`;
+
+    const startDate = new Date(startVal);
+    const startValid = (startDate - current > 0);
+    const endDate = new Date(endVal);
+    const endValid = (endDate - current > 0);
+
     this.state = {
       gid: props.params.gid,
 
       nameVal: '',
       descriptionVal: '',
-      startVal: '',
-      endVal: '',
+      startVal,
+      endVal,
       pending: [],
+
+      nameValid: false,
+      startValid,
+      endValid,
+      errorMessage: null,
 
       greenspaceName: '',
       lat: 0,
@@ -26,6 +48,8 @@ class CreateEvent extends Component {
     };
 
     this.updateFormVal = this.updateFormVal.bind(this);
+    this.validateFormVal = this.validateFormVal.bind(this);
+    this.setEndVal = this.setEndVal.bind(this);
     this.handleParticipants = this.handleParticipants.bind(this);
     this.create = this.create.bind(this);
   }
@@ -46,7 +70,49 @@ class CreateEvent extends Component {
     this.setState((prevState) => {
       prevState[updatedField] = updatedValue;
       return prevState;
-    });
+    }, () => this.validateFormVal(updatedField, updatedValue));
+  }
+
+  validateFormVal(field, value) {
+    var {
+      nameValid,
+      startValid,
+      endValid,
+    } = this.state;
+
+    switch(field) {
+      case 'nameVal':
+        nameValid = (value.length >= 1);
+        break;
+
+      case 'startVal':
+        const current = new Date();
+        const startDate = new Date(value);
+        startValid = (startDate - current > 0);
+        break;
+
+      case 'endVal':
+        const startDateState = new Date(this.state.startVal);
+        const endDate = new Date(value);
+        endValid = (endDate - startDateState > 0);
+        break;
+
+      default:
+        break;
+    }
+
+    this.setState({ nameValid, startValid, endValid });
+    return;
+  }
+
+  setEndVal() {
+    const { startVal, startValid } = this.state;
+    if (startValid) {
+      var endHour = parseInt(startVal.substring(11,13)) + 1;
+      if (endHour === 24) { endHour = 0; }
+      const endVal = `${startVal.substring(0,11)}${endHour}${startVal.substring(13)}`
+      this.setState({ endVal });
+    }
   }
 
   handleParticipants(participants) {
@@ -61,18 +127,30 @@ class CreateEvent extends Component {
       startVal,
       endVal,
       pending,
+      nameValid,
+      startValid,
+      endValid,
     } = this.state;
+
     const startDate = new Date(this.state.startVal);
     const endDate = new Date(this.state.endVal);
 
-    greenspaceServices.info(gid)
-      .then((res) => {
-        const greenspace = res.content;
-        eventServices.create(nameVal, descriptionVal, greenspace, startDate, endDate, pending)
-          .then((res) => {
-            this.props.router.push(`/map/${gid}/${window.location.search}`);
-          });
-      });
+    if (!nameValid) {
+      this.setState({ errorMessage: 'Please enter a valid event name.', });
+    } else if (!startValid) {
+      this.setState({ errorMessage: 'Please enter a valid start time.', });
+    } else if (!endValid) {
+      this.setState({ errorMessage: 'Please enter a valid end time.', });
+    } else {
+      greenspaceServices.info(gid)
+        .then((res) => {
+          const greenspace = res.content;
+          eventServices.create(nameVal, descriptionVal, greenspace, startDate, endDate, pending)
+            .then((res) => {
+              this.props.router.push(`/map/${gid}/${window.location.search}`);
+            });
+        });
+    }
   }
 
   render(){
@@ -85,6 +163,7 @@ class CreateEvent extends Component {
       greenspaceName,
       lat,
       lng,
+      errorMessage,
     } = this.state;
 
     return (
@@ -97,7 +176,8 @@ class CreateEvent extends Component {
       >
         <div className="section-header">Create Event</div>
         <div className="form">
-          <input autoFocus className='form-input'
+          <input autoFocus
+            className='form-input'
             name='nameVal'
             placeholder='event name'
             value={nameVal}
@@ -115,6 +195,7 @@ class CreateEvent extends Component {
             value={startVal}
             type="datetime-local"
             onChange={this.updateFormVal}
+            onBlur={this.setEndVal}
           />
           <div>End:</div>
           <input className='form-input'
@@ -123,8 +204,12 @@ class CreateEvent extends Component {
             type="datetime-local"
             onChange={this.updateFormVal}
           />
-        <UserSearch handleParticipants={this.handleParticipants} currentUser={this.props.currentUser}/>
+          <UserSearch
+            handleParticipants={this.handleParticipants}
+            currentUser={this.props.currentUser}
+          />
           <div className="btn" onClick={this.create}>Create</div>
+          { errorMessage ? (<div id="form-error">{errorMessage}</div>) : null }
         </div>
       </GreenspaceSidebar>
     );
