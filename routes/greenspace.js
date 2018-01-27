@@ -47,7 +47,10 @@ router.get('/:minLat/:maxLat/:minLong/:maxLong', async (req, res) => {
     // greenspace: greenspace object (see schema)
 router.post('/', async (req, res) => {
   try {
-    const newGreenspace = await greenspace.createGreenspace(req.body.name, req.body.location.coordinates, req.body.tags);
+    const location = req.body.location.map((val) => {
+      return parseFloat(val);
+    });
+    const newGreenspace = await greenspace.createGreenspace(req.body.name, location, req.body.tags);
     utils.sendSuccessResponse(res, newGreenspace);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);

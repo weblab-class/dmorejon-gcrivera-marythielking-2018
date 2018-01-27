@@ -46,8 +46,8 @@ class App extends Component {
       .then((res) => {
         callback({
           greenspaceName: res.content.name,
-          lat: res.content.location.coordinates[0],
-          lng: res.content.location.coordinates[1],
+          lat: res.content.location[0],
+          lng: res.content.location[1],
         });
       })
       .catch((err) => console.log(err.error.err));
