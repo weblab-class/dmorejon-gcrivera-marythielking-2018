@@ -234,6 +234,11 @@ class LeafletMap extends Component {
   recenter() {
     this.map.setView(this.state.center);
     this.map.setZoom(16);
+    if (this.state.marker) {
+      this.state.marker.remove(this.map);
+      this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
+      this.setState({ marker: null });
+    }
   }
 
   render(){
