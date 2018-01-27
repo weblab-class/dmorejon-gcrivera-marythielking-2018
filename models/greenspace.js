@@ -4,12 +4,16 @@ const tagSchema = mongoose.Schema({
   name: {type: String, required: true}
 });
 
-const greenspaceModel = mongoose.model('Greenspace', mongoose.Schema({
-  location: {type: [{type: Number, required: true}], required: true},
+const greenspaceSchema = mongoose.Schema({
+  // location: {type: [{type: Number, required: true}], required: true},
+  location: {type: { type: String }, coordinates: [Number]},
   _arraySignature: { type: String, unique: true },
   name: {type: String, required: true},
   tags: {type: [{type: String}], default: []},
-}));
+});
+
+greenspaceSchema.index({ "location": "2dsphere" });
+const greenspaceModel = mongoose.model('Greenspace', greenspaceSchema);
 
 const greenspace = ((greenspaceModel) => {
   let that = {};
@@ -40,7 +44,9 @@ const greenspace = ((greenspaceModel) => {
       throw {message: 'Greenspace validation failed: location: Path `location` is required.', errorCode: 400};
     }
     const _arraySignature = location.join('.');
-    const newGreenspace = new greenspaceModel({location: location,
+    const newGreenspace = new greenspaceModel({location: {
+                                                  type: 'Point',
+                                                  coordinates: location},
                                                 name: name,
                                                 _arraySignature: _arraySignature,
                                                 tags: tags});
@@ -77,7 +83,9 @@ const greenspace = ((greenspaceModel) => {
 
   that.changeGreenspaceLocation = async (id, location) => {
     try {
-      const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {location: location});
+      const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {location: {
+                                                                                  type: 'Point',
+                                                                                  coordinates: location}});
       if (!oldGreenspace) {
         throw {message: 'Greenspace does not exist.', errorCode: 404}
       }
@@ -92,4 +100,5 @@ const greenspace = ((greenspaceModel) => {
 
 })(greenspaceModel);
 
-module.exports = greenspace;
+exports.greenspace = greenspace;
+exports.greenspaceModel = greenspaceModel;
