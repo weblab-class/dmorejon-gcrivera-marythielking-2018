@@ -113,6 +113,7 @@ class GreenspaceInfo extends Component {
         lng={lng}
         backButton={false}
         ref="component"
+        currentUser={currentUser}
       >
 
         { renderedRating }
