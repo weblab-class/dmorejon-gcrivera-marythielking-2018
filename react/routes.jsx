@@ -15,6 +15,7 @@ import EditEvent from './Pages/EditEvent.jsx';
 import ReviewView from './Pages/ReviewView.jsx';
 import CreateReview from './Pages/CreateReview.jsx';
 import UserView from './Pages/UserView.jsx';
+import Discover from './Pages/DiscoverPage.jsx';
 import NotFound from './Pages/NotFound.jsx';
 
 const checkUser = (nextState, replace, callback) => {
@@ -60,6 +61,8 @@ export default (
       <Route path="user/view/:id"
         component={UserView}
         onEnter={checkUser} />
+      <Route path="discover"
+          component={Discover} />
       <Route path="*"
         component={NotFound} />
     </Route>

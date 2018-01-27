@@ -55,16 +55,30 @@ export default {
       uri : BASE_URL + '/favorites/add',
       method: 'PUT',
       json : true,
-      body : greenspaceObj,
+      body : { greenspace: {
+        name: greenspaceObj.name,
+        location: greenspaceObj.location,
+        _arraysignature: greenspaceObj._arraysignature,
+        tags: greenspaceObj.tags,
+        _id : greenspaceObj._id,
+        }
+      }
     });
   },
 
-  deleteFavorite : (greenspaceObj) => {
+  removeFavorite : (greenspaceObj) => {
     return request({
       uri : BASE_URL + '/favorites/remove',
       method: 'PUT',
       json : true,
-      body : greenspaceObj,
+      body : { greenspace: {
+        name: greenspaceObj.name,
+        location: greenspaceObj.location,
+        _arraysignature: greenspaceObj._arraysignature,
+        tags: greenspaceObj.tags,
+        _id : greenspaceObj._id,
+        }
+      },
     });
   },
 }
