@@ -16,7 +16,7 @@ class GreenspaceSidebar extends Component {
       backButton,
       children,
       router,
-
+      isFavorite,
     } = this.props;
 
     let renderedBackButton = null;
@@ -32,13 +32,33 @@ class GreenspaceSidebar extends Component {
       );
     }
 
-    let renderedStar = null;
+    let renderedStar = <FontAwesome
+      name="star"
+      size="lg"
+      id="fav-star-filled"
+      title="Favorite"
+    />;
+    if (isFavorite) {
+      renderedStar = (
+        <FontAwesome
+          name="star"
+          size="lg"
+          id="fav-star-filled"
+          title="Favorite"
+        />
+      );
+    }
+
 
     return (
       <Sidebar setMapPlaceMarkers={setMapPlaceMarkers}>
         { renderedBackButton }
         <div id="greenspace-header">
-          <h1>{name}</h1>
+          <div id="greenspace-name-star">
+            <h1>{name}</h1>
+            {renderedStar}
+          </div>
+
           <a href={`https://www.google.com/maps?saddr=My+Location&daddr=${lat},${lng}`} target="_blank">
             <img src="/images/google-maps-icon-2015.png" height="30px" className="gmaps-logo" title="Directions"/>
           </a>
