@@ -44,6 +44,11 @@ h1:hover {
   border-radius: 5px;
 }
 
+#form-error {
+  color: #d14747;
+  margin: 5px;
+}
+
 .lg {
   padding: 10px 15px;
   font-size: 16px;

@@ -16,17 +16,23 @@ class PopUp extends Component {
   }
 
   handleClickOutside(event) {
-    if (!this.props.location.pathname.startsWith('/loading')) {
+    if (this.props.canClickOut) {
       this.props.router.push(`/map/${window.location.search}`);
     }
   }
 
   render(){
-    return (
-      <div className="popup" id={this.props.id}>
+    var closeButton = null;
+    if (this.props.canClickOut) {
+      closeButton = (
         <Link to={`/map/${window.location.search}`} className="close-btn" id="popup-close-btn">
           <FontAwesome name="times" size="lg" title="Close"/>
         </Link>
+      );
+    }
+    return (
+      <div className="popup" id={this.props.id}>
+        { closeButton }
         {this.props.children}
       </div>
     )
@@ -38,10 +44,12 @@ PopUp.propTypes = {
   id : PropTypes.string,
   disableMap: PropTypes.bool,
   setMapViewOnly: PropTypes.func,
+  canClickOut: PropTypes.bool,
 };
 
 PopUp.defaultProps = {
   disableMap: true,
+  canClickOut: true,
 }
 
 export default withRouter(onClickOutside(PopUp));

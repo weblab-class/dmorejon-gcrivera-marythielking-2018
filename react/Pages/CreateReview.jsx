@@ -19,6 +19,8 @@ class CreateReview extends Component {
       greenspaceName: '',
       lat: 0,
       lng: 0,
+
+      errorMessage: null,
     };
 
     this.updateFormVal = this.updateFormVal.bind(this);
@@ -64,14 +66,20 @@ class CreateReview extends Component {
 
     const time = new Date();
 
-    greenspaceServices.info(gid)
-      .then((res) => {
-        const greenspace = res.content;
-        reviewServices.create(greenspace, rating, reviewVal, time)
-          .then((res) => {
-            this.props.router.push(`/map/${gid}/reviews/${window.location.search}`);
-          });
-      });
+    if (rating === 0) {
+      this.setState({ errorMessage: "Please enter a rating." });
+    } else if (reviewVal === '') {
+      this.setState({ errorMessage: "Please enter a review." });
+    } else {
+      greenspaceServices.info(gid)
+        .then((res) => {
+          const greenspace = res.content;
+          reviewServices.create(greenspace, rating, reviewVal, time)
+            .then((res) => {
+              this.props.router.push(`/map/${gid}/reviews/${window.location.search}`);
+            });
+        });
+    }
   }
 
   render(){
@@ -81,6 +89,7 @@ class CreateReview extends Component {
       greenspaceName,
       lat,
       lng,
+      errorMessage,
     } = this.state;
 
     return (
@@ -102,6 +111,7 @@ class CreateReview extends Component {
             onKeyPress={this.onKeyPress}
           />
           <div className="btn" onClick={this.create}>Create</div>
+          { errorMessage ? (<div id="form-error">{errorMessage}</div>) : null }
         </div>
       </GreenspaceSidebar>
     );
