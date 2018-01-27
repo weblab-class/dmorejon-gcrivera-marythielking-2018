@@ -242,12 +242,15 @@ class LeafletMap extends Component {
   }
 
   render(){
+    let imgClass;
+    if (this.props.viewOnly) {imgClass = 'hidden'}
+
     return (
       <div id="leaflet-map" className={this.props.display ? '' : 'hidden'}>
         <div className="leaflet-bottom leaflet-left">
           <div className="leaflet-control-zoom leaflet-bar leaflet-control find-loc-div leaflet-touch"
                 onClick={this.recenter}>
-            <img src="/images/location-512.png" id="find-loc-btn"/>
+            <img src="/images/location-512.png" id="find-loc-btn" className={imgClass}/>
           </div>
         </div>
       </div>
