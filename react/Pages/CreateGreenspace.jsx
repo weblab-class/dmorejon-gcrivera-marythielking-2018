@@ -10,6 +10,7 @@ class CreateGreenspace extends Component {
       lng: props.params.lng,
 
       nameVal: '',
+      errorMessage: null,
     };
 
     this.updateFormVal = this.updateFormVal.bind(this);
@@ -34,11 +35,18 @@ class CreateGreenspace extends Component {
 
   create() {
     const { lat, lng, nameVal } = this.state;
-    this.props.createGreenspace(nameVal, lat, lng);
+    if (nameVal === '') {
+      this.setState({ errorMessage: "Please enter a name for the greenspace." });
+    } else {
+      this.props.createGreenspace(nameVal, lat, lng);
+    }
   }
 
   render(){
-    const { nameVal } = this.state;
+    const {
+      nameVal,
+      errorMessage,
+    } = this.state;
 
     return (
       <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
@@ -52,6 +60,7 @@ class CreateGreenspace extends Component {
             onKeyPress={this.onKeyPress}
           />
           <div className="btn" onClick={this.create}>Create</div>
+          { errorMessage ? (<div id="form-error">{errorMessage}</div>) : null }
         </div>
       </Sidebar>
     );

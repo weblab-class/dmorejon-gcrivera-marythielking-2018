@@ -12,11 +12,6 @@ class CreateEvent extends Component {
   constructor(props){
     super(props);
 
-    // const current = new Date();
-    // const startTime = current.toISOString().substring(0,16);
-    // const hour = startTime.substring(11,13);
-    // console.log(startTime);
-
     const current = new Date();
     const date = current.toISOString().substring(0,8) + current.getDate();
 
