@@ -517,10 +517,17 @@ h1:hover {
   margin-top: 8px;
   color: #FEDD45;
   text-shadow: 0px 1px 3px #000;
+
 }
 #fav-star-unfilled {
   margin-left: 7px;
   margin-top: 8px;
+}
+#fav-star-filled:hover {
+  cursor: pointer;
+}
+#fav-star-unfilled:hover {
+  cursor: pointer;
 }
 
 #greenspace-name-star {
