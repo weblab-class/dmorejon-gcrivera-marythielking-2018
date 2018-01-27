@@ -19,11 +19,15 @@ class UserView extends Component {
       reviews: [],
       events: [],
       pending: [],
+      favorites: [],
     };
-    console.log(props.currentUser);
+
     this.renderReviews = this.renderReviews.bind(this);
     this.renderReview = this.renderReview.bind(this);
     this.renderEvents = this.renderEvents.bind(this);
+    this.renderPending = this.renderPending.bind(this);
+    this.renderPendingEvent = this.renderPendingEvent.bind(this);
+    this.renderFavorites = this.renderFavorites.bind(this);
   }
 
   componentDidMount() {
@@ -54,6 +58,7 @@ class UserView extends Component {
       this.setState({
         currentUser: newProps.currentUser.displayname,
         photo: newProps.currentUser.photo,
+        favorites: newProps.currentUser.favorites,
       });
     }
   }
@@ -83,30 +88,91 @@ class UserView extends Component {
     </div>);
   }
 
-  renderEvents(events) {
+  renderEvents() {
+    const { events } = this.state;
+    const pendingEvents = this.renderPending();
     if (events.length === 0) {
       return (<div className='userview-col'>
+        {pendingEvents}
         <h1 className="section-header">You aren't a part of any events yet!</h1>
       </div>);
     } else {
       return (<div className='userview-col'>
-        <h1 className="section-header">Your events: </h1>
+        {pendingEvents}
+        <h1 className="section-header">Upcoming Events:</h1>
         <EventList events={events} />
       </div>);
     };
+  }
+
+  renderPending() {
+    const { pending } = this.state;
+    if (pending.length === 0) {
+      return null;
+    } else {
+      const renderedPending = pending.map((p) => this.renderPendingEvent(p));
+      return (<div>
+        <h1 className="section-header">Event Invitations:</h1>
+        <div className="list-items">{renderedPending}</div>
+      </div>)
+    }
+  }
+
+  renderPendingEvent(p) {
+    const { name, _id, starttime, greenspace } = p;
+
+    const localStart = new Date(starttime).toString()
+    const date = localStart.substring(4,10)
+      + ", " + localStart.substring(11,15)
+      + " at " + localStart.substring(16,21);
+
+    return (<Link
+      to={`/map/${greenspace._id}/event/${_id}/${window.location.search}`}
+      className="list-item-event"
+      key={_id}
+    >
+      <div className="event-name">{name}</div>
+      <div className="event-date">{date}</div>
+      <FontAwesome name="check" />
+      <FontAwesome name="times" />
+    </Link>);
+  }
+
+  renderFavorites() {
+    const { favorites } = this.state;
+    if (favorites.length === 0) {
+      return (<div className="userview-col">
+        <h1 className="section-header">You don't have any favorite greenspaces yet!</h1>
+      </div>);
+    } else {
+      const renderedFavorites = favorites.map((f) => this.renderFavorite(f));
+      return (<div className="userview-col">
+        <h1 className="section-header">Favorite Greenspaces:</h1>
+        <div className="list-items">{renderedFavorites}</div>
+      </div>);
+    };
+  }
+
+  renderFavorite(f) {
+    return (
+      <Link to={`/map/${f._id}/${window.location.search}`}
+        className="list-item-event"
+        key={f._id}
+      >
+        <div>{f.name}</div>
+      </Link>
+    );
   }
 
   render(){
     const {
       currentUser,
       photo,
-      events,
-      pending,
     } = this.state;
 
     const renderedReviews = this.renderReviews();
-    const renderedEvents = this.renderEvents(events);
-    const renderedPending = this.renderEvents(pending);
+    const renderedEvents = this.renderEvents();
+    const renderedFavorites = this.renderFavorites();
 
     return (
       <div id='userview' ref="component">
@@ -116,8 +182,8 @@ class UserView extends Component {
         </div>
         <div id="userview-content">
           {renderedEvents}
+          {renderedFavorites}
           {renderedReviews}
-          {renderedPending}
         </div>
       </div>
     );
