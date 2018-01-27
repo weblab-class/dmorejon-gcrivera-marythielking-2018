@@ -234,7 +234,6 @@ class LeafletMap extends Component {
   recenter() {
     this.map.setView(this.state.center);
     this.map.setZoom(16);
-    return;
   }
 
   render(){
