@@ -32,8 +32,8 @@ class GreenspaceInfo extends Component {
         if (this.refs.component) {
           this.setState({
             name: res.content.name,
-            lat: res.content.location[0],
-            lng: res.content.location[1],
+            lat: res.content.location.coordinates[0],
+            lng: res.content.location.coordinates[1],
           });
         }
       });
@@ -114,6 +114,7 @@ class GreenspaceInfo extends Component {
         backButton={false}
         ref="component"
       >
+
         { renderedRating }
         { renderedEvents }
         { currentUser ? createEvent : '' }

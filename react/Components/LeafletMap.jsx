@@ -150,7 +150,7 @@ class LeafletMap extends Component {
 
     greenspaceServices.getAll(minLat, maxLat, minLng, maxLng)
       .then((res) => {
-        res.content.map((g) => this.placeMarker(g.location, g._id));
+        res.content.map((g) => this.placeMarker(g.location.coordinates, g._id));
       }).catch((err) => {
         console.log(err);
       });
