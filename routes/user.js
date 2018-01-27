@@ -51,10 +51,6 @@ router.get('/:name', async (req, res) => {
   }
 });
 
-
-
-
-
 // PUT /user/tag/create
   // Request Body:
     // name: name of tag to be added to current user
