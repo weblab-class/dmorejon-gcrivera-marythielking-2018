@@ -32,8 +32,8 @@ const greenspace = ((greenspaceModel) => {
 
   that.getGreenspaces = async (minLat, maxLat, minLong, maxLong) => {
     try {
-      return await greenspaceModel.find({'location.0': {$gte: minLat, $lte: maxLat},
-                                                      'location.1' :{$gte: minLong, $lte: maxLong}});
+      return await greenspaceModel.find({'location.coordinates.0': {$gte: minLat, $lte: maxLat},
+                                                      'location.coordinates.1' :{$gte: minLong, $lte: maxLong}});
     } catch(e) {
       throw e;
     }

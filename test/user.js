@@ -40,7 +40,6 @@ describe('User API', () => {
         await newUser.save()
         return;
       } catch(e) {
-        console.log(e)
         return e;
       }
     });
@@ -282,7 +281,6 @@ describe('User API', () => {
               assert.equal(res.body.success, true);
               assert.equal(res.body.content.fbid, 10211342727149288);
               assert.equal(res.body.content.favorites.length, 1);
-              console.log(res.body.content.favorites);
             })
             .end((err, res) => {
               if (err) done(err);
