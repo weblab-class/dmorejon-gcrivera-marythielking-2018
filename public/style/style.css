@@ -496,6 +496,22 @@ h1:hover {
   cursor: pointer;
   background-color: #f4f4f4;
 }
+
+.discover-div {
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+.discover-div:hover {
+  cursor: pointer;
+  background-color: #f4f4f4;
+}
+
+#discover-icon {
+  padding: 5px;
+  padding-top: 3px;
+}
+
 #fav-star-filled {
   margin-left: 7px;
   margin-top: 8px;

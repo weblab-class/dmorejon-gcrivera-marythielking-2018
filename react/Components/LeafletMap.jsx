@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import FontAwesome from 'react-fontawesome';
 import greenspaceServices from '../../services/greenspaceServices.js';
 
 class LeafletMap extends Component {
@@ -32,6 +33,7 @@ class LeafletMap extends Component {
     this.setMapCenter = this.setMapCenter.bind(this);
     this.placeNewMarker = this.placeNewMarker.bind(this);
     this.recenter = this.recenter.bind(this);
+    this.discoverClick = this.discoverClick.bind(this);
   }
 
   componentDidMount() {
@@ -241,6 +243,11 @@ class LeafletMap extends Component {
     }
   }
 
+  discoverClick() {
+    this.props.router.push(`/discover/${window.location.search}`);
+    return;
+  }
+
   render(){
     let imgClass;
     if (this.props.viewOnly) {imgClass = 'hidden'}
@@ -251,6 +258,12 @@ class LeafletMap extends Component {
           <div className="leaflet-control-zoom leaflet-bar leaflet-control find-loc-div leaflet-touch"
                 onClick={this.recenter}>
             <img src="/images/location-512.png" id="find-loc-btn" className={imgClass}/>
+          </div>
+        </div>
+        <div className={`leaflet-top leaflet-left ${imgClass}`}>
+          <div className="leaflet-control-zoom leaflet-bar leaflet-control leaflet-touch discover-div"
+                onClick={this.discoverClick}>
+            <FontAwesome name="search" size="3x" title="Discover" id="discover-icon"/>
           </div>
         </div>
       </div>
