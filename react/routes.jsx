@@ -59,7 +59,8 @@ export default (
         component={CreateReview}
         onEnter={checkUser} />
       <Route path="user/view/:id"
-        component={UserView} />
+        component={UserView}
+        onEnter={checkUser} />
       <Route path="discover"
           component={Discover} />
       <Route path="*"
