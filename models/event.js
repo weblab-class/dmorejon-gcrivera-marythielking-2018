@@ -184,4 +184,5 @@ const event = ((eventModel) => {
 
 })(eventModel);
 
-module.exports = event;
+exports.event = event;
+exports.eventModel = eventModel;

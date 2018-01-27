@@ -4,12 +4,15 @@ const tagSchema = mongoose.Schema({
   name: {type: String, required: true}
 });
 
-const greenspaceModel = mongoose.model('Greenspace', mongoose.Schema({
-  location: {type: [{type: Number, required: true}], required: true},
+const greenspaceSchema = mongoose.Schema({
+  location: {type: {$geometry: { type: 'Point' }, coordinates: [Number]}},
   _arraySignature: { type: String, unique: true },
   name: {type: String, required: true},
   tags: {type: [{type: String}], default: []},
-}));
+});
+
+greenspaceSchema.index({ "location": "2dsphere" });
+const greenspaceModel = mongoose.model('Greenspace', greenspaceSchema);
 
 const greenspace = ((greenspaceModel) => {
   let that = {};
@@ -36,6 +39,7 @@ const greenspace = ((greenspaceModel) => {
   }
 
   that.createGreenspace = async (name, location, tags) => {
+    console.log(location)
     if (!location) {
       throw {message: 'Greenspace validation failed: location: Path `location` is required.', errorCode: 400};
     }
@@ -47,6 +51,7 @@ const greenspace = ((greenspaceModel) => {
     try {
       return await newGreenspace.save();
     } catch(e) {
+      console.log(e)
       throw e;
     }
   }
@@ -77,7 +82,9 @@ const greenspace = ((greenspaceModel) => {
 
   that.changeGreenspaceLocation = async (id, location) => {
     try {
-      const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {location: location});
+      const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id}, {location: {
+                                                                                  type: 'Point',
+                                                                                  coordinates: location}});
       if (!oldGreenspace) {
         throw {message: 'Greenspace does not exist.', errorCode: 404}
       }
@@ -92,4 +99,5 @@ const greenspace = ((greenspaceModel) => {
 
 })(greenspaceModel);
 
-module.exports = greenspace;
+exports.greenspace = greenspace;
+exports.greenspaceModel = greenspaceModel;

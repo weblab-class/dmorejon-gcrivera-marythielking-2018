@@ -23,6 +23,20 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /user/favorites/check/:gid
+  // Response body:
+    // success: true if user info retrieved from database; false otherwise
+    // err: on error, an error message
+    // bool: true if greenspace in the user's favorites, false otherwise (see above schema)
+router.get('/favorites/check/:gid', async (req, res) => {
+  try {
+    const bool = await user.isGreenspaceFavorite(req.user.fbid, req.params.gid);
+    utils.sendSuccessResponse(res, bool);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
 // GET /user/:name
   // Response body:
     // success: true if user info retrieved from database; false otherwise
@@ -63,6 +77,38 @@ router.put('/tag/create', async (req, res) => {
 router.put('/tag/delete', async (req, res) => {
   try {
     const userData = await user.deleteTag(req.user.fbid, req.body.name);
+    utils.sendSuccessResponse(res, userData);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
+// PUT /user/favorites/add
+  //Request Body:
+    //greenspace: greenspace object the user is trying to favorite
+  // Response body:
+    // success: true if user info retrieved from database; false otherwise
+    // err: on error, an error message
+    // user: updated user object (see above schema)
+router.put('/favorites/add', async (req, res) => {
+  try {
+    const userData = await user.addFavorite(req.user.fbid, req.body.greenspace);
+    utils.sendSuccessResponse(res, userData);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
+// PUT /user/favorites/remove
+  //Request Body:
+    //greenspace: greenspace object the user is trying to remove from favorites
+  // Response body:
+    // success: true if user info retrieved from database; false otherwise
+    // err: on error, an error message
+    // user: updated user object (see above schema)
+router.put('/favorites/remove', async (req, res) => {
+  try {
+    const userData = await user.removeFavorite(req.user.fbid, req.body.greenspace);
     utils.sendSuccessResponse(res, userData);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);

@@ -1,6 +1,6 @@
 const express = require('express');
 const utils = require('../utils');
-const greenspace = require('../models/greenspace');
+const greenspace = require('../models/greenspace').greenspace;
 
 const router = express.Router();
 
@@ -47,7 +47,10 @@ router.get('/:minLat/:maxLat/:minLong/:maxLong', async (req, res) => {
     // greenspace: greenspace object (see schema)
 router.post('/', async (req, res) => {
   try {
-    const newGreenspace = await greenspace.createGreenspace(req.body.name, req.body.location, req.body.tags);
+    const location = req.body.location.map((val) => {
+      return parseFloat(val);
+    });
+    const newGreenspace = await greenspace.createGreenspace(req.body.name, location, req.body.tags);
     utils.sendSuccessResponse(res, newGreenspace);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);
@@ -90,7 +93,7 @@ router.put('/name/:greenspaceid', async (req, res) => {
     // err: on error, an error message
 router.put('/location/:greenspaceid', async (req, res) => {
   try {
-    await greenspace.changeGreenspaceName(req.params.greenspaceid, req.body.location);
+    await greenspace.changeGreenspaceName(req.params.greenspaceid, req.body.location.coordinates);
     utils.sendSuccessResponse(res);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);

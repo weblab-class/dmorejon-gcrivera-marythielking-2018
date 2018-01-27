@@ -11,6 +11,11 @@ for (let i in mongoose.connection.collections) {
   mongoose.connection.collections[i].remove(function() {});
 }
 
+const greenspace1 = {location: [29.004612, 35.277791], name: 'Barely Green', _id: mongoose.Types.ObjectId('besttestid12'), _arraySignature: '123'};
+const greenspace2 = {location: [32.015199, 35.277791], name: 'Disputed Turf', _id: mongoose.Types.ObjectId('testtestid23'), _arraySignature: '456'};
+const greenspace3 = {location: [30.696969, 21.696969], name: 'Happy Greenspace', _id: mongoose.Types.ObjectId('456id1234567'), _arraySignature: '567'};
+const greenspace4 = {location: [15.123456, 17.123480], name: 'Sad Greenspace', _id: mongoose.Types.ObjectId('123id4567890'), _arraySignature: '789'};
+
 describe('User API', () => {
 
   describe('GET /user', () => {
@@ -35,7 +40,6 @@ describe('User API', () => {
         await newUser.save()
         return;
       } catch(e) {
-        console.log(e)
         return e;
       }
     });
@@ -63,6 +67,8 @@ describe('User API', () => {
         return e;
       }
     });
+
+
 
     it('Get data for an invalid user', (done) => {
       request(app)
@@ -143,6 +149,7 @@ describe('User API', () => {
           else done();
         });
     });
+
   });
 
   describe('PUT /user', () => {
@@ -230,5 +237,89 @@ describe('User API', () => {
         });
     });
   });
+
+  describe('/user/favorites/', () => {
+
+    before((done) => {
+      request(app)
+        .put('/user/favorites/add')
+        .send({greenspace: greenspace1})
+        .end((err, res) => {
+          if (err) done(err);
+          else {
+            done();
+          }
+        });
+    });
+
+
+        it('Add a favorite to a user', (done) => {
+          request(app)
+            .put('/user/favorites/add')
+            .send({greenspace: greenspace2})
+            .expect(200)
+            .expect('Content-Type', 'application/json; charset=utf-8')
+            .expect((res) => {
+              assert.equal(res.body.success, true);
+              assert.equal(res.body.content.fbid, 10211342727149288);
+              assert.equal(res.body.content.favorites[0].name, 'Barely Green');
+              assert.equal(res.body.content.favorites.length, 2)
+            })
+            .end((err, res) => {
+              if (err) done(err);
+              else done();
+            });
+        });
+
+        it('Remove a favorite from a user', (done) => {
+          request(app)
+            .put('/user/favorites/remove')
+            .send({greenspace: greenspace1})
+            .expect(200)
+            .expect('Content-Type', 'application/json; charset=utf-8')
+            .expect((res) => {
+              assert.equal(res.body.success, true);
+              assert.equal(res.body.content.fbid, 10211342727149288);
+              assert.equal(res.body.content.favorites.length, 1);
+            })
+            .end((err, res) => {
+              if (err) done(err);
+              else done();
+            });
+        });
+
+            it('Check favorites for invalid greenspace', (done) => {
+              request(app)
+                .get('/user/favorites/check/123456789012')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .expect((res) => {
+                  assert.equal(res.body.success, true);
+                  assert.isDefined(res.body.content);
+                  assert.equal(res.body.content, false);
+                })
+                .end((err, res) => {
+                  if (err) done(err);
+                  else done();
+                });
+            });
+
+            it('Check favorites for a valid greenspace', (done) => {
+              request(app)
+                .get('/user/favorites/check/testtestid23')
+                .expect(200)
+                .expect('Content-Type', 'application/json; charset=utf-8')
+                .expect((res) => {
+                  assert.equal(res.body.success, true);
+                  assert.isDefined(res.body.content);
+                  assert.equal(res.body.content, true);
+                })
+                .end((err, res) => {
+                  if (err) done(err);
+                  else done();
+                });
+            });
+      });
+
 
 });

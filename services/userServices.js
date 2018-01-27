@@ -20,6 +20,14 @@ export default {
     });
   },
 
+  isFavorite : (gid) => {
+    return request({
+      uri : BASE_URL + `/favorites/check/${gid}`,
+      method: 'GET',
+      json : true
+    });
+  },
+
   addTag : (name) => {
     return request({
       uri : BASE_URL + '/tag/create',
@@ -39,6 +47,24 @@ export default {
       body : {
         name,
       }
+    });
+  },
+
+  addFavorite : (greenspaceObj) => {
+    return request({
+      uri : BASE_URL + '/favorites/add',
+      method: 'PUT',
+      json : true,
+      body : greenspaceObj,
+    });
+  },
+
+  deleteFavorite : (greenspaceObj) => {
+    return request({
+      uri : BASE_URL + '/favorites/remove',
+      method: 'PUT',
+      json : true,
+      body : greenspaceObj,
     });
   },
 }

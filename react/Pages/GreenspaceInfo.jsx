@@ -114,6 +114,7 @@ class GreenspaceInfo extends Component {
         backButton={false}
         ref="component"
       >
+
         { renderedRating }
         { renderedEvents }
         { currentUser ? createEvent : '' }

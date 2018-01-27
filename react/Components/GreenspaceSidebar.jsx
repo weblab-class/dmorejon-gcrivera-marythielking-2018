@@ -15,7 +15,8 @@ class GreenspaceSidebar extends Component {
       lng,
       backButton,
       children,
-      router
+      router,
+
     } = this.props;
 
     let renderedBackButton = null;
@@ -30,6 +31,8 @@ class GreenspaceSidebar extends Component {
         />
       );
     }
+
+    let renderedStar = null;
 
     return (
       <Sidebar setMapPlaceMarkers={setMapPlaceMarkers}>
@@ -53,6 +56,7 @@ GreenspaceSidebar.propTypes = {
   lat: PropTypes.number,
   lng: PropTypes.number,
   backButton: PropTypes.bool,
+  isFavorite: PropTypes.bool,
 }
 
 GreenspaceSidebar.defaultProps = {

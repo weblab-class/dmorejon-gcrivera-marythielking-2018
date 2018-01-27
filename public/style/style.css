@@ -496,3 +496,7 @@ h1:hover {
   cursor: pointer;
   background-color: #f4f4f4;
 }
+#fav-star {
+  margin-right: 135px;
+  margin-top: 10px;
+}
