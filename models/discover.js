@@ -23,10 +23,8 @@ const discover = (() => {
           if (a_dtfe >= b_dtfe) {return -1;}
           else {return 1;}
         });
-        // console.log(greenspacesAndEvents);
         return greenspacesAndEvents;
       } catch(e) {
-        console.log(e)
         throw e;
       }
     }
@@ -97,7 +95,7 @@ const discover = (() => {
         Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       const d = R * c;
-      return d / 25.0;
+      return Math.sqrt(d) / 25.0;
     }
 
     const _toRadian = (val) => {
@@ -120,7 +118,7 @@ const discover = (() => {
 
     const _getFavorite = (greenspace, user) => {
       const favoriteCheck = user.favorites.some((favorite) => {
-        return favorite._id == greenspace._id;
+        return favorite._id.toString() == greenspace._id.toString()
       });
       if (favoriteCheck) {return 0.25;}
       return 0.75;
@@ -129,7 +127,7 @@ const discover = (() => {
     const _getAttatched = (userid, events) => {
       const attatched = events.some((event) => {
         const participating = event.participants.some((participant) => {
-          return participant.fbid == userid;
+          return participant.fbid.toString() == userid.toString();
         });
         if (participating) {return true;}
         return false;

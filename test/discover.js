@@ -17,19 +17,6 @@ let cutler;
 
 describe('Discover API', () => {
 
-  before(async () => {
-    try {
-      const newUser = new userModel({fbid: 10211342727149288,
-                                      displayname:'Gabrielle Rivera',
-                                      photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901',
-                                      tags: ['dogs', 'hiking', 'soccer', 'field']});
-      await newUser.save();
-      return;
-    } catch(e) {
-      throw e;
-    }
-  });
-
   before((done) => {
     request(app)
       .post('/greenspace')
@@ -42,6 +29,20 @@ describe('Discover API', () => {
           done();
         }
       });
+  });
+
+  before(async () => {
+    try {
+      const newUser = new userModel({fbid: 10211342727149288,
+                                      displayname:'Gabrielle Rivera',
+                                      photo: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/15590502_10208201639144052_5928782208183143104_n.jpg?oh=07a9b95b86ef0d984b4f42928a4f2568&oe=5AEF5901',
+                                      tags: ['dogs', 'hiking', 'soccer', 'field'],
+                                      favorites: [kresge]});
+      await newUser.save();
+      return;
+    } catch(e) {
+      throw e;
+    }
   });
 
   before((done) => {
@@ -182,7 +183,11 @@ describe('Discover API', () => {
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
-          console.log(res.body.content);
+          assert.equal(res.body.content.length, 3);
+          assert.equal(res.body.content[0].greenspace.name, 'Killian');
+          assert.equal(res.body.content[0].events.length, 2);
+          assert.equal(res.body.content[0].events[0].name, 'Frisbee');
+          assert.equal(res.body.content[1].greenspace.name, 'Kresge');
         })
         .end((err, res) => {
           if (err) done(err);
