@@ -31,6 +31,7 @@ class LeafletMap extends Component {
     this.onNewMarker = this.onNewMarker.bind(this);
     this.setMapCenter = this.setMapCenter.bind(this);
     this.placeNewMarker = this.placeNewMarker.bind(this);
+    this.recenter = this.recenter.bind(this);
   }
 
   componentDidMount() {
@@ -230,9 +231,22 @@ class LeafletMap extends Component {
     }
   }
 
+  recenter() {
+    this.map.setView(this.state.center);
+    this.map.setZoom(16);
+    return;
+  }
+
   render(){
     return (
-      <div id="leaflet-map" className={this.props.display ? '' : 'hidden'}></div>
+      <div id="leaflet-map" className={this.props.display ? '' : 'hidden'}>
+        <div className="leaflet-bottom leaflet-left">
+          <div className="leaflet-control-zoom leaflet-bar leaflet-control find-loc-div leaflet-touch"
+                onClick={this.recenter}>
+            <img src="/images/location-512.png" id="find-loc-btn"/>
+          </div>
+        </div>
+      </div>
     );
   }
 }

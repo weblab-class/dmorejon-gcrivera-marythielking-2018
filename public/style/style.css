@@ -470,3 +470,24 @@ h1:hover {
 #close-btn:hover {
   color: #4f4f4f;
 }
+
+#find-loc-btn {
+  height: 20px;
+  cursor: pointer;
+  margin-bottom: 70px;
+  margin-left: 5px;
+  padding-top: 5px;
+  pointer-events: all;
+}
+
+.find-loc-div {
+  width: 30px;
+  height: -30px;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+.find-loc-div:hover {
+  cursor: pointer;
+  background-color: #f4f4f4;
+}
