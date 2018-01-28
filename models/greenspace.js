@@ -36,6 +36,7 @@ const greenspace = ((greenspaceModel) => {
                                                       'location.1' :{$gte: minLat, $lte: maxLat}});
       return greenspaces.map((val) => {
         val.location = [val.location[1], val.location[0]];
+        return val;
       });
     } catch(e) {
       throw e;

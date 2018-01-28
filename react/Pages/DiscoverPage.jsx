@@ -10,7 +10,7 @@ class Discover extends Component {
   render() {
     return (
       <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
-        <div className="section-header">Discover</div>
+        <h1>Discover</h1>
       </Sidebar>
     );
   }

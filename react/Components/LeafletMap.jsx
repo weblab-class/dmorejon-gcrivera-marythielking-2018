@@ -244,6 +244,10 @@ class LeafletMap extends Component {
   }
 
   discoverClick() {
+    if (this.state.marker) {
+      this.state.marker.remove(this.map);
+      this.setState({ marker: null });
+    }
     this.props.router.push(`/discover/${window.location.search}`);
     return;
   }
@@ -251,6 +255,16 @@ class LeafletMap extends Component {
   render(){
     let imgClass;
     if (this.props.viewOnly) {imgClass = 'hidden'}
+
+    let discover;
+    if(this.props.currentUser) {
+      discover = (
+        <div className="leaflet-control-zoom leaflet-bar leaflet-control leaflet-touch discover-div"
+              onClick={this.discoverClick}>
+          <FontAwesome name="search" size="3x" title="Discover" id="discover-icon"/>
+        </div>
+      );
+    }
 
     return (
       <div id="leaflet-map" className={this.props.display ? '' : 'hidden'}>
@@ -261,10 +275,7 @@ class LeafletMap extends Component {
           </div>
         </div>
         <div className={`leaflet-top leaflet-left ${imgClass}`}>
-          <div className="leaflet-control-zoom leaflet-bar leaflet-control leaflet-touch discover-div"
-                onClick={this.discoverClick}>
-            <FontAwesome name="search" size="3x" title="Discover" id="discover-icon"/>
-          </div>
+          {discover}
         </div>
       </div>
     );
