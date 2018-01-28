@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import Sidebar from '../Components/Sidebar.jsx';
 
 class Discover extends Component {
-  render(){
+  constructor(props){
+    super(props);
+  }
+
+  render() {
     return (
       <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
         <div className="section-header">Discover</div>

@@ -9,6 +9,7 @@ const discover = (() => {
 
     that.getDiscoveryInfo = async (userid, userLocation) => {
       try {
+        userLocation = [userLocation[1], userLocation[0]];
         const user = await _getUserData(userid);
         const greenspaces = await _getPossibleGreenspaces(userLocation);
         let greenspacesAndEvents = [];
@@ -25,6 +26,7 @@ const discover = (() => {
         });
         return greenspacesAndEvents;
       } catch(e) {
+        console.log(e.message)
         throw e;
       }
     }
@@ -80,11 +82,11 @@ const discover = (() => {
     const _getDistance = (greenspace, userLocation) => {
       const R = 3959; // radius of earth in miles
 
-      let lat1 = greenspace.location.coordinates[0];
-      const lon1 = greenspace.location.coordinates[1];
+      let lat1 = greenspace.location[1];
+      const lon1 = greenspace.location[0];
 
-      let lat2 = userLocation[0];
-      const lon2 = userLocation[1];
+      let lat2 = userLocation[1];
+      const lon2 = userLocation[0];
 
       const dLat = _toRadian(lat2-lat1);
       const dLon = _toRadian(lon2-lon1);
@@ -112,6 +114,10 @@ const discover = (() => {
         if (commonEventTags.length > 0) {return true;}
         return false;
       });
+
+      if (commonTags.length == 0) {
+        return 0.1;
+      }
 
       return commonTags.length / numUserTags;
     }

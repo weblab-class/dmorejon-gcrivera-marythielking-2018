@@ -23,6 +23,7 @@ const greenspace = ((greenspaceModel) => {
       if (!greenspaceData) {
         throw {message: 'Greenspace does not exist.', errorCode: 404};
       }
+      greenspaceData.location = [greenspaceData.location[1], greenspaceData.location[0]];
       return greenspaceData;
     } catch(e) {
       throw e;
@@ -31,20 +32,22 @@ const greenspace = ((greenspaceModel) => {
 
   that.getGreenspaces = async (minLat, maxLat, minLong, maxLong) => {
     try {
-      return await greenspaceModel.find({'location.0': {$gte: minLat, $lte: maxLat},
-                                                      'location.1' :{$gte: minLong, $lte: maxLong}});
+      const greenspaces = await greenspaceModel.find({'location.0': {$gte: minLong, $lte: maxLong},
+                                                      'location.1' :{$gte: minLat, $lte: maxLat}});
+      return greenspaces.map((val) => {
+        val.location = [val.location[1], val.location[0]];
+      });
     } catch(e) {
       throw e;
     }
   }
 
   that.createGreenspace = async (name, location, tags) => {
-    console.log(location)
     if (!location) {
       throw {message: 'Greenspace validation failed: location: Path `location` is required.', errorCode: 400};
     }
     const _arraySignature = location.join('.');
-    const newGreenspace = new greenspaceModel({location: location,
+    const newGreenspace = new greenspaceModel({location: [location[1], location[0]],
                                                 name: name,
                                                 _arraySignature: _arraySignature,
                                                 tags: tags});

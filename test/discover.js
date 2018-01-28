@@ -25,7 +25,6 @@ describe('Discover API', () => {
         if (err) done(err);
         else {
           kresge = res.body.content;
-          kresge.location = kresge.location.coordinates;
           done();
         }
       });
@@ -53,7 +52,6 @@ describe('Discover API', () => {
         if (err) done(err);
         else {
           killian = res.body.content;
-          killian.location = killian.location.coordinates;
           done();
         }
       });
@@ -67,7 +65,6 @@ describe('Discover API', () => {
         if (err) done(err);
         else {
           cutler = res.body.content;
-          cutler.location = cutler.location.coordinates;
           done();
         }
       });
