@@ -181,7 +181,7 @@ class UserView extends Component {
     return (
       <div id='userview' ref="component">
         <div id="userview-user">
-          <img src={photo} height="80px" className="profile-icon"/>
+          <img src={photo} height="55px" className="profile-icon"/>
           <h1 id="userview-name">{currentUser}</h1>
         </div>
         <div id="userview-content">

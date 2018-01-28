@@ -12,6 +12,11 @@ class Header extends Component {
     if (currentUser) {
       const { displayname, photo } = currentUser;
       headerButtons = (<div id="header-btns">
+        <Link to={`/map/${window.location.search}`}>
+          <div className="header-btn">
+            <FontAwesome name="map-o" size="2x" title="To Map"/>
+          </div>
+        </Link>
         <Link to={`/user/view/${currentUser.fbid}/${window.location.search}`}>
           <div className="header-btn">
               <img src={photo} height="40px" className="profile-icon" id="header-profile-icon" title="User Profile"/>
