@@ -265,6 +265,37 @@ h1:hover {
   color: #4f4f4f;
 }
 
+.list-item-pending {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pending-btns {
+  display: flex;
+  align-items: center;
+  border: 1px solid #4f4f4f;
+  border-radius: 5px;
+}
+
+.pending-btns .pending-btn:not(:last-child) {
+    border-right: 1px solid #4f4f4f; /* Prevent double borders */
+}
+
+.pending-btn {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4f4f4f;
+}
+
+.pending-btn:hover {
+  background-color: #4f4f4f;
+  color: #919191;
+}
+
 .list-item-participant {
   display: flex;
   align-items: center;

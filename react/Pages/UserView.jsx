@@ -22,6 +22,9 @@ class UserView extends Component {
       favorites: [],
     };
 
+    this.updateEvents = this.updateEvents.bind(this);
+    this.acceptEvent = this.acceptEvent.bind(this);
+    this.declineEvent = this.declineEvent.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
     this.renderReview = this.renderReview.bind(this);
     this.renderEvents = this.renderEvents.bind(this);
@@ -38,6 +41,20 @@ class UserView extends Component {
         }
       });
 
+    this.updateEvents();
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.currentUser) {
+      this.setState({
+        currentUser: newProps.currentUser.displayname,
+        photo: newProps.currentUser.photo,
+        favorites: newProps.currentUser.favorites,
+      });
+    }
+  }
+
+  updateEvents() {
     Services.event.getAllByUser()
       .then((res) => {
         if (this.refs.component && res.content) {
@@ -53,14 +70,20 @@ class UserView extends Component {
       });
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.currentUser) {
-      this.setState({
-        currentUser: newProps.currentUser.displayname,
-        photo: newProps.currentUser.photo,
-        favorites: newProps.currentUser.favorites,
+  acceptEvent(e, eventId) {
+    e.preventDefault(); // don't link to event page
+    Services.event.accept(eventId)
+      .then((res) => {
+        this.updateEvents();
       });
-    }
+  }
+
+  declineEvent(e, eventId) {
+    e.preventDefault(); // don't link to event page
+    Services.event.decline(eventId)
+      .then((res) => {
+        this.updateEvents();
+      });
   }
 
   renderReviews() {
@@ -135,9 +158,13 @@ class UserView extends Component {
         <div className="event-name">{name}</div>
         <div className="event-date">{date}</div>
       </div>
-      <div className="pending-icons" >
-        <FontAwesome name="check" className="pending-icon" />
-        <FontAwesome name="times" className="pending-icon" />
+      <div className="pending-btns" >
+        <div className="pending-btn" onClick={(e) => this.acceptEvent(e, _id)}>
+          <FontAwesome name="check" />
+        </div>
+        <div className="pending-btn" onClick={(e) => this.declineEvent(e, _id)}>
+          <FontAwesome name="times" />
+        </div>
       </div>
     </Link>);
   }
