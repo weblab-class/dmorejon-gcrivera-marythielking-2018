@@ -319,6 +319,14 @@ h1:hover {
   justify-content: flex-start;
 }
 
+.event-participant:hover {
+  cursor: default;
+}
+
+#pending-users {
+  margin-top: 10px;
+}
+
 .list-item-review {
   padding: 10px 15px;
   margin: 2px 0px;

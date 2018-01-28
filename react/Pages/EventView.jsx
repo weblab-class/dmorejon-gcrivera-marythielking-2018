@@ -26,6 +26,7 @@ class EventView extends Component {
     this.renderDeleteBtn = this.renderDeleteBtn.bind(this);
     this.renderBtn = this.renderBtn.bind(this);
     this.renderParticipants = this.renderParticipants.bind(this);
+    this.renderPending = this.renderPending.bind(this);
     this.renderParticipant = this.renderParticipant.bind(this);
   }
 
@@ -173,6 +174,22 @@ class EventView extends Component {
     </div>);
   }
 
+  renderPending() {
+    const { currentUser } = this.props;
+    const { pending, host } = this.state;
+    if (!pending) { return null; }
+    if (host && currentUser) {
+      if (host.fbid === currentUser.fbid) {
+        const pendingList = pending.map((p) => this.renderParticipant(p));
+        return (<div id="pending-users">
+          <div className="section-header">Invited Users:</div>
+          <div className="list-items">{pendingList}</div>
+        </div>);
+      }
+    }
+    return null;
+  }
+
   renderParticipant(p) {
     return (<div key={p._id} className="list-item-participant event-participant">
         <img src={p.photo} height="30px" className="profile-icon" id="search-icon" />
@@ -194,6 +211,7 @@ class EventView extends Component {
     const deleteBtn = this.renderDeleteBtn();
     const joinLeaveBtn = this.renderBtn();
     const renderedParticipants = this.renderParticipants();
+    const renderedPending = this.renderPending();
 
     return (
       <GreenspaceSidebar
@@ -210,6 +228,7 @@ class EventView extends Component {
         {renderedTime}
         <div id="event-description">{description}</div>
         {renderedParticipants}
+        {renderedPending}
         {joinLeaveBtn}
       </GreenspaceSidebar>
     );
