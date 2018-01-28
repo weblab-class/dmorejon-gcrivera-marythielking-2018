@@ -27,22 +27,29 @@ class EventList extends Component {
   }
 
   render(){
-    const { events } = this.props;
+    const { events, maxHeight } = this.props;
 
     if (events.length === 0) {
       return null;
     }
-    return (<div className="list-items">
-      {events.map((e) => this.renderEvent(e))}
-    </div>);
+    return (
+      <div
+        className="list-items"
+        style={{ maxHeight }}
+      >
+        {events.map((e) => this.renderEvent(e))}
+      </div>
+    );
   }
 }
 
 EventList.propTypes = {
   events: PropTypes.arrayOf(PropTypes.object),
+  maxHeight: PropTypes.string,
 }
 
 EventList.defaultProps = {
+  maxHeight: null,
 }
 
 export default withRouter(EventList);

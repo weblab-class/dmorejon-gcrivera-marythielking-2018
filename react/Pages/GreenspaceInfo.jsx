@@ -60,7 +60,7 @@ class GreenspaceInfo extends Component {
     }
     return (<div id="upcoming-events">
       <div id="upcoming-events-text">Upcoming Events:</div>
-      <EventList events={events} />
+      <EventList events={events} maxHeight="300px" />
     </div>);
   }
 
