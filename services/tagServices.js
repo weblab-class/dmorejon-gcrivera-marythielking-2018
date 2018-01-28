@@ -8,7 +8,7 @@ export default {
   search : (name) => {
     return request({
       uri : BASE_URL + `/${name}`,
-      method: 'GET',
+      method : 'GET',
       json : true
     });
   },
@@ -16,11 +16,19 @@ export default {
   create : (name) => {
     return request({
       uri : BASE_URL,
-      method: 'POST',
+      method : 'POST',
       json : true,
       body : {
         name,
       }
+    });
+  },
+
+  delete : (name) => {
+    return request({
+      uri : BASE_URL + `/${name}`,
+      method : 'DELETE',
+      json : true,
     });
   },
 }

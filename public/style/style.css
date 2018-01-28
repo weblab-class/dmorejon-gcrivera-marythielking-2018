@@ -575,3 +575,41 @@ h1:hover {
 .discover-greenspace {
   background-color: #b4d0af; /* #cccccc; */
 }
+
+#delete-tag-icon {
+  margin-left: 4px;
+  cursor: pointer;
+  color: grey;
+}
+
+.list-item-addedTag {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 15px;
+  margin: 2px 0px;
+  border-radius: 5px;
+  background-color: rgba(183, 183, 183, 0.5);
+}
+
+#list-items-addedTag {
+  max-height: 105px;
+  overflow-y: scroll;
+  display: inline-block;
+}
+
+.tag-list {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+.list-item-tag {
+  display: inline-block;
+  margin-right: 10px;
+  margin-top: 5px;
+  padding: 2px;
+  padding-right: 6px;
+  padding-left: 10px;
+  background-color: rgba(145, 145, 145, 0.5);
+  border-radius: 12px;
+}

@@ -33,8 +33,8 @@ class App extends Component {
     this.setMapViewOnly = this.setMapViewOnly.bind(this);
   }
 
-  createGreenspace(name, lat, lng) {
-    Services.greenspace.create(name, [lat, lng])
+  createGreenspace(name, lat, lng, tags) {
+    Services.greenspace.create(name, [lat, lng], tags)
       .then((res) => {
         this.setState({newMarker: true});
         this.props.router.push(`/map/${res.content._id}/${window.location.search}`);
