@@ -9,7 +9,8 @@ class UserSearch extends Component {
 
     this.state = {
       users: [],
-      participants: []
+      participants: [],
+      update: false,
     };
 
     ArrowKeysReact.config({
@@ -34,6 +35,7 @@ class UserSearch extends Component {
     this.renderParticipants = this.renderParticipants.bind(this);
     this.deleteParticipant = this.deleteParticipant.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.createKeyPress = this.createKeyPress.bind(this);
   }
 
   updateFormVal(event) {
@@ -109,6 +111,12 @@ class UserSearch extends Component {
     }
   }
 
+  createKeyPress(event, user) {
+    if (event.key === 'Enter') {
+      this.props.create();
+    }
+  }
+
   render() {
     const {
       users,
@@ -130,6 +138,7 @@ class UserSearch extends Component {
           <input className='form-input' id="-1"
             placeholder='add participants'
             onChange={this.updateFormVal}
+            onKeyPress={this.createKeyPress}
             ref="-1"
           />
         <div className="list-items" id="list-items-participant">
