@@ -528,3 +528,7 @@ h1:hover {
   display: flex;
   align-items: center;
 }
+
+.discover-greenspace {
+  background-color: #b4d0af; /* #cccccc; */
+}

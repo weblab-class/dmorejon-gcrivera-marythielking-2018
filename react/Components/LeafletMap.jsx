@@ -10,7 +10,7 @@ class LeafletMap extends Component {
     super(props);
 
     if (window.location.search) {
-      var center = window.location.search.split('=')[1].split(',');
+      let center = window.location.search.split('=')[1].split(',');
       center = [parseFloat(center[0]), parseFloat(center[1])];
     } else {
       var center = [42.3580, -71.0942];
