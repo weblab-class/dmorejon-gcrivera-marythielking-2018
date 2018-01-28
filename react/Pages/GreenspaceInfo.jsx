@@ -35,6 +35,7 @@ class GreenspaceInfo extends Component {
             lat: res.content.location[0],
             lng: res.content.location[1],
           });
+          this.props.setMapViewFn(res.content.location);
         }
       });
 

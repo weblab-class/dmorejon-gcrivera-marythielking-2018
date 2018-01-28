@@ -33,6 +33,7 @@ class EventView extends Component {
     this.props.getGreenspaceInfo(gid, (info) => {
       if (this.refs.component) {
         this.setState(info)
+        this.props.setMapViewFn([this.state.lat, this.state.lng]);
       }
     });
 

@@ -16,6 +16,7 @@ class App extends Component {
       placeMarkers: true,
       newMarker: false,
       resetMarkers: false,
+      setMapView: null,
     };
 
     Services.user.info()
@@ -31,6 +32,7 @@ class App extends Component {
     this.getGreenspaceInfo = this.getGreenspaceInfo.bind(this);
     this.setMapPlaceMarkers = this.setMapPlaceMarkers.bind(this);
     this.setMapViewOnly = this.setMapViewOnly.bind(this);
+    this.setMapViewFn = this.setMapViewFn.bind(this);
   }
 
   createGreenspace(name, lat, lng) {
@@ -65,6 +67,10 @@ class App extends Component {
     }
   }
 
+  setMapViewFn(loc) {
+    this.setState({ setMapView: loc });
+  }
+
   render(){
     const {
       showMap,
@@ -73,6 +79,7 @@ class App extends Component {
       placeMarkers,
       newMarker,
       resetMarkers,
+      setMapView,
     } = this.state;
 
     return (
@@ -88,6 +95,7 @@ class App extends Component {
             newMarker={newMarker}
             resetMarkers={resetMarkers}
             currentUser={currentUser}
+            setMapView={setMapView}
           />
           {React.cloneElement(this.props.children, {
             currentUser: currentUser,
@@ -95,6 +103,7 @@ class App extends Component {
             getGreenspaceInfo: this.getGreenspaceInfo,
             setMapViewOnly: this.setMapViewOnly,
             setMapPlaceMarkers: this.setMapPlaceMarkers,
+            setMapViewFn: this.setMapViewFn,
           })}
         </div>
       </div>

@@ -8,7 +8,7 @@ import greenspaceServices from '../../services/greenspaceServices.js';
 class LeafletMap extends Component {
   constructor(props){
     super(props);
-    
+
     var center = null;
     if (window.location.search) {
       center = window.location.search.split('=')[1].split(',');
@@ -23,6 +23,7 @@ class LeafletMap extends Component {
       prevPlaceMarkers: true,
       center: center,
       icon: null,
+      currentGreenspace: null,
     }
 
     this.disableMap = this.disableMap.bind(this);
@@ -61,6 +62,17 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(newProps) {
+    if (newProps.setMapView) {
+      this.setState({ currentGreenspace: newProps.setMapView });
+      this.map.setView(newProps.setMapView);
+      // if (this.props.location.pathname == ('/map/')) {
+      //   this.setState({ currentGreenspace: null});
+      // } else {
+      //   this.map.setView(newProps.setMapView);
+      //   this.setState({ currentGreenspace: newProps.setMapView });
+      // }
+    }
+
     if(this.props.location.pathname === '/loading') {
       this.disableMap()
       this.map.off('click');
@@ -124,6 +136,22 @@ class LeafletMap extends Component {
   }
 
   placeMarker(latlng, id="temp") {
+    if (this.state.currentGreenspace) {
+      if (this.state.currentGreenspace[0] == latlng[0] && this.state.currentGreenspace[1] == latlng[1]) {
+        const icon = L.icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+        const marker = L.marker(latlng, {icon: icon}).addTo(this.map);
+        marker.on('click', this.onNewMarker);
+        marker.gid = id;
+        return marker;
+      }
+    }
     const marker = L.marker(latlng).addTo(this.map);
     marker.on('click', this.onNewMarker);
     marker.gid = id;
@@ -160,6 +188,10 @@ class LeafletMap extends Component {
   }
 
   onMapClick(event) {
+    if (this.props.location.pathname == ('/map/')) {
+      this.setState({ currentGreenspace: null});
+    }
+
     const {
       marker,
       placeMarkers,
