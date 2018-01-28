@@ -38,6 +38,7 @@ class GreenspaceSidebar extends Component {
   }
 
   onBackClick() {
+    console.log('here');
     if (this.props.location.pathname.includes('/reviews/')) {
       this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
     } else {
@@ -79,15 +80,13 @@ class GreenspaceSidebar extends Component {
 
     let renderedBackButton = null;
     if (backButton) {
-      renderedBackButton = (
+      renderedBackButton = (<div id="back-button" onClick={this.onBackClick}>
         <FontAwesome
           name="angle-left"
           size="2x"
-          id="back-button"
           title="Back"
-          onClick={this.onBackClick}
         />
-      );
+      </div>);
     }
 
     let renderedStar = (
