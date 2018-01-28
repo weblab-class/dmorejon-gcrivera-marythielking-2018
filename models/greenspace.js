@@ -54,7 +54,6 @@ const greenspace = ((greenspaceModel) => {
     try {
       return await newGreenspace.save();
     } catch(e) {
-      console.log(e)
       throw e;
     }
   }

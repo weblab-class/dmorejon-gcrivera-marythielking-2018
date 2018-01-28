@@ -47,10 +47,14 @@ router.get('/:minLat/:maxLat/:minLong/:maxLong', async (req, res) => {
     // greenspace: greenspace object (see schema)
 router.post('/', async (req, res) => {
   try {
-    const location = req.body.location.map((val) => {
-      return parseFloat(val);
-    });
+    let location;
+    if (req.body.location) {
+      location = req.body.location.map((val) => {
+        return parseFloat(val);
+      });
+    }
     const newGreenspace = await greenspace.createGreenspace(req.body.name, location, req.body.tags);
+    newGreenspace.location = [newGreenspace.location[1], newGreenspace.location[0]];
     utils.sendSuccessResponse(res, newGreenspace);
   } catch(e) {
     utils.sendErrorResponse(res, e.errorCode, e.message);

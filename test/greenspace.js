@@ -58,7 +58,7 @@ describe('Greenspace API', () => {
         .expect((res) => {
           assert.equal(res.body.success, true);
           assert.isDefined(res.body.content);
-          assert.deepEqual(res.body.content.location.coordinates, [29.004612, 35.277791]);
+          assert.deepEqual(res.body.content.location, [29.004612, 35.277791]);
           assert.deepEqual(res.body.content.tags, ['pond', 'water', 'lake']);
           assert.equal(res.body.content.name, 'Barely Green');
         })
@@ -155,7 +155,7 @@ describe('Greenspace API', () => {
         .expect((res) => {
           assert.equal(res.body.success, true);
           assert.isDefined(res.body.content);
-          assert.deepEqual(res.body.content.location.coordinates, [-73.240813, -62.833790]);
+          assert.deepEqual(res.body.content.location, [-73.240813, -62.833790]);
           assert.deepEqual(res.body.content.tags, ['frozen', 'ice', 'snow']);
           assert.equal(res.body.content.name, 'Penguin Party Space');
         })
