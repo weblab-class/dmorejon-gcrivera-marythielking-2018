@@ -19,11 +19,14 @@ class EventView extends Component {
 
     this.joinButton = this.joinButton.bind(this);
     this.leaveButton = this.leaveButton.bind(this);
+    this.acceptButton = this.acceptButton.bind(this);
+    this.declineButton = this.declineButton.bind(this);
     this.deleteEvent = this.deleteEvent.bind(this);
     this.renderTime = this.renderTime.bind(this);
     this.renderDeleteBtn = this.renderDeleteBtn.bind(this);
-    this.renderJoinLeaveBtn = this.renderJoinLeaveBtn.bind(this);
+    this.renderBtn = this.renderBtn.bind(this);
     this.renderParticipants = this.renderParticipants.bind(this);
+    this.renderPending = this.renderPending.bind(this);
     this.renderParticipant = this.renderParticipant.bind(this);
   }
 
@@ -47,18 +50,40 @@ class EventView extends Component {
   }
 
   joinButton() {
-    const { gid, eventId } = this.props.params;
-    eventServices.join(this.props.params.eventId)
+    const { eventId } = this.props.params;
+    eventServices.join(eventId)
       .then((res) => {
         this.setState({ participants: res.content.participants });
       });
   }
 
   leaveButton() {
-    const { gid, eventId } = this.props.params;
-    eventServices.leave(this.props.params.eventId, this.props.currentUser)
+    const { eventId } = this.props.params;
+    eventServices.leave(eventId, this.props.currentUser)
       .then((res) => {
         this.setState({ participants: res.content.participants });
+      });
+  }
+
+  acceptButton() {
+    const { eventId } = this.props.params;
+    eventServices.accept(eventId)
+      .then((res) => {
+        this.setState({
+          pending: res.content.pending,
+          participants: res.content.participants,
+        });
+      });
+  }
+
+  declineButton() {
+    const { eventId } = this.props.params;
+    eventServices.decline(eventId)
+      .then((res) => {
+        this.setState({
+          pending: res.content.pending,
+          participants: res.content.participants,
+        });
       });
   }
 
@@ -106,18 +131,31 @@ class EventView extends Component {
     return null;
   }
 
-  renderJoinLeaveBtn() {
+  renderBtn() {
     const { currentUser } = this.props;
-    const { participants, host } = this.state;
+    const { participants, pending, host } = this.state;
 
-    if (participants && currentUser){
-      const matchedUserArray = participants.filter((u) => u.fbid === currentUser.fbid);
-      if (matchedUserArray.length === 0) {
+    if (participants && currentUser) {
+      const userParticipant = participants.filter((u) => u.fbid === currentUser.fbid);
+      const userPending = pending.filter((u) => u.fbid === currentUser.fbid);
+
+      if (userPending.length > 0) {
+        return (<div>
+          <div id="add-event" onClick={this.acceptButton}>
+            <FontAwesome name="calendar-plus-o" size="2x" id="calendar-icon" />
+            <div id="add-event-text">Accept Invitation</div>
+          </div>
+          <div id="add-event" onClick={this.declineButton}>
+            <FontAwesome name="calendar-minus-o" size="2x" id="calendar-icon" />
+            <div id="add-event-text">Decline Invitation</div>
+          </div>
+        </div>);
+      } else if (userParticipant.length === 0) {
         return (<div id="add-event" onClick={this.joinButton}>
           <FontAwesome name="calendar-plus-o" size="2x" id="calendar-icon" />
           <div id="add-event-text">Join This Event</div>
         </div>);
-      } else if (matchedUserArray.length > 0 && currentUser.fbid !== host.fbid) {
+      } else if (userParticipant.length > 0 && currentUser.fbid !== host.fbid) {
         return (<div id="add-event" onClick={this.leaveButton}>
           <FontAwesome name="calendar-minus-o" size="2x" id="calendar-icon" />
           <div id="add-event-text">Leave This Event</div>
@@ -135,6 +173,22 @@ class EventView extends Component {
       <div className="section-header">Participants:</div>
       <div className="list-items">{participantList}</div>
     </div>);
+  }
+
+  renderPending() {
+    const { currentUser } = this.props;
+    const { pending, host } = this.state;
+    if (!pending) { return null; }
+    if (host && currentUser) {
+      if (host.fbid === currentUser.fbid) {
+        const pendingList = pending.map((p) => this.renderParticipant(p));
+        return (<div id="pending-users">
+          <div className="section-header">Invited Users:</div>
+          <div className="list-items">{pendingList}</div>
+        </div>);
+      }
+    }
+    return null;
   }
 
   renderParticipant(p) {
@@ -156,8 +210,9 @@ class EventView extends Component {
 
     const renderedTime = this.renderTime();
     const deleteBtn = this.renderDeleteBtn();
-    const joinLeaveBtn = this.renderJoinLeaveBtn();
+    const joinLeaveBtn = this.renderBtn();
     const renderedParticipants = this.renderParticipants();
+    const renderedPending = this.renderPending();
 
     return (
       <GreenspaceSidebar
@@ -174,6 +229,7 @@ class EventView extends Component {
         {renderedTime}
         <div id="event-description">{description}</div>
         {renderedParticipants}
+        {renderedPending}
         {joinLeaveBtn}
       </GreenspaceSidebar>
     );
