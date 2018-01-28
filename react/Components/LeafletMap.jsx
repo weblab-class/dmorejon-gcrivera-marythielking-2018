@@ -8,6 +8,7 @@ import greenspaceServices from '../../services/greenspaceServices.js';
 class LeafletMap extends Component {
   constructor(props){
     super(props);
+    
     var center = null;
     if (window.location.search) {
       center = window.location.search.split('=')[1].split(',');

@@ -128,13 +128,17 @@ class UserView extends Component {
 
     return (<Link
       to={`/map/${greenspace._id}/event/${_id}/${window.location.search}`}
-      className="list-item-event"
+      className="list-item-event list-item-pending"
       key={_id}
     >
-      <div className="event-name">{name}</div>
-      <div className="event-date">{date}</div>
-      <FontAwesome name="check" />
-      <FontAwesome name="times" />
+      <div>
+        <div className="event-name">{name}</div>
+        <div className="event-date">{date}</div>
+      </div>
+      <div className="pending-icons" >
+        <FontAwesome name="check" className="pending-icon" />
+        <FontAwesome name="times" className="pending-icon" />
+      </div>
     </Link>);
   }
 

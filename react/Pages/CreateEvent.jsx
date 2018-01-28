@@ -101,12 +101,33 @@ class CreateEvent extends Component {
   }
 
   setEndVal() {
-    const { startVal, startValid } = this.state;
+    const {
+      startVal,
+      startValid,
+      endVal,
+      endValid,
+    } = this.state;
     if (startValid) {
-      var endHour = parseInt(startVal.substring(11,13)) + 1;
-      if (endHour === 24) { endHour = 0; }
-      const endVal = `${startVal.substring(0,11)}${endHour}${startVal.substring(13)}`
-      this.setState({ endVal });
+      // don't update the end value if it's valid
+      if (endValid) {
+        const startDate = new Date(startVal);
+        const endDate = new Date(endVal);
+        if (endDate - startDate > 0) {
+          return;
+        }
+      }
+
+      const endHour = parseInt(startVal.substring(11,13)) + 1;
+      var newEndVal = `${startVal.substring(0,11)}${endHour}${startVal.substring(13)}`
+
+      // set end time to end of day if start time is after 11pm
+      if (endHour === 24) {
+        newEndVal = `${newEndVal.substring(0,11)}23:59`;
+      }
+
+      this.validateFormVal('endVal', newEndVal);
+      this.setState({ endVal: newEndVal });
+      return;
     }
   }
 
