@@ -118,11 +118,17 @@ h1:hover {
   overflow: hidden;
 }
 
-#header-logo {
-  font-family: "Roboto Condensed", sans-serif;
-  font-size: 3em;
-  color: #FFF;
-  padding-left: 0.5rem;
+.header-logo {
+  margin-left: 15px;
+}
+
+#logo-words {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  #logo-words { display: block; }
+  #logo-icon { display: none; }
 }
 
 #header-btns {

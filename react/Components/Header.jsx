@@ -39,7 +39,10 @@ class Header extends Component {
 
     return (
       <div id="header">
-        <Link to={`/${window.location.search}`}><div id="header-logo">greenspace</div></Link>
+        <Link to={`/${window.location.search}`}>
+          <img src="/images/logo_name.png" height="50px" className="header-logo" id="logo-words" />
+          <img src="/images/logo_icon.png" height="50px" className="header-logo" id="logo-icon" />
+        </Link>
         {headerButtons}
       </div>
     )
