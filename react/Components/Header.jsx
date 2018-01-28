@@ -31,6 +31,7 @@ class Header extends Component {
     } else {
       headerButtons = (<Link to="/login">
         <div className="header-btn">
+          <div className="header-btn-text">Login</div>
           <FontAwesome name="sign-in" size="2x" title="Log in"/>
         </div>
       </Link>);

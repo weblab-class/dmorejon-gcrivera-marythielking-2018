@@ -38,7 +38,6 @@ class GreenspaceSidebar extends Component {
   }
 
   onBackClick() {
-    console.log('here');
     if (this.props.location.pathname.includes('/reviews/')) {
       this.props.router.push(`/map/${this.props.params.gid}/${window.location.search}`);
     } else {
