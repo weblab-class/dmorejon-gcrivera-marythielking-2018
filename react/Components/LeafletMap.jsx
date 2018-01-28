@@ -63,25 +63,23 @@ class LeafletMap extends Component {
 
   componentWillReceiveProps(newProps) {
     if (newProps.setMapView) {
-      this.setState({ currentGreenspace: newProps.setMapView });
-      this.map.setView(newProps.setMapView);
-      // if (this.props.location.pathname == ('/map/')) {
-      //   this.setState({ currentGreenspace: null});
-      // } else {
-      //   this.map.setView(newProps.setMapView);
-      //   this.setState({ currentGreenspace: newProps.setMapView });
-      // }
+      if (this.props.setMapView === null) {
+        this.setState({ currentGreenspace: newProps.setMapView });
+        this.map.setView(newProps.setMapView);
+      } else if (newProps.setMapView[0] !== this.props.setMapView[0] || newProps.setMapView[1] !== this.props.setMapView[1]) {
+        this.setState({ currentGreenspace: newProps.setMapView });
+        this.map.setView(newProps.setMapView);
+      }
     }
 
-    if(this.props.location.pathname === '/loading') {
+    if (this.props.location.pathname === '/loading') {
       this.disableMap()
       this.map.off('click');
       this.setState({
         placeMarkers: true,
         prevPlaceMarkers: true,
       });
-    }
-    else {
+    } else {
       this.enableMap();
       this.map.on('click', this.onMapClick);
     }
@@ -189,7 +187,7 @@ class LeafletMap extends Component {
 
   onMapClick(event) {
     if (this.props.location.pathname == ('/map/')) {
-      this.setState({ currentGreenspace: null});
+      this.setState({ currentGreenspace: null }, () => this.setMarkers());
     }
 
     const {
