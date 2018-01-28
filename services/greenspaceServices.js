@@ -20,7 +20,7 @@ export default {
     })
   },
 
-  create : (name, location) => {
+  create : (name, location, tags) => {
     return request({
       uri: BASE_URL,
       method: 'POST',
@@ -28,6 +28,7 @@ export default {
       body: {
         name,
         location,
+        tags,
       },
     });
   },

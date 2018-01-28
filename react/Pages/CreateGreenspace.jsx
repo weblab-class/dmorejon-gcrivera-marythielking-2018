@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Sidebar from '../Components/Sidebar.jsx';
+import TagSearch from '../Components/TagSearch.jsx';
+
 
 class CreateGreenspace extends Component {
   constructor(props){
@@ -11,11 +13,13 @@ class CreateGreenspace extends Component {
 
       nameVal: '',
       errorMessage: null,
+      tags: [],
     };
 
     this.updateFormVal = this.updateFormVal.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
     this.create = this.create.bind(this);
+    this.handleTags = this.handleTags.bind(this);
   }
 
   updateFormVal(event){
@@ -34,18 +38,23 @@ class CreateGreenspace extends Component {
   }
 
   create() {
-    const { lat, lng, nameVal } = this.state;
+    const { lat, lng, nameVal, tags} = this.state;
     if (nameVal === '') {
       this.setState({ errorMessage: "Please enter a name for the greenspace." });
     } else {
-      this.props.createGreenspace(nameVal, lat, lng);
+      this.props.createGreenspace(nameVal, lat, lng, tags);
     }
+  }
+
+  handleTags(tags) {
+    this.setState({ tags: tags})
   }
 
   render(){
     const {
       nameVal,
       errorMessage,
+      tags
     } = this.state;
 
     return (
@@ -58,6 +67,10 @@ class CreateGreenspace extends Component {
             value={nameVal}
             onChange={this.updateFormVal}
             onKeyPress={this.onKeyPress}
+          />
+          <TagSearch
+            handleTags={this.handleTags}
+            create={this.create}
           />
           <div className="btn" onClick={this.create}>Create</div>
           { errorMessage ? (<div id="form-error">{errorMessage}</div>) : null }
