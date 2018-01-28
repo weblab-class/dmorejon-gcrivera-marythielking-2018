@@ -23,12 +23,16 @@ class GreenspaceSidebar extends Component {
 
     Services.greenspace.info(gid)
       .then((res) => {
-        this.setState({greenspace: res.content});
+        if (this.refs.component) {
+          this.setState({greenspace: res.content});
+        }
       });
     if(this.props.currentUser) {
       Services.user.isFavorite(gid)
         .then((res) => {
-          this.setState({isFavorite: res.content});
+          if (this.refs.component) {
+            this.setState({isFavorite: res.content});
+          }
         });
     }
   }
@@ -46,13 +50,13 @@ class GreenspaceSidebar extends Component {
     if(this.state.isFavorite) {
       Services.user.removeFavorite(this.state.greenspace)
         .then((res) => {
-          this.setState({isFavorite: false})
+          this.setState({isFavorite: false});
         });
     }
     else {
       Services.user.addFavorite(this.state.greenspace)
         .then((res) => {
-          this.setState({isFavorite: true})
+          this.setState({isFavorite: true});
       });
     }
   }
@@ -108,7 +112,7 @@ class GreenspaceSidebar extends Component {
     }
 
     return (
-      <Sidebar setMapPlaceMarkers={setMapPlaceMarkers}>
+      <Sidebar setMapPlaceMarkers={setMapPlaceMarkers} ref="component">
         { renderedBackButton }
         <div id="greenspace-header">
           <div id="greenspace-name-star">

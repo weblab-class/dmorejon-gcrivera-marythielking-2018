@@ -18,116 +18,180 @@ class UserView extends Component {
       photo: null,
       reviews: [],
       events: [],
-      reviews: [],
+      pending: [],
+      favorites: [],
+    };
+
+    this.renderReviews = this.renderReviews.bind(this);
+    this.renderReview = this.renderReview.bind(this);
+    this.renderEvents = this.renderEvents.bind(this);
+    this.renderPending = this.renderPending.bind(this);
+    this.renderPendingEvent = this.renderPendingEvent.bind(this);
+    this.renderFavorites = this.renderFavorites.bind(this);
+  }
+
+  componentDidMount() {
+    Services.review.getAllByUser()
+      .then((res) => {
+        if (this.refs.component) {
+          this.setState({ reviews: res.content});
+        }
+      });
+
+    Services.event.getAllByUser()
+      .then((res) => {
+        if (this.refs.component && res.content) {
+          this.setState({ events: res.content});
+        }
+      });
+
+    Services.event.getAllPendingByUser()
+      .then((res) => {
+        if (this.refs.component && res.content) {
+          this.setState({ pending: res.content});
+        }
+      });
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.currentUser) {
+      this.setState({
+        currentUser: newProps.currentUser.displayname,
+        photo: newProps.currentUser.photo,
+        favorites: newProps.currentUser.favorites,
+      });
+    }
+  }
+
+  renderReviews() {
+    const { reviews } = this.state;
+    if (reviews.length === 0) {
+      return (<div className="userview-col">
+        <h1 className="section-header">You haven't written any reviews yet!</h1>
+      </div>);
+    } else {
+      const renderedReviews = reviews.map((r) => this.renderReview(r));
+      return (<div className="userview-col">
+        <h1 className="section-header">Your Reviews:</h1>
+        <div className="list-items">{renderedReviews}</div>
+      </div>);
     };
   }
 
-    componentDidMount() {
-      Services.review.getAllByUser()
-        .then((res) => {
-          if (this.refs.component) {
-            this.setState({ reviews: res.content});
-          }
-        });
+  renderReview(r) {
+    return (<div className="list-item-review" key={r._id}>
+      <div className='userview-rating-greenspace'>
+        <ReactStars value={r.rating} edit={false} color2="black" />
+        <div className='userview-review-greenspace'> {r.greenspace.name}</div>
+      </div>
+      {r.body}
+    </div>);
+  }
 
-      Services.event.getAllByUser()
-        .then((res) => {
-          if (this.refs.component && res.content) {
-            this.setState({ events: res.content});
-          }
-        });
+  renderEvents() {
+    const { events } = this.state;
+    const pendingEvents = this.renderPending();
+    if (events.length === 0) {
+      return (<div className='userview-col'>
+        {pendingEvents}
+        <h1 className="section-header">You aren't a part of any events yet!</h1>
+      </div>);
+    } else {
+      return (<div className='userview-col'>
+        {pendingEvents}
+        <h1 className="section-header">Upcoming Events:</h1>
+        <EventList events={events} />
+      </div>);
+    };
+  }
+
+  renderPending() {
+    const { pending } = this.state;
+    if (pending.length === 0) {
+      return null;
+    } else {
+      const renderedPending = pending.map((p) => this.renderPendingEvent(p));
+      return (<div>
+        <h1 className="section-header">Event Invitations:</h1>
+        <div className="list-items">{renderedPending}</div>
+      </div>)
     }
+  }
 
-    componentWillReceiveProps(newProps) {
-      if(newProps.currentUser) {
-        this.setState({ currentUser: newProps.currentUser.displayname, photo: newProps.currentUser.photo });
-      }
-    }
+  renderPendingEvent(p) {
+    const { name, _id, starttime, greenspace } = p;
 
-    reviewDivs(reviews) {
-      return reviews.map((r) => {
-        return (
-          <div className="list-item-review userview" key={r._id}>
-          <div className='userview-review-greenspace'>
-            <ReactStars value={r.rating} edit={false} color2="black" />
-            <div className = 'userview-greenspace'> {r.greenspace.name}</div>
-          </div>
-          <div className = 'userview-review-body'>
-            {r.body}
-          </div>
+    const localStart = new Date(starttime).toString()
+    const date = localStart.substring(4,10)
+      + ", " + localStart.substring(11,15)
+      + " at " + localStart.substring(16,21);
 
-        </div>)
-      })
-    }
+    return (<Link
+      to={`/map/${greenspace._id}/event/${_id}/${window.location.search}`}
+      className="list-item-event"
+      key={_id}
+    >
+      <div className="event-name">{name}</div>
+      <div className="event-date">{date}</div>
+      <FontAwesome name="check" />
+      <FontAwesome name="times" />
+    </Link>);
+  }
+
+  renderFavorites() {
+    const { favorites } = this.state;
+    if (favorites.length === 0) {
+      return (<div className="userview-col">
+        <h1 className="section-header">You don't have any favorite greenspaces yet!</h1>
+      </div>);
+    } else {
+      const renderedFavorites = favorites.map((f) => this.renderFavorite(f));
+      return (<div className="userview-col">
+        <h1 className="section-header">Favorite Greenspaces:</h1>
+        <div className="list-items">{renderedFavorites}</div>
+      </div>);
+    };
+  }
+
+  renderFavorite(f) {
+    return (
+      <Link to={`/map/${f._id}/${window.location.search}`}
+        className="list-item-event"
+        key={f._id}
+      >
+        <div>{f.name}</div>
+      </Link>
+    );
+  }
 
   render(){
     const {
       currentUser,
       photo,
-      reviews,
-      events,
-      reviewsCorrect
     } = this.state;
 
-    let reviewDivList = null;
-    if (reviews.length !== 0) {reviewDivList = this.reviewDivs(this.state.reviews);}
-    let reviews_div;
-    let events_div;
-
-    if (reviews.length === 0) {
-      reviews_div = (
-        <div className = 'userview-ratings'>
-          <h1 className="section-header">You haven't written any reviews yet!</h1>
-        </div>
-      )
-    } else {
-      reviews_div = (
-        <div id = 'userview-ratings'>
-          <h1 className="section-header">Your Reviews:</h1>
-          <div className="list-items">{reviewDivList}</div>
-        </div>
-      )
-    };
-
-    if (events.length === 0) {
-      events_div = (
-        <div className = 'userview-events'>
-          <h1 className="section-header">You aren't a part of any events yet!</h1>
-        </div>
-      )
-    } else {
-      events_div = (
-        <div className = 'userview-events'>
-          <h1 className="section-header">Your events: </h1>
-          <EventList events={events} />
-        </div>
-      )
-    };
+    const renderedReviews = this.renderReviews();
+    const renderedEvents = this.renderEvents();
+    const renderedFavorites = this.renderFavorites();
 
     return (
-      <PopUp setMapViewOnly={this.props.setMapViewOnly} ref="component">
-
-        <div id="userview-close-btn">
-          <Link to={`/map/${window.location.search}`} id="close-btn">
-            <FontAwesome name="times" size="lg" title="Close"/>
-          </Link>
+      <div id='userview' ref="component">
+        <div id="userview-user">
+          <img src={photo} height="80px" className="profile-icon"/>
+          <h1 id="userview-name">{currentUser}</h1>
         </div>
-        <div id='userview'>
-          <div className = 'userview-user'>
-            <h1 id="userview-name">{currentUser}</h1>
-                <img src={photo} height="100px" className="profile-icon"/>
-          </div>
-          {reviews_div}
-          {events_div}
+        <div id="userview-content">
+          {renderedEvents}
+          {renderedFavorites}
+          {renderedReviews}
         </div>
-      </PopUp>
+      </div>
     );
   }
 }
 
 UserView.propTypes = {
   currentUser: PropTypes.object,
-  setMapViewOnly: PropTypes.func,
 };
 
 export default UserView;
