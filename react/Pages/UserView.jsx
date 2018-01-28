@@ -41,17 +41,18 @@ class UserView extends Component {
         }
       });
 
-    this.updateEvents();
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.currentUser) {
-      this.setState({
-        currentUser: newProps.currentUser.displayname,
-        photo: newProps.currentUser.photo,
-        favorites: newProps.currentUser.favorites,
+    Services.user.info()
+      .then((res) => {
+        if (this.refs.component) {
+          this.setState({
+            currentUser: res.content.displayname,
+            photo: res.content.photo,
+            favorites: res.content.favorites,
+          });
+        }
       });
-    }
+
+    this.updateEvents();
   }
 
   updateEvents() {
@@ -220,9 +221,5 @@ class UserView extends Component {
     );
   }
 }
-
-UserView.propTypes = {
-  currentUser: PropTypes.object,
-};
 
 export default UserView;
