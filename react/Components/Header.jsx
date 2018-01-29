@@ -62,7 +62,10 @@ class Header extends Component {
 
     return (
       <div id="header">
-        <div id="header-logo" className={headerClass} onClick={() => this.headerClick(`/${window.location.search}`)}>greenspace</div>
+        <div id="header-logo" className={headerClass} onClick={() => this.headerClick(`/${window.location.search}`)}>
+          <img src="/images/logo_name.png" height="50px" className="header-logo" id="logo-words" />
+          <img src="/images/logo_icon.png" height="50px" className="header-logo" id="logo-icon" />
+        </div>
         {headerButtons}
       </div>
     )
