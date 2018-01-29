@@ -692,6 +692,12 @@ h1:hover {
   font-size: 16px;
 }
 
+#tutorial-dots-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 #tutorial-container {
   display: flex;
   justify-content: space-around;
@@ -717,6 +723,17 @@ h1:hover {
 .tutorial-gif.show {
   opacity: 1;
   visibility: visible;
+}
+
+#carousel-text {
+  width: 200px;
+}
+
+#carousel-text-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #no-greenspace-text {
