@@ -16,15 +16,16 @@ class TagSearch extends Component {
 
     ArrowKeysReact.config({
         up: () => {
-          const currentFoc = parseInt(document.activeElement.id);
+          const currentFoc = parseInt(document.activeElement.id.split('/')[0]);
           if (currentFoc > -1) {
-            this.refs[String(currentFoc - 1)].focus();
+            this.refs[String(currentFoc - 1) + '/tag'].focus();
           }
         },
         down: () => {
-          const currentFoc = parseInt(document.activeElement.id);
+          const currentFoc = parseInt(document.activeElement.id.split('/')[0]);
           if (currentFoc < this.state.tags.length - 1) {
-            this.refs[String(currentFoc + 1)].focus();
+            this.refs[String(currentFoc + 1) + '/tag'].focus();
+            console.log("HERE2")
           }
         }
       });
@@ -54,8 +55,8 @@ class TagSearch extends Component {
       this.setState({ createdTags: updatedCreatedList });
     }
     this.props.handleTags(updatedTagList);
-    this.refs[String(-1)].value = '';
-    this.refs[String(-1)].focus();
+    this.refs[String(-1) + '/tag'].value = '';
+    this.refs[String(-1) + '/tag'].focus();
     this.setState({ addedTags: updatedTagList, tags: [], isNew: null });
   }
 
@@ -69,7 +70,7 @@ class TagSearch extends Component {
       this.setState({ createdTags: createdTags });
     }
     let updatedTagList = this.removeFromArray(this.state.addedTags, tag);
-    this.refs[String(-1)].focus();
+    this.refs[String(-1) + '/tag'].focus();
     this.props.handleTags(updatedTagList);
     this.setState({ addedTags: updatedTagList});
   }
@@ -107,9 +108,9 @@ class TagSearch extends Component {
       return (
         <li
           onKeyPress={((e) => this.handleKeyPress(e, tag.name))}
-          tabIndex={idx}
-          id={idx.toString()}
-          ref={idx.toString()}
+          tabIndex={idx + 1001}
+          id={idx.toString() + '/tag'}
+          ref={idx.toString() + '/tag'}
           key={tag.name}
           onClick={((e) => this.updateTagList(e, tag.name))}
           className="search-results"
@@ -146,12 +147,12 @@ class TagSearch extends Component {
       <div>
         <div id="tag-title">Tags:</div>
         <div className="list-items" id="list-items-addedTag">{renderedAddedTags}</div>
-        <div className="form" {...ArrowKeysReact.events} tabIndex="-1">
-          <input className='form-input' id="-1"
+        <div className="form" {...ArrowKeysReact.events} tabIndex="1000">
+          <input className='form-input' id="-1/tag"
             placeholder='add tags'
             onChange={this.updateFormVal}
             onKeyPress={((e) => this.handleKeyPress(e, e.target.value))}
-            ref="-1"
+            ref="-1/tag"
           />
         <div className="list-items" id="list-items-tag">
           <ul className="tag-list">{renderedTags}</ul>

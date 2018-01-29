@@ -18,12 +18,15 @@ class UserSearch extends Component {
           const currentFoc = parseInt(document.activeElement.id);
           if (currentFoc > -1) {
             this.refs[String(currentFoc - 1)].focus();
+            console.log(this.refs[String(currentFoc - 1)])
           }
         },
         down: () => {
           const currentFoc = parseInt(document.activeElement.id);
           if (currentFoc < this.state.users.length - 1) {
             this.refs[String(currentFoc + 1)].focus();
+            console.log("HERE")
+            console.log(this.refs[String(currentFoc + 1)])
           }
         }
       });
