@@ -5,41 +5,64 @@ import FontAwesome from 'react-fontawesome';
 import Services from '../../services';
 
 class Header extends Component {
+  constructor(props){
+    super(props);
+
+    this.headerClick = this.headerClick.bind(this);
+  }
+
+  headerClick(path) {
+    if (!this.props.location.pathname.startsWith('/loading')) {
+      this.props.router.push(path);
+    }
+  }
+
   render(){
     const { currentUser } = this.props;
     let headerButtons = null;
 
-    if (currentUser) {
-      const { displayname, photo } = currentUser;
-      headerButtons = (<div id="header-btns">
-        <Link to={`/map/${window.location.search}`}>
-          <div className="header-btn">
-            <FontAwesome name="map-o" size="2x" title="To Map"/>
-          </div>
-        </Link>
-        <Link to={`/user/view/${currentUser.fbid}/${window.location.search}`}>
-          <div className="header-btn">
-              <img src={photo} height="40px" className="profile-icon" id="header-profile-icon" title="User Profile"/>
-          </div>
-        </Link>
+    let signoutBtn = (
+      <div className="freeze-header-btn">
+        <FontAwesome name="sign-out" size="2x" title="Logout"/>
+      </div>
+    );
+    let btnClass = "freeze-header-btn";
+    let headerClass;
+    if (!this.props.location.pathname.startsWith('/loading')) {
+      signoutBtn = (
         <a href="/logout">
           <div className="header-btn">
             <FontAwesome name="sign-out" size="2x" title="Logout"/>
           </div>
         </a>
+      );
+      btnClass = "header-btn";
+      headerClass = "logo-hover"
+    }
+
+    if (currentUser) {
+      const { displayname, photo } = currentUser;
+      headerButtons = (<div id="header-btns">
+        <div className={btnClass} onClick={() => this.headerClick(`/map/${window.location.search}`)}>
+          <FontAwesome name="map-o" size="2x" title="To Map"/>
+        </div>
+        <div className={btnClass} onClick={() => this.headerClick(`/user/view/${currentUser.fbid}/${window.location.search}`)}>
+            <img src={photo} height="40px" className="profile-icon" id="header-profile-icon" title="User Profile"/>
+        </div>
+        {signoutBtn}
       </div>);
     } else {
-      headerButtons = (<Link to="/login">
-        <div className="header-btn">
+      headerButtons = (
+        <div className={btnClass} onClick={() => this.headerClick(`/login`)}>
           <div className="header-btn-text">Login</div>
           <FontAwesome name="sign-in" size="2x" title="Log in"/>
         </div>
-      </Link>);
+      );
     }
 
     return (
       <div id="header">
-        <Link to={`/${window.location.search}`}><div id="header-logo">greenspace</div></Link>
+        <div id="header-logo" className={headerClass} onClick={() => this.headerClick(`/${window.location.search}`)}>greenspace</div>
         {headerButtons}
       </div>
     )
