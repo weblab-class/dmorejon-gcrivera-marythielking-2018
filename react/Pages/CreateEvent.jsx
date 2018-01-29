@@ -5,6 +5,7 @@ import FontAwesome from 'react-fontawesome';
 
 import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import UserSearch from '../Components/UserSearch.jsx';
+import TagSearch from '../Components/TagSearch.jsx';
 import eventServices from '../../services/eventServices.js';
 import greenspaceServices from '../../services/greenspaceServices.js';
 
@@ -40,12 +41,15 @@ class CreateEvent extends Component {
       greenspaceName: '',
       lat: 0,
       lng: 0,
+
+      tags: [],
     };
 
     this.updateFormVal = this.updateFormVal.bind(this);
     this.validateFormVal = this.validateFormVal.bind(this);
     this.setEndVal = this.setEndVal.bind(this);
     this.handleParticipants = this.handleParticipants.bind(this);
+    this.handleTags = this.handleTags.bind(this);
     this.create = this.create.bind(this);
   }
 
@@ -135,6 +139,10 @@ class CreateEvent extends Component {
     this.setState({ pending: participants});
   }
 
+  handleTags(tags) {
+    this.setState({ tags: tags })
+  }
+
   create() {
     const {
       gid,
@@ -146,6 +154,7 @@ class CreateEvent extends Component {
       nameValid,
       startValid,
       endValid,
+      tags,
     } = this.state;
 
     const startDate = new Date(this.state.startVal);
@@ -158,10 +167,13 @@ class CreateEvent extends Component {
     } else if (!endValid) {
       this.setState({ errorMessage: 'Please enter a valid end time.', });
     } else {
+      let tagString = tags.map((tag) => {
+        return tag.name;
+      });
       greenspaceServices.info(gid)
         .then((res) => {
           const greenspace = res.content;
-          eventServices.create(nameVal, descriptionVal, greenspace, startDate, endDate, pending)
+          eventServices.create(nameVal, descriptionVal, greenspace, startDate, endDate, pending, tagString)
             .then((res) => {
               this.props.router.push(`/map/${gid}/${window.location.search}`);
             });
@@ -180,6 +192,7 @@ class CreateEvent extends Component {
       lat,
       lng,
       errorMessage,
+      tags,
     } = this.state;
 
     return (
@@ -223,6 +236,10 @@ class CreateEvent extends Component {
           <UserSearch
             handleParticipants={this.handleParticipants}
             currentUser={this.props.currentUser}
+            create={this.create}
+          />
+          <TagSearch
+            handleTags={this.handleTags}
             create={this.create}
           />
           <div className="btn" onClick={this.create}>Create</div>

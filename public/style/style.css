@@ -603,6 +603,11 @@ h1:hover {
   cursor: pointer;
   color: grey;
 }
+#delete-tag-icon:hover {
+  margin-left: 4px;
+  cursor: pointer;
+  color: black;
+}
 
 .list-item-addedTag {
   display: flex;
@@ -628,7 +633,8 @@ h1:hover {
 .list-item-tag {
   display: inline-block;
   margin-right: 10px;
-  margin-top: 5px;
+  margin-top: 10px;
+  margin-bottom: 5px;
   padding: 2px;
   padding-right: 6px;
   padding-left: 10px;
