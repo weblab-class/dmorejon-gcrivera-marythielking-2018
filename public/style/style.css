@@ -104,6 +104,7 @@ h1:hover {
   justify-content: space-between;
   align-items: center;
   overflow-x: scroll;
+  z-index: 20;
 }
 
 #header::after {
@@ -201,7 +202,10 @@ h1:hover {
 }
 
 @media (min-width: 600px) {
-  .sidebar { width: 300px; }
+  .sidebar {
+    width: 300px;
+    box-shadow: -10px 0 5px -10px #696969;
+  }
   #sidebar-close-btn { display: none; }
 }
 
@@ -225,7 +229,10 @@ h1:hover {
 }
 
 @media (min-width: 768px) {
-  .popup { margin: 100px 50px; }
+  .popup {
+    margin: 100px 50px;
+    box-shadow: 0px 0 5px 0px #696969;
+  }
   #popup-close-btn { display: none; }
 }
 
