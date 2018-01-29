@@ -135,6 +135,14 @@ h1:hover {
   display: flex;
 }
 
+.freeze-header-btn {
+  padding: 0 1em;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: #FFF;
+}
+
 .header-btn {
   padding: 0 1em;
   display: flex;
@@ -596,6 +604,10 @@ h1:hover {
 
 .discover-greenspace {
   background-color: #b4d0af; /* #cccccc; */
+}
+
+.logo-hover {
+  cursor: pointer;
 }
 
 #delete-tag-icon {
