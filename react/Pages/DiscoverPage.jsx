@@ -19,10 +19,16 @@ class Discover extends Component {
 
     this.renderData = this.renderData.bind(this);
     this.renderEvents = this.renderEvents.bind(this);
-    this.handleTags = this.handleTags.bind(this);
+    this.handleAddTag = this.handleAddTag.bind(this);
+    this.handleRemoveTag = this.handleRemoveTag.bind(this);
+    this.discoverServiceCall = this.discoverServiceCall.bind(this);
   }
 
   componentDidMount() {
+    this.discoverServiceCall();
+  }
+
+  discoverServiceCall() {
     if (window.location.search) {
       let location = window.location.search.split('=')[1].split(',');
       location = [parseFloat(location[0]), parseFloat(location[1])];
@@ -62,8 +68,21 @@ class Discover extends Component {
       );
     });
   }
-  handleTags(tags) {
-    this.setState({ tags: tags});
+
+  handleAddTag(tags, tag) {
+    this.setState({ tags: tags });
+    Services.user.addTag(tag.name)
+      .then(() => {
+        this.discoverServiceCall();
+      });
+  }
+
+  handleRemoveTag(tags, tag) {
+    this.setState({ tags: tags });
+    Services.user.deleteTag(tag.name)
+      .then(() => {
+        this.discoverServiceCall();
+      });
   }
 
   render() {
@@ -85,7 +104,8 @@ class Discover extends Component {
         <h1>Discover</h1>
         <div id="tag-title-discover">Add your tags:</div>
         <TagSearch
-          handleTags={this.handleTags}
+          handleAddTag={this.handleAddTag}
+          handleRemoveTag={this.handleRemoveTag}
           userTags={this.props.currentUser.tags}
         />
         {dataDiv}

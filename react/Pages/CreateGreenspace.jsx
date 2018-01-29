@@ -73,8 +73,8 @@ class CreateGreenspace extends Component {
           />
         <div id="tag-title-createGreenspace">Tag this greenspace:</div>
           <TagSearch
-            handleTags={this.handleTags}
-            create={this.create}
+            handleAddTag={this.handleTags}
+            handleRemoveTag={this.handleTags}
           />
           <div className="btn" onClick={this.create}>Create</div>
           { errorMessage ? (<div id="form-error">{errorMessage}</div>) : null }
