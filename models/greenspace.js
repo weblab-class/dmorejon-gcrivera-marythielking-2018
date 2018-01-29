@@ -97,6 +97,32 @@ const greenspace = ((greenspaceModel) => {
     }
   }
 
+  that.addTag = async (id, name) => {
+    try {
+      const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id},
+                                                                    {$push: {tags: name}});
+      if (!oldGreenspace) {
+        throw {message: 'Greenspace does not exist.', errorCode: 404}
+      }
+      return;
+    } catch(e) {
+      throw e;
+    }
+  }
+
+  that.deleteTag = async (id, name) => {
+    try {
+      const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id},
+                                                                    {$pull: {tags: name}});
+      if (!oldGreenspace) {
+        throw {message: 'Greenspace does not exist.', errorCode: 404}
+      }
+      return;
+    } catch(e) {
+      throw e;
+    }
+  }
+
   Object.freeze(that);
   return that;
 

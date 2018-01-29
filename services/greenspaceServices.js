@@ -32,4 +32,28 @@ export default {
       },
     });
   },
+
+  addTag : (gid, name) => {
+    return request({
+      uri: BASE_URL + '/add/tag',
+      method: 'PUT',
+      json: true,
+      body: {
+        gid,
+        name,
+      },
+    });
+  },
+
+  deleteTag : (gid, name) => {
+    return request({
+      uri: BASE_URL + '/delete/tag',
+      method: 'PUT',
+      json: true,
+      body: {
+        gid,
+        name,
+      },
+    });
+  },
 }
