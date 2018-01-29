@@ -11,7 +11,6 @@ import CreateGreenspace from './Pages/CreateGreenspace.jsx';
 import GreenspaceInfo from './Pages/GreenspaceInfo.jsx';
 import CreateEvent from './Pages/CreateEvent.jsx';
 import EventView from './Pages/EventView.jsx';
-import EditEvent from './Pages/EditEvent.jsx';
 import ReviewView from './Pages/ReviewView.jsx';
 import CreateReview from './Pages/CreateReview.jsx';
 import UserView from './Pages/UserView.jsx';
@@ -19,16 +18,25 @@ import Discover from './Pages/DiscoverPage.jsx';
 import NotFound from './Pages/NotFound.jsx';
 
 const checkUser = (nextState, replace, callback) => {
-    Services.user.info()
-      .then((res) => {
-        if (!res.content) {
-          replace('/login');
-        }
-        callback();
-      }).catch((err => {
-        console.log("Err in checkUser(): ", err);
-        callback();
-      }));
+  Services.user.info()
+    .then((res) => {
+      if (!res.content) {
+        replace('/login');
+      }
+      callback();
+    }).catch((err => {
+      console.log("Err in checkUser(): ", err);
+      callback();
+    }));
+};
+
+const checkGID = (nextState, callback, component) => {
+  Services.greenspace.info(nextState.params.gid)
+    .then((res) => {
+      callback(null, component);
+    }).catch((err) => {
+      callback(null, NotFound);
+    });
 };
 
 export default (
@@ -45,18 +53,16 @@ export default (
         component={CreateGreenspace}
         onEnter={checkUser} />
       <Route path="map/:gid"
-        component={GreenspaceInfo} />
+        getComponent={(nextState, cb) => checkGID(nextState, cb, GreenspaceInfo)} />
       <Route path="map/:gid/event/create"
-        component={CreateEvent}
+        getComponent={(nextState, cb) => checkGID(nextState, cb, CreateEvent)}
         onEnter={checkUser} />
       <Route path="map/:gid/event/:eventId"
-        component={EventView} />
-      <Route path="map/:gid/event/:eventId/edit"
-        component={EditEvent} />
+        getComponent={(nextState, cb) => checkGID(nextState, cb, EventView)} />
       <Route path="map/:gid/reviews"
-        component={ReviewView} />
+        getComponent={(nextState, cb) => checkGID(nextState, cb, ReviewView)} />
       <Route path="map/:gid/reviews/create"
-        component={CreateReview}
+        getComponent={(nextState, cb) => checkGID(nextState, cb, CreateReview)}
         onEnter={checkUser} />
       <Route path="user/view/:id"
         component={UserView}
