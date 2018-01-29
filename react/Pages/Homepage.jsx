@@ -11,6 +11,11 @@ class Homepage extends Component {
   }
 
   render(){
+    // <div id='blurb'>
+    //   Greenspace allows you to mark outdoor areas that other users can view.
+    //    Plan events on these 'greenspaces' (add your friends!), write reviews,
+    //    and find new natural areas around you to check out!
+    // </div>
     let fbLogIn;
     if (!this.props.currentUser) {
       fbLogIn = (
@@ -28,10 +33,9 @@ class Homepage extends Component {
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
         <h1>Welcome to Greenspace!</h1>
-        <div id='blurb'>
-          Greenspace allows you to mark outdoor areas that other users can view.
-           Plan events on these 'greenspaces' (add your friends!), write reviews,
-           and find new natural areas around you to check out!
+        <div id="homepage-tutorials">
+          <img src="/images/small_create_greenspace.gif" height="200px" className="tutorial-gif"></img>
+          <img src="/images/small_create_event_3.gif" height="200px" className="tutorial-gif"></img>
         </div>
         <div>
           <a href={`/loading/${window.location.search}`}>
