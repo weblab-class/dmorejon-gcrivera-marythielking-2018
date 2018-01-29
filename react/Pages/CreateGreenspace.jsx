@@ -71,6 +71,7 @@ class CreateGreenspace extends Component {
             onChange={this.updateFormVal}
             onKeyPress={this.onKeyPress}
           />
+        <div id="tag-title-createGreenspace">Tag this greenspace:</div>
           <TagSearch
             handleTags={this.handleTags}
             create={this.create}
