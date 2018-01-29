@@ -678,6 +678,11 @@ h1:hover {
   border-radius: 12px;
 }
 
+
+#tag-title-createGreenspace {
+  font-size: 16px;
+}
+
 .tutorial-gif {
   border-radius: 50%;
 }

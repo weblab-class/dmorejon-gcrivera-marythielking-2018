@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Services from '../../services';
+import PropTypes from 'prop-types';
 import ArrowKeysReact from 'arrow-keys-react';
 import FontAwesome from 'react-fontawesome';
 
@@ -9,7 +10,7 @@ class TagSearch extends Component {
 
     this.state = {
       tags: [],
-      addedTags: [],
+      addedTags: props.userTags,
       createdTags: [],
       isNew: null,
     };
@@ -145,7 +146,6 @@ class TagSearch extends Component {
 
     return (
       <div>
-        <div id="tag-title">Tags:</div>
         <div className="list-items" id="list-items-addedTag">{renderedAddedTags}</div>
         <div className="form" {...ArrowKeysReact.events} tabIndex="1000">
           <input className='form-input' id="-1/tag"
@@ -161,6 +161,14 @@ class TagSearch extends Component {
       </div>
     );
   }
+}
+
+TagSearch.propTypes = {
+  userTags: PropTypes.arrayOf(PropTypes.string),
+}
+
+TagSearch.defaultProps = {
+  userTags: [],
 }
 
 export default TagSearch;
