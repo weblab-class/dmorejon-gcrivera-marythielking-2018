@@ -15,24 +15,6 @@ class TagSearch extends Component {
       isNew: null,
     };
 
-    ArrowKeysReact.config({
-        up: () => {
-          const currentFoc = parseInt(document.activeElement.id.split('/')[0]);
-          if (currentFoc > -1) {
-            this.refs[String(currentFoc - 1) + '/tag'].focus();
-          }
-        },
-        down: () => {
-          const currentFoc = parseInt(document.activeElement.id.split('/')[0]);
-          if (currentFoc < this.state.tags.length - 1) {
-            this.refs[String(currentFoc + 1) + '/tag'].focus();
-            console.log("HERE2")
-          }
-        }
-      });
-
-
-
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.updateTagList = this.updateTagList.bind(this);
     this.updateFormVal = this.updateFormVal.bind(this);
@@ -40,6 +22,7 @@ class TagSearch extends Component {
     this.removeFromArray = this.removeFromArray.bind(this);
     this.renderSearchTags = this.renderSearchTags.bind(this);
     this.renderAddedTags = this.renderAddedTags.bind(this);
+    this.keyScroll = this.keyScroll.bind(this);
   }
 
   handleKeyPress(event, tag) {
@@ -133,6 +116,22 @@ class TagSearch extends Component {
     });
   }
 
+  keyScroll(e) {
+    if (e.which == 38) {
+      const currentFoc = parseInt(document.activeElement.id.split('/')[0]);
+      if (currentFoc > -1) {
+        this.refs[String(currentFoc - 1) + '/tag'].focus();
+      }
+    }
+
+    if (e.which == 40) {
+      const currentFoc = parseInt(document.activeElement.id.split('/')[0]);
+      if (currentFoc < this.state.tags.length - 1) {
+        this.refs[String(currentFoc + 1) + '/tag'].focus();
+      }
+    }
+  }
+
   render() {
     const {
       addedTags,
@@ -147,7 +146,7 @@ class TagSearch extends Component {
     return (
       <div>
         <div className="list-items" id="list-items-addedTag">{renderedAddedTags}</div>
-        <div className="form" {...ArrowKeysReact.events} tabIndex="1000">
+        <div className="form" onKeyDown={this.keyScroll} tabIndex="1000">
           <input className='form-input' id="-1/tag"
             placeholder='add tags'
             onChange={this.updateFormVal}
