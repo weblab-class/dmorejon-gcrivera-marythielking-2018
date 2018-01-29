@@ -81,7 +81,10 @@ class TagSearch extends Component {
   }
 
   updateFormVal(event) {
-    if (!event.target.value) {this.setState({ tags: []});}
+    if (!event.target.value) {
+      this.setState({ tags: []});
+      return;
+    }
     Services.tag.search(event.target.value).then((res) => {
       let tagsResults = res.content;
       if (tagsResults.length > 0) {

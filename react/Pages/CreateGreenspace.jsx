@@ -42,7 +42,10 @@ class CreateGreenspace extends Component {
     if (nameVal === '') {
       this.setState({ errorMessage: "Please enter a name for the greenspace." });
     } else {
-      this.props.createGreenspace(nameVal, lat, lng, tags);
+      let tagString = tags.map((tag) => {
+        return tag.name;
+      });
+      this.props.createGreenspace(nameVal, lat, lng, tagString);
     }
   }
 
