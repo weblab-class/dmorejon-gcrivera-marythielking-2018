@@ -693,15 +693,71 @@ h1:hover {
 #tutorial-container {
   display: flex;
   justify-content: space-around;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .tutorial-gif {
+  position: absolute;
+  top: 0px;
+  left: 0px;
   border-radius: 50%;
   height: 200px;
   width: 200px;
+  -webkit-transition: 0.75s;
+  -moz-transition: 0.75s;
+  -o-transition: 0.75s;
+  transition: 0.75s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tutorial-gif.show {
+  opacity: 1;
+  visibility: visible;
 }
 
 #no-greenspace-text {
   text-align: center;
   margin: 20px 0px;
+}
+
+.carousel-btn {
+  top: 5px;
+  left: 5px;
+  color: #696969;
+}
+
+.carousel-btn:hover {
+  color: #4f4f4f;
+  cursor: pointer;
+}
+
+#carousel-back {
+  padding-right: 15px;
+}
+
+#carousel-forward {
+  padding-left: 15px;
+}
+
+#carousel-imgs {
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+
+#circles-container {
+  display: flex;
+  justify-content: space-around;
+  width: 50px;
+}
+
+.circle-container {
+  color: #696969;
+}
+
+.circle-container:hover {
+  color: #4f4f4f;
+  cursor: pointer;
 }
