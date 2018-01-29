@@ -32,7 +32,6 @@ class Homepage extends Component {
         <a
           href="/auth/facebook"
           className="fb-btn btn"
-          onClick={this.props.logInUser}
         >
           <img src="images/FB-f-Logo__white_1024.png" height="20px" className="fb-logo" />
           Log in with Facebook

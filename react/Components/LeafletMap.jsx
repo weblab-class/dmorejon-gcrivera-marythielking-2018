@@ -157,9 +157,6 @@ class LeafletMap extends Component {
   }
 
   placeNewMarker(latlng, id="temp") {
-    if (!this.props.currentUser) {
-      return;
-    }
     const marker = L.marker(latlng).addTo(this.map);
     this.setState({ marker: marker });
     this.onNewMarker({latlng: latlng, target: {gid: marker.gid}});
@@ -228,6 +225,8 @@ class LeafletMap extends Component {
       if (e_lat === m_lat && e_lng === m_lng) {
         if (this.props.currentUser){
           this.props.router.push(`/map/${e_lat},${e_lng}/create/${window.location.search}`);
+        } else {
+          this.props.router.push(`/map/${e_lat},${e_lng}/create/login/${window.location.search}`);
         }
       } else {
         marker.remove(this.map);
