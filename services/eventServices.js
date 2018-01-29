@@ -106,6 +106,30 @@ export default {
     });
   },
 
+  addTag : (eventid, name) => {
+    return request({
+      uri : BASE_URL + `/add/tag`,
+      method: 'PUT',
+      json : true,
+      body : {
+        eventid,
+        name,
+      }
+    });
+  },
+
+  deleteTag : (eventid, name) => {
+    return request({
+      uri : BASE_URL + `/delete/tag`,
+      method: 'PUT',
+      json : true,
+      body : {
+        eventid,
+        name,
+      }
+    });
+  },
+
   delete : (eventid) => {
     return request({
       uri : BASE_URL + `/${eventid}`,
