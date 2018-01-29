@@ -603,7 +603,31 @@ h1:hover {
 }
 
 .discover-greenspace {
-  background-color: #b4d0af; /* #cccccc; */
+  background-color: rgba(202, 202, 202, 0.8);
+  padding: 10px;
+  margin: 10px 0px;
+  border-radius: 5px;
+}
+
+.discover-greenspace:hover {
+  cursor: default;
+}
+
+.discover-greenspace-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.discover-greenspace-name {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.discover-hr {
+  color: #89b780;
+  border-width: 2px;
+  border-style: solid;
 }
 
 .logo-hover {
@@ -614,6 +638,11 @@ h1:hover {
   margin-left: 4px;
   cursor: pointer;
   color: grey;
+}
+#delete-tag-icon:hover {
+  margin-left: 4px;
+  cursor: pointer;
+  color: black;
 }
 
 .list-item-addedTag {
@@ -640,7 +669,8 @@ h1:hover {
 .list-item-tag {
   display: inline-block;
   margin-right: 10px;
-  margin-top: 5px;
+  margin-top: 10px;
+  margin-bottom: 5px;
   padding: 2px;
   padding-right: 6px;
   padding-left: 10px;

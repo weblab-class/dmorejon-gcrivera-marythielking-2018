@@ -144,7 +144,7 @@ class TagSearch extends Component {
 
     return (
       <div>
-        <div>Tags:</div>
+        <div id="tag-title">Tags:</div>
         <div className="list-items" id="list-items-addedTag">{renderedAddedTags}</div>
         <div className="form" {...ArrowKeysReact.events} tabIndex="-1">
           <input className='form-input' id="-1"
