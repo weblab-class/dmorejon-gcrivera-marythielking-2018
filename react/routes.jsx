@@ -8,6 +8,7 @@ import LogIn from './Pages/LogIn.jsx';
 import Loading from './Pages/Loading.jsx';
 import MapView from './Pages/MapView.jsx';
 import CreateGreenspace from './Pages/CreateGreenspace.jsx';
+import CreateGreenspaceLogin from './Pages/CreateGreenspaceLogin.jsx';
 import GreenspaceInfo from './Pages/GreenspaceInfo.jsx';
 import CreateEvent from './Pages/CreateEvent.jsx';
 import EventView from './Pages/EventView.jsx';
@@ -52,6 +53,8 @@ export default (
       <Route path="map/:lat,:lng/create"
         component={CreateGreenspace}
         onEnter={checkUser} />
+      <Route path="map/:lat,:lng/create/login"
+        component={CreateGreenspaceLogin} />
       <Route path="map/:gid"
         getComponent={(nextState, cb) => checkGID(nextState, cb, GreenspaceInfo)} />
       <Route path="map/:gid/event/create"

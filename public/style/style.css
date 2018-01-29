@@ -690,3 +690,8 @@ h1:hover {
 #homepage-tutorials {
   display: flex;
 }
+
+#no-greenspace-text {
+  text-align: center;
+  margin: 20px 0px;
+}
