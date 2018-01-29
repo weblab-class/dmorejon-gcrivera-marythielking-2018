@@ -104,4 +104,36 @@ router.put('/location/:greenspaceid', async (req, res) => {
   }
 });
 
+// PUT /greenspace/add/tag
+  // Request Body:
+    // gid
+    // name
+  // Response body:
+    // success: true if greenspace tag added in database; false otherwise
+    // err: on error, an error message
+router.put('/add/tag', async (req, res) => {
+  try {
+    await greenspace.addTag(req.body.gid, req.body.name);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
+// PUT /greenspace/delete/tag
+  // Request Body:
+    // gid
+    // name
+  // Response body:
+    // success: true if greenspace tag removed from database; false otherwise
+    // err: on error, an error message
+router.put('/delete/tag', async (req, res) => {
+  try {
+    await greenspace.deleteTag(req.body.gid, req.body.name);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
 module.exports = router;
