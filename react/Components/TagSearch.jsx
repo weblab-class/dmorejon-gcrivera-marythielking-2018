@@ -81,7 +81,10 @@ class TagSearch extends Component {
   }
 
   updateFormVal(event) {
-    if (!event.target.value) {this.setState({ tags: []});}
+    if (!event.target.value) {
+      this.setState({ tags: []});
+      return;
+    }
     Services.tag.search(event.target.value).then((res) => {
       let tagsResults = res.content;
       if (tagsResults.length > 0) {
@@ -141,7 +144,7 @@ class TagSearch extends Component {
 
     return (
       <div>
-        <div>Tags:</div>
+        <div id="tag-title">Tags:</div>
         <div className="list-items" id="list-items-addedTag">{renderedAddedTags}</div>
         <div className="form" {...ArrowKeysReact.events} tabIndex="-1">
           <input className='form-input' id="-1"

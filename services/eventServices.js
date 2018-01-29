@@ -37,7 +37,7 @@ export default {
     });
   },
 
-  create : (name, description, greenspace, starttime, endtime, pending) => {
+  create : (name, description, greenspace, starttime, endtime, pending, tags) => {
     return request({
       uri : BASE_URL,
       method: 'POST',
@@ -49,6 +49,7 @@ export default {
         starttime,
         endtime,
         pending,
+        tags,
       }
     });
   },
