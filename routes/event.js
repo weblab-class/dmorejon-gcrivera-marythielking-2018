@@ -158,6 +158,38 @@ router.put('/decline/:eventid', async (req, res) => {
   }
 });
 
+// PUT /event/add/tag
+  // Request Body:
+    // eventid
+    // name
+  // Response body:
+    // success: true if greenspace tag added in database; false otherwise
+    // err: on error, an error message
+router.put('/add/tag', async (req, res) => {
+  try {
+    await event.addTag(req.body.eventid, req.body.name, req.user);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
+// PUT /event/delete/tag
+  // Request Body:
+    // eventid
+    // name
+  // Response body:
+    // success: true if greenspace tag removed from database; false otherwise
+    // err: on error, an error message
+router.put('/delete/tag', async (req, res) => {
+  try {
+    await event.deleteTag(req.body.eventid, req.body.name, req.user);
+    utils.sendSuccessResponse(res);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
 // DELETE /event/:eventid
   // Response body:
     // success: true if event deleted from database; false otherwise

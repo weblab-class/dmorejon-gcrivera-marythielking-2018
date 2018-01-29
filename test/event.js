@@ -429,6 +429,36 @@ describe('Event API', () => {
           else done();
         });
     });
+
+    it('Add a tag to an event', (done) => {
+      request(app)
+        .put('/event/add/tag')
+        .send({eventid: snowballFightID, name: "snow"})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Delete a tag from an event', (done) => {
+      request(app)
+        .put('/event/delete/tag')
+        .send({eventid: snowballFightID, name: "snow"})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
   });
 
   describe('DELETE /event', () => {
