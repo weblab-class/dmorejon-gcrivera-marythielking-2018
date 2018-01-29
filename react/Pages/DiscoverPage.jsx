@@ -5,6 +5,7 @@ import { Link, withRouter } from 'react-router';
 import Services from '../../services';
 import Sidebar from '../Components/Sidebar.jsx';
 import EventList from '../Components/EventList.jsx';
+import TagSearch from '../Components/TagSearch.jsx';
 
 class Discover extends Component {
   constructor(props){
@@ -13,10 +14,12 @@ class Discover extends Component {
     this.state = {
       data: null,
       location: null,
+      tags: [],
     };
 
     this.renderData = this.renderData.bind(this);
     this.renderEvents = this.renderEvents.bind(this);
+    this.handleTags = this.handleTags.bind(this);
   }
 
   componentDidMount() {
@@ -59,11 +62,14 @@ class Discover extends Component {
       );
     });
   }
+  handleTags(tags) {
+    this.setState({ tags: tags});
+  }
 
   render() {
     const { data, location } = this.state;
 
-    var dataDiv = null;
+    let dataDiv = null;
     if (!location) {
       dataDiv = (
         <div>
@@ -77,6 +83,11 @@ class Discover extends Component {
     return (
       <Sidebar ref="component" setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
         <h1>Discover</h1>
+        <div id="tag-title-discover">Add your tags:</div>
+        <TagSearch
+          handleTags={this.handleTags}
+          userTags={this.props.currentUser.tags}
+        />
         {dataDiv}
       </Sidebar>
     );
@@ -85,6 +96,7 @@ class Discover extends Component {
 
 Discover.propTypes = {
   setMapPlaceMarkers: PropTypes.func,
+  currentUser: PropTypes.object,
 }
 
 export default withRouter(Discover);

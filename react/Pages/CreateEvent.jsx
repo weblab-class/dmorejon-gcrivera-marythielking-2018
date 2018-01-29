@@ -238,6 +238,7 @@ class CreateEvent extends Component {
             currentUser={this.props.currentUser}
             create={this.create}
           />
+        <div id="tag-title-createEvent">Tags:</div>
           <TagSearch
             handleTags={this.handleTags}
             create={this.create}
