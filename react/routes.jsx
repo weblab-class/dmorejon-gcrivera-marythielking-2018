@@ -62,7 +62,8 @@ export default (
         component={UserView}
         onEnter={checkUser} />
       <Route path="discover"
-          component={Discover} />
+        component={Discover}
+        onEnter={checkUser} />
       <Route path="*"
         component={NotFound} />
     </Route>

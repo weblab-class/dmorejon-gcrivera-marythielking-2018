@@ -595,7 +595,31 @@ h1:hover {
 }
 
 .discover-greenspace {
-  background-color: #b4d0af; /* #cccccc; */
+  background-color: rgba(202, 202, 202, 0.8);
+  padding: 10px;
+  margin: 10px 0px;
+  border-radius: 5px;
+}
+
+.discover-greenspace:hover {
+  cursor: default;
+}
+
+.discover-greenspace-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.discover-greenspace-name {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.discover-hr {
+  color: #89b780;
+  border-width: 2px;
+  border-style: solid;
 }
 
 #delete-tag-icon {

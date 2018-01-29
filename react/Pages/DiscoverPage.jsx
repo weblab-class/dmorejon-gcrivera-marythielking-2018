@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Sidebar from '../Components/Sidebar.jsx';
+import { Link, withRouter } from 'react-router';
+
 import Services from '../../services';
+import Sidebar from '../Components/Sidebar.jsx';
 import EventList from '../Components/EventList.jsx';
 
 class Discover extends Component {
@@ -24,18 +26,19 @@ class Discover extends Component {
       this.setState({location: location});
       Services.discover.info(location)
         .then((res) => {
-          this.setState({data: res.content});
+          if (this.refs.component) {
+            this.setState({data: res.content});
+          }
         });
     }
   }
 
   renderEvents(events) {
     if (events.length === 0) {
-      return (<div id="upcoming-events">There are no upcoming events.</div>);
+      return (<div id="discover-upcoming-events">There are no upcoming events.</div>);
     }
-    return (<div id="upcoming-events">
-      <div id="upcoming-events-text">Upcoming Events:</div>
-      <EventList events={events} />
+    return (<div id="discover-upcoming-events">
+      <EventList events={events} maxHeight="80px" />
     </div>);
   }
 
@@ -44,7 +47,13 @@ class Discover extends Component {
       const events = this.renderEvents(val.events);
       return (
         <div key={val.greenspace._id} className="discover-greenspace">
-          {val.greenspace.name}
+          <div className="discover-greenspace-header">
+            <div className="discover-greenspace-name">{val.greenspace.name}</div>
+            <Link to={`/map/${val.greenspace._id}/${window.location.search}`}>
+              <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png" height="20px" title="View Greenspace"/>
+            </Link>
+          </div>
+          <hr className="discover-hr"/>
           {events}
         </div>
       );
@@ -52,26 +61,21 @@ class Discover extends Component {
   }
 
   render() {
+    const { data, location } = this.state;
 
-    const {
-      data,
-      location,
-    } = this.state;
-
-    let dataDiv;
+    var dataDiv = null;
     if (!location) {
       dataDiv = (
         <div>
           Greenspace needs your location to start discovering!
         </div>
       );
-    }
-    if (data) {
+    } else if (data) {
       dataDiv = this.renderData(data);
     }
 
     return (
-      <Sidebar setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
+      <Sidebar ref="component" setMapPlaceMarkers={this.props.setMapPlaceMarkers}>
         <h1>Discover</h1>
         {dataDiv}
       </Sidebar>
@@ -83,4 +87,4 @@ Discover.propTypes = {
   setMapPlaceMarkers: PropTypes.func,
 }
 
-export default Discover;
+export default withRouter(Discover);
