@@ -8,9 +8,12 @@ class TagSearch extends Component {
   constructor(props){
     super(props);
 
+    let userTagObjects = props.userTags.map((tagString) => {
+      return { name: tagString };
+    });
     this.state = {
       tags: [],
-      addedTags: props.userTags,
+      addedTags: userTagObjects,
       createdTags: [],
       isNew: null,
     };
@@ -38,7 +41,7 @@ class TagSearch extends Component {
       const updatedCreatedList = this.state.createdTags.concat({ name: tag });
       this.setState({ createdTags: updatedCreatedList });
     }
-    this.props.handleTags(updatedTagList);
+    this.props.handleAddTag(updatedTagList, { name: tag });
     this.refs[String(-1) + '/tag'].value = '';
     this.refs[String(-1) + '/tag'].focus();
     this.setState({ addedTags: updatedTagList, tags: [], isNew: null });
@@ -55,7 +58,7 @@ class TagSearch extends Component {
     }
     let updatedTagList = this.removeFromArray(this.state.addedTags, tag);
     this.refs[String(-1) + '/tag'].focus();
-    this.props.handleTags(updatedTagList);
+    this.props.handleRemoveTag(updatedTagList, tag);
     this.setState({ addedTags: updatedTagList});
   }
 

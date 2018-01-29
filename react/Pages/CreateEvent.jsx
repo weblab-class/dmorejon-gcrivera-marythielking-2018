@@ -236,12 +236,11 @@ class CreateEvent extends Component {
           <UserSearch
             handleParticipants={this.handleParticipants}
             currentUser={this.props.currentUser}
-            create={this.create}
           />
         <div id="tag-title-createEvent">Tags:</div>
           <TagSearch
-            handleTags={this.handleTags}
-            create={this.create}
+            handleAddTag={this.handleTags}
+            handleRemoveTag={this.handleTags}
           />
           <div className="btn" onClick={this.create}>Create</div>
           { errorMessage ? (<div id="form-error">{errorMessage}</div>) : null }
