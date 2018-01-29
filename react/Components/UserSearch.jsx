@@ -17,7 +17,15 @@ class UserSearch extends Component {
         up: () => {
           const currentFoc = parseInt(document.activeElement.id);
           if (currentFoc > -1) {
-            this.refs[String(currentFoc - 1)].focus();
+            const nextFoc = currentFoc - 1;
+            const elt = this.refs[String(nextFoc)];
+            elt.focus();
+            if (nextFoc === -1) {
+              const end = elt.value.length;
+              setTimeout(() => {
+                elt.setSelectionRange(0, end);
+              }, 0);
+            }
           }
         },
         down: () => {
