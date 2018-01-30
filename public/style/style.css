@@ -887,3 +887,11 @@ h1:hover {
   padding-bottom: 5px;
   text-align: right;
 }
+
+.marker-cluster-small {
+  background-color: rgba(209, 126, 87, 0.6) !important;
+}
+
+.marker-cluster-small div {
+  background-color: rgba(227, 138, 97, 0.6) !important;
+}
