@@ -6,6 +6,7 @@ import ReactStars from 'react-stars';
 
 import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import EventList from '../Components/EventList.jsx';
+import TagSearch from '../Components/TagSearch.jsx';
 import Services from '../../services';
 
 class GreenspaceInfo extends Component {
@@ -18,10 +19,14 @@ class GreenspaceInfo extends Component {
       lng: 0,
       events: [],
       rating: null,
+      tags: [],
+      updatePropTags: true,
     };
 
     this.renderEvents = this.renderEvents.bind(this);
     this.renderRating = this.renderRating.bind(this);
+    this.handleAddTag = this.handleAddTag.bind(this);
+    this.handleRemoveTag = this.handleRemoveTag.bind(this);
   }
 
   componentDidMount() {
@@ -34,7 +39,9 @@ class GreenspaceInfo extends Component {
             name: res.content.name,
             lat: res.content.location[0],
             lng: res.content.location[1],
+            tags: res.content.tags,
           });
+          this.setState({ updatePropTags: false });
           this.props.setMapViewFn(res.content.location);
         }
       });
@@ -91,9 +98,17 @@ class GreenspaceInfo extends Component {
     </div>);
   }
 
-  render(){
+  handleAddTag(tags, tag) {
+    Services.greenspace.addTag(this.props.params.gid, tag.name);
+  }
+
+  handleRemoveTag(tags, tag) {
+    Services.greenspace.deleteTag(this.props.params.gid, tag.name);
+  }
+
+  render() {
     const { currentUser, setMapPlaceMarkers } = this.props;
-    const { name, lat, lng, rating } = this.state;
+    const { name, lat, lng, rating, tags } = this.state;
     const gid = this.props.params.gid
 
     const renderedEvents = this.renderEvents();
@@ -116,10 +131,15 @@ class GreenspaceInfo extends Component {
         ref="component"
         currentUser={currentUser}
       >
-
         { renderedRating }
         { renderedEvents }
         { currentUser ? createEvent : '' }
+        <TagSearch
+            handleAddTag={this.handleAddTag}
+            handleRemoveTag={this.handleRemoveTag}
+            propTags={tags}
+            updateState={this.state.updatePropTags}
+        />
       </GreenspaceSidebar>
     );
   }

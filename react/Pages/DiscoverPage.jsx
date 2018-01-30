@@ -30,7 +30,7 @@ class Discover extends Component {
     Services.user.info()
       .then((res) => {
           this.setState({ tags: res.content.tags });
-          this.setState({ updatePropTags: false })
+          this.setState({ updatePropTags: false });
         });
     }
 

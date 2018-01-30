@@ -7,7 +7,6 @@ import FontAwesome from 'react-fontawesome';
 class TagSearch extends Component {
   constructor(props){
     super(props);
-
     let propTagObjects = props.propTags.map((tagString) => {
       return { name: tagString };
     });
