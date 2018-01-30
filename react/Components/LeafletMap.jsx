@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
 import omitBy from 'lodash/omitBy';
 import has from 'lodash/has';
+import Cluster from 'leaflet.markercluster';
 import greenspaceServices from '../../services/greenspaceServices.js';
 
 class LeafletMap extends Component {
@@ -26,6 +27,7 @@ class LeafletMap extends Component {
       center: center,
       icon: null,
       currentGreenspace: null,
+      cluster: new Cluster.MarkerClusterGroup({ showCoverageOnHover: true}),
     }
 
     this.disableMap = this.disableMap.bind(this);
@@ -57,8 +59,8 @@ class LeafletMap extends Component {
     map.on('click', this.onMapClick)
     map.on('moveend', this.setMarkers);
 
-    this.setMarkers();
     this.setMapCenter(this.map);
+    this.setMarkers();
 
     if (this.props.viewOnly) { this.disableMap(); }
   }
@@ -87,7 +89,7 @@ class LeafletMap extends Component {
 
     if (newProps.resetMarkers && this.state.marker) {
       this.state.marker.remove(this.map);
-      this.setState({ marker: null });
+      this.setState({ marker: null , cluster: markers });
     }
 
     if (newProps.viewOnly !== this.props.viewOnly) {
@@ -145,20 +147,28 @@ class LeafletMap extends Component {
           popupAnchor: [1, -34],
           shadowSize: [41, 41]
         });
-        const marker = L.marker(latlng, {icon: icon}).addTo(this.map);
+        const marker = L.marker(latlng, {icon: icon})
         marker.on('click', this.onNewMarker);
         marker.gid = id;
         return marker;
       }
     }
-    const marker = L.marker(latlng).addTo(this.map);
+    const marker = L.marker(latlng)
     marker.on('click', this.onNewMarker);
     marker.gid = id;
     return marker;
   }
 
   placeNewMarker(latlng, id="temp") {
-    const marker = L.marker(latlng).addTo(this.map);
+    const icon = L.icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+    const marker = L.marker(latlng, {icon: icon}).addTo(this.map);
     this.setState({ marker: marker });
     this.onNewMarker({latlng: latlng, target: {gid: marker.gid}});
     marker.gid = id;
@@ -166,6 +176,9 @@ class LeafletMap extends Component {
   }
 
   setMarkers() {
+    let markers = this.state.cluster;
+    markers.clearLayers();
+
     const bounds = this.map.getBounds();
     const swBounds = bounds.getSouthWest();
     const neBounds = bounds.getNorthEast();
@@ -177,7 +190,18 @@ class LeafletMap extends Component {
 
     greenspaceServices.getAll(minLat, maxLat, minLng, maxLng)
       .then((res) => {
-        res.content.map((g) => this.placeMarker(g.location, g._id));
+        res.content.map((g) => {
+          const allMarkers = markers.getLayers()
+          const duplicate = allMarkers.some((layer) => {
+            return g._id == layer.gid;
+          });
+          if (!duplicate) {
+            const marker = this.placeMarker(g.location, g._id);
+            markers.addLayer(marker);
+          }
+        });
+        this.map.addLayer(markers);
+        this.setState({ cluster: markers });
       }).catch((err) => {
         console.log(err);
       });
@@ -248,7 +272,7 @@ class LeafletMap extends Component {
       var center = window.location.search.split('=')[1].split(',');
       map.setView([parseFloat(center[0]), parseFloat(center[1])]);
       this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
-      L.marker(this.state.center, {icon: locIcon}).addTo(map);
+      L.marker(this.state.center, {icon: locIcon, zIndexOffset: -300}).addTo(map);
       this.setState({ icon: locIcon });
       return;
     }
@@ -257,7 +281,7 @@ class LeafletMap extends Component {
         this.setState({ center: [position.coords.latitude, position.coords.longitude] });
         map.setView(this.state.center);
         this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
-        L.marker(this.state.center, {icon: locIcon}).addTo(map);
+        L.marker(this.state.center, {icon: locIcon, zIndexOffset: -300}).addTo(map);
         this.setState({ icon: locIcon });
         return;
       });
@@ -269,8 +293,8 @@ class LeafletMap extends Component {
     this.map.setZoom(16);
     if (this.state.marker) {
       this.state.marker.remove(this.map);
-      this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
       this.setState({ marker: null });
+      this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
     }
   }
 

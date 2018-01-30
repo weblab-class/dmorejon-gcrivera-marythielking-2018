@@ -15,6 +15,7 @@ class Discover extends Component {
       data: null,
       location: null,
       tags: [],
+      updatePropTags: true,
     };
 
     this.renderData = this.renderData.bind(this);
@@ -26,7 +27,12 @@ class Discover extends Component {
 
   componentDidMount() {
     this.discoverServiceCall();
-  }
+    Services.user.info()
+      .then((res) => {
+          this.setState({ tags: res.content.tags });
+          this.setState({ updatePropTags: false });
+        });
+    }
 
   discoverServiceCall() {
     if (window.location.search) {
@@ -70,15 +76,13 @@ class Discover extends Component {
   }
 
   handleAddTag(tags, tag) {
-    this.setState({ tags: tags });
     Services.user.addTag(tag.name)
-      .then(() => {
+      .then((res) => {
         this.discoverServiceCall();
       });
   }
 
   handleRemoveTag(tags, tag) {
-    this.setState({ tags: tags });
     Services.user.deleteTag(tag.name)
       .then(() => {
         this.discoverServiceCall();
@@ -106,7 +110,8 @@ class Discover extends Component {
         <TagSearch
           handleAddTag={this.handleAddTag}
           handleRemoveTag={this.handleRemoveTag}
-          userTags={this.props.currentUser.tags}
+          propTags={this.state.tags}
+          updateState={this.state.updatePropTags}
         />
         {dataDiv}
       </Sidebar>
@@ -116,7 +121,6 @@ class Discover extends Component {
 
 Discover.propTypes = {
   setMapPlaceMarkers: PropTypes.func,
-  currentUser: PropTypes.object,
 }
 
 export default withRouter(Discover);

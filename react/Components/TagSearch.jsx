@@ -7,13 +7,12 @@ import FontAwesome from 'react-fontawesome';
 class TagSearch extends Component {
   constructor(props){
     super(props);
-
-    let userTagObjects = props.userTags.map((tagString) => {
+    let propTagObjects = props.propTags.map((tagString) => {
       return { name: tagString };
     });
     this.state = {
       tags: [],
-      addedTags: userTagObjects,
+      addedTags: propTagObjects,
       createdTags: [],
       isNew: null,
     };
@@ -26,6 +25,15 @@ class TagSearch extends Component {
     this.renderSearchTags = this.renderSearchTags.bind(this);
     this.renderAddedTags = this.renderAddedTags.bind(this);
     this.keyScroll = this.keyScroll.bind(this);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if(newProps.propTags && newProps.updateState) {
+      let propTagObjects = newProps.propTags.map((tagString) => {
+        return { name: tagString };
+      });
+      this.setState({ addedTags: propTagObjects });
+    }
   }
 
   handleKeyPress(event, tag) {
@@ -174,11 +182,13 @@ class TagSearch extends Component {
 }
 
 TagSearch.propTypes = {
-  userTags: PropTypes.arrayOf(PropTypes.string),
+  propTags: PropTypes.arrayOf(PropTypes.string),
+  updateState: PropTypes.bool,
 }
 
 TagSearch.defaultProps = {
-  userTags: [],
+  propTags: [],
+  updateState: false,
 }
 
 export default TagSearch;
