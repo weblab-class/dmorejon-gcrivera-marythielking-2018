@@ -103,7 +103,6 @@ class GreenspaceInfo extends Component {
   }
 
   handleRemoveTag(tags, tag) {
-    console.log(tag);
     Services.greenspace.deleteTag(this.props.params.gid, tag.name);
   }
 

@@ -58,7 +58,7 @@ class TagSearch extends Component {
        addedTags: updatedTagList,
        tags: [],
        isNew: null,
-       userAddedTags: updatedUserAddedTagList,   
+       userAddedTags: updatedUserAddedTagList,
      });
   }
 
@@ -67,7 +67,7 @@ class TagSearch extends Component {
       return tag.name === tagElem.name;
     });
     if (isCreatedTag) {
-      Services.tag.delete(tag);
+      Services.tag.delete(tag.name);
       let createdTags = this.removeFromArray(this.state.createdTags, tag);
       this.setState({ createdTags: createdTags });
     }
@@ -178,7 +178,7 @@ class TagSearch extends Component {
     let renderedAddedTags = [];
     if (tags.length > 0) {renderedTags = this.renderSearchTags(tags);}
     if (addedTags.length > 0) {renderedAddedTags = this.renderAddedTags(addedTags);}
-
+    
     return (
       <div>
         <div className="list-items" id="list-items-addedTag">{renderedAddedTags}</div>
