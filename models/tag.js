@@ -28,14 +28,14 @@ const tag = ((tagModel) => {
     }
 
     that.createTag = async (name) => {
-      if(!name) {throw {message: 'Tag validation failed: name: Path `name` is required.', errorCode: 400}}
-      name = name.toLowerCase();
-      const duplicateTag = await tagModel.findOne({name: name});
-      if (duplicateTag) {
-        return duplicateTag;
-      }
-      const newTag = new tagModel({name: name});
       try {
+        if(!name) {throw {message: 'Tag validation failed: name: Path `name` is required.', errorCode: 400}}
+        name = name.toLowerCase();
+        const duplicateTag = await tagModel.findOne({name: name});
+        if (duplicateTag) {
+          return duplicateTag;
+        }
+        const newTag = new tagModel({name: name});
         return await newTag.save();
       } catch(e) {
         throw e;
@@ -44,6 +44,8 @@ const tag = ((tagModel) => {
 
     that.deleteTag = async (name) => {
       try {
+          if(!name) {throw {message: 'Tag name is required.', errorCode: 400}}
+          name = name.toLowerCase();
           const oldTag = await tagModel.findOneAndRemove({name: name});
           if (!oldTag) {
             throw {message: 'Tag does not exist.', errorCode: 404}

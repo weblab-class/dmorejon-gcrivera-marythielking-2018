@@ -114,8 +114,7 @@ class GreenspaceSidebar extends Component {
         { renderedBackButton }
         <div id="greenspace-header">
           <div id="greenspace-name-star">
-            <h1>{name}</h1>
-            { currentUser ? renderedStar : '' }
+            <h1>{name}{ currentUser ? renderedStar : '' }</h1>
           </div>
           <a href={`https://www.google.com/maps?saddr=My+Location&daddr=${lat},${lng}`} target="_blank">
             <img src="/images/google-maps-icon-2015.png" height="30px" className="gmaps-logo" title="Directions"/>

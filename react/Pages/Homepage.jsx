@@ -21,11 +21,13 @@ class Homepage extends Component {
         "Personalize your discover page with tags to find new natural areas around you!"
       ],
       currentGIF: 0,
+      zoomed: 'tutorial-gif show',
     }
 
     this.goBack = this.goBack.bind(this);
     this.goForward = this.goForward.bind(this);
     this.goToGIF = this.goToGIF.bind(this);
+    this.handleZoom = this.handleZoom.bind(this);
   }
 
   goBack() {
@@ -48,12 +50,21 @@ class Homepage extends Component {
     this.setState({ currentGIF: parseInt(e.target.id) });
   }
 
+  handleZoom() {
+    if (this.state.zoomed !== 'zoom-gif') {
+      this.setState({ zoomed: 'zoom-gif'});
+    } else {
+      this.setState({ zoomed: 'tutorial-gif show' });
+    }
+  }
+
   render(){
 
     const {
       gifs,
       text,
       currentGIF,
+      zoomed
     } = this.state;
 
     let imgs = [];
@@ -61,7 +72,13 @@ class Homepage extends Component {
     let texts = [];
     for (let i = 0; i < gifs.length; i++) {
       if (i === currentGIF) {
-        imgs.push(<img src={gifs[i]} key={i} className="tutorial-gif show"></img>);
+        imgs.push(<img ref={currentGIF}
+                        src={gifs[i]}
+                        key={i}
+                        className={zoomed}
+                        onClick={this.handleZoom}
+                  >
+                  </img>);
         circles.push(
           <div className="circle-container" key={i} onClick={this.goToGIF}>
             <FontAwesome name="circle" id={i}/>

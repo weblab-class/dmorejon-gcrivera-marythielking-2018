@@ -99,6 +99,8 @@ const greenspace = ((greenspaceModel) => {
 
   that.addTag = async (id, name) => {
     try {
+      if(!name) {throw {message: 'Tag name is required.', errorCode: 400}}
+      name = name.toLowerCase();
       const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id},
                                                                     {$push: {tags: name}});
       if (!oldGreenspace) {
@@ -112,6 +114,8 @@ const greenspace = ((greenspaceModel) => {
 
   that.deleteTag = async (id, name) => {
     try {
+      if(!name) {throw {message: 'Tag name is required.', errorCode: 400}}
+      name = name.toLowerCase();
       const oldGreenspace = await greenspaceModel.findOneAndUpdate({_id: id},
                                                                     {$pull: {tags: name}});
       if (!oldGreenspace) {

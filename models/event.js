@@ -170,6 +170,8 @@ const event = ((eventModel) => {
 
   that.addTag = async (id, name, user) => {
     try {
+      if(!name) {throw {message: 'Tag name is required.', errorCode: 400}}
+      name = name.toLowerCase();
       const oldEvent = await eventModel.findOneAndUpdate({_id: id, 'host.fbid': user.fbid},
                                                                     {$push: {tags: name}});
       if (!oldEvent) {
@@ -183,6 +185,8 @@ const event = ((eventModel) => {
 
   that.deleteTag = async (id, name, user) => {
     try {
+      if(!name) {throw {message: 'Tag name is required.', errorCode: 400}}
+      name = name.toLowerCase();
       const oldEvent = await eventModel.findOneAndUpdate({_id: id, 'host.fbid': user.fbid},
                                                                     {$pull: {tags: name}});
       if (!oldEvent) {
