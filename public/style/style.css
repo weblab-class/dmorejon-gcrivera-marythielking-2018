@@ -228,7 +228,7 @@ h1:hover {
   border-radius: 5px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) and (min-height: 700px) {
   .popup {
     margin: 100px 50px;
     box-shadow: 0px 0 5px 0px #696969;
@@ -706,6 +706,12 @@ h1:hover {
   margin-bottom: 8px;
 }
 
+#tutorial-dots-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 #tutorial-container {
   display: flex;
   justify-content: space-around;
@@ -731,6 +737,17 @@ h1:hover {
 .tutorial-gif.show {
   opacity: 1;
   visibility: visible;
+}
+
+#carousel-text {
+  width: 200px;
+}
+
+#carousel-text-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #no-greenspace-text {

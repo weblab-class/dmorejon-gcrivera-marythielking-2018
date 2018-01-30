@@ -91,6 +91,7 @@ class Homepage extends Component {
     return (
       <PopUp setMapViewOnly={this.props.setMapViewOnly}>
         <h1 style={{"marginBottom": "10px", "marginTop": "10px"}}>Welcome to Greenspace!</h1>
+        <div id="tutorial-dots-container">
           <div id="tutorial-container">
             <div className="carousel-btn" id="carousel-back" onClick={this.goBack}>
               <FontAwesome
@@ -99,8 +100,13 @@ class Homepage extends Component {
                 title="Back"
               />
             </div>
-            <div id="carousel-imgs">
-              {imgs}
+            <div id="carousel-text-container">
+              <div id="carousel-imgs">
+                {imgs}
+              </div>
+              <div id="carousel-text">
+                {text[currentGIF]}
+              </div>
             </div>
             <div className="carousel-btn" id="carousel-forward" onClick={this.goForward}>
               <FontAwesome
@@ -113,9 +119,7 @@ class Homepage extends Component {
           <div id="circles-container">
             {circles}
           </div>
-          <div>
-            {text[currentGIF]}
-          </div>
+        </div>
         <div>
           <a href={`/loading/${window.location.search}`}>
             <div className="btn" id="explore-btn">Explore</div>
