@@ -38,7 +38,7 @@ class TagSearch extends Component {
   }
 
   handleKeyPress(event, tag) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && tag !== '') {
       this.updateTagList(event, tag);
     }
   }
@@ -178,7 +178,7 @@ class TagSearch extends Component {
     let renderedAddedTags = [];
     if (tags.length > 0) {renderedTags = this.renderSearchTags(tags);}
     if (addedTags.length > 0) {renderedAddedTags = this.renderAddedTags(addedTags);}
-    
+
     return (
       <div>
         <div className="list-items" id="list-items-addedTag">{renderedAddedTags}</div>
