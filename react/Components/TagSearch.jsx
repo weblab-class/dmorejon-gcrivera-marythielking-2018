@@ -135,7 +135,7 @@ class TagSearch extends Component {
       return (
         <div key={tag.name} className="list-item-tag">
           {tag.name}
-          {userCreatedTag || userAddedTag ?
+          {userCreatedTag || userAddedTag || this.props.discoverPage ?
             <FontAwesome name="times" title="Delete" id="delete-tag-icon"
             onClick={((e) => this.removeTag(e, tag))}/>
             : ''}
@@ -201,11 +201,13 @@ class TagSearch extends Component {
 TagSearch.propTypes = {
   propTags: PropTypes.arrayOf(PropTypes.string),
   updateState: PropTypes.bool,
+  discoverPage: PropTypes.bool,
 }
 
 TagSearch.defaultProps = {
   propTags: [],
   updateState: false,
+  discoverPage: false,
 }
 
 export default TagSearch;
