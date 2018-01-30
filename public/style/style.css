@@ -741,6 +741,10 @@ h1:hover {
 
 #carousel-text {
   width: 200px;
+  position: relative;
+  height: 66px;
+  display: flex;
+  align-items: center;
 }
 
 #carousel-text-container {
@@ -793,4 +797,20 @@ h1:hover {
 .circle-container:hover {
   color: #4f4f4f;
   cursor: pointer;
+}
+
+.text-container {
+  position: absolute;
+  width: 200px;
+  -webkit-transition: 0.75s;
+  -moz-transition: 0.75s;
+  -o-transition: 0.75s;
+  transition: 0.75s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.text-container.show {
+  opacity: 1;
+  visibility: visible;
 }
