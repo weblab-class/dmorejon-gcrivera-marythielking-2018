@@ -719,6 +719,13 @@ h1:hover {
   margin-bottom: 8px;
 }
 
+#tag-title-greenspaceInfo {
+  margin-top: 20px;
+}
+#tags-greenspace {
+  align-self: flex-end;
+}
+
 #tag-title-createEvent {
   margin-bottom: 8px;
 }

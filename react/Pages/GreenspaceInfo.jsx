@@ -134,12 +134,15 @@ class GreenspaceInfo extends Component {
         { renderedRating }
         { renderedEvents }
         { currentUser ? createEvent : '' }
-        <TagSearch
-            handleAddTag={this.handleAddTag}
-            handleRemoveTag={this.handleRemoveTag}
-            propTags={tags}
-            updateState={this.state.updatePropTags}
-        />
+        <div id="tags-greenspace">
+          <div className="section-header" id="tag-title-greenspaceInfo">Greenspace Tags:</div>
+          <TagSearch
+              handleAddTag={this.handleAddTag}
+              handleRemoveTag={this.handleRemoveTag}
+              propTags={tags}
+              updateState={this.state.updatePropTags}
+          />
+      </div>
       </GreenspaceSidebar>
     );
   }

@@ -5,6 +5,8 @@ import FontAwesome from 'react-fontawesome';
 
 import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import TagSearch from '../Components/TagSearch.jsx';
+import TagDisplay from '../Components/TagDisplay.jsx';
+
 import eventServices from '../../services/eventServices.js';
 import userServices from '../../services/userServices.js';
 
@@ -34,7 +36,7 @@ class EventView extends Component {
     this.renderParticipant = this.renderParticipant.bind(this);
     this.handleAddTag = this.handleAddTag.bind(this);
     this.handleRemoveTag = this.handleRemoveTag.bind(this);
-    this.renderTagSearch = this.renderTagSearch.bind(this);
+    this.renderTags = this.renderTags.bind(this);
   }
 
   componentDidMount() {
@@ -213,7 +215,7 @@ class EventView extends Component {
     </div>)
   }
 
-  renderTagSearch() {
+  renderTags() {
     const { currentUser } = this.props;
     const { host, tags, updatePropTags } = this.state;
     if (host && currentUser) {
@@ -228,9 +230,17 @@ class EventView extends Component {
               updateState={updatePropTags}
             />
          </div>);
+      } else {
+        return (
+          <div>
+            <div className= "section-header">Event Tags:</div>
+            <TagDisplay propTags={tags} />
+          </div>
+
+        )
       }
     }
-    return null;
+
   }
 
   render() {
@@ -249,7 +259,7 @@ class EventView extends Component {
     const joinLeaveBtn = this.renderBtn();
     const renderedParticipants = this.renderParticipants();
     const renderedPending = this.renderPending();
-    const renderedTagSearch = this.renderTagSearch();
+    const renderedTags = this.renderTags();
 
     return (
       <GreenspaceSidebar
@@ -268,7 +278,7 @@ class EventView extends Component {
         {renderedParticipants}
         {renderedPending}
         {joinLeaveBtn}
-        {renderedTagSearch}
+        {renderedTags}
       </GreenspaceSidebar>
     );
   }
