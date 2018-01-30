@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
 
 const greenspaceSchema = mongoose.Schema({
   location: {type: [{type: Number, required: true}], required: true},
-  _arraySignature: { type: String, unique: true },
+  _arraySignature: { type: String },
   name: {type: String, required: true}
 });
 
