@@ -12,12 +12,13 @@ class Homepage extends Component {
     this.state = {
       gifs: [
        "/images/small_create_greenspace.gif",
-       "/images/small_create_event_4.gif"
+       "/images/small_create_event_4.gif",
+       "/images/small_discover_greenspace.gif"
       ],
       text: [
         "Create greenspaces by marking outdoor areas!",
         "Plan events on greenspaces and invite your friends!",
-        "Personalize your discover page to find new natural areas around you!"
+        "Personalize your discover page with tags to find new natural areas around you!"
       ],
       currentGIF: 0,
     }
