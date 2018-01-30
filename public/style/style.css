@@ -827,6 +827,9 @@ h1:hover {
   position: relative;
 }
 
+#carousel-imgs:hover {
+  cursor: pointer;
+}
 #circles-container {
   display: flex;
   justify-content: space-around;
