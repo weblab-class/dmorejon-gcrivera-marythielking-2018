@@ -213,4 +213,38 @@ describe('Greenspace API', () => {
         });
     });
   });
+
+  describe('PUT /greenspace', () => {
+
+    it('Add a tag to a greenspace', (done) => {
+      request(app)
+        .put('/greenspace/add/tag')
+        .send({gid: barelyGreenID, name: "swimming"})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+    it('Delete a tag from a greenspace', (done) => {
+      request(app)
+        .put('/greenspace/delete/tag')
+        .send({gid: barelyGreenID, name: "swimming"})
+        .expect(200)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, true);
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+
+  });
 });
