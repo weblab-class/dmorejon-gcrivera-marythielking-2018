@@ -358,6 +358,7 @@ h1:hover {
 
 #pending-users {
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .list-item-review {
@@ -662,12 +663,12 @@ h1:hover {
 #delete-tag-icon {
   margin-left: 4px;
   cursor: pointer;
-  color: grey;
+  color: #696969;
 }
 #delete-tag-icon:hover {
   margin-left: 4px;
   cursor: pointer;
-  color: black;
+  color: rgb(79, 79, 79);
 }
 
 .list-item-addedTag {
@@ -700,7 +701,7 @@ h1:hover {
   margin-right: 10px;
   margin-bottom: 7px;
   padding: 2px;
-  padding-right: 6px;
+  padding-right: 9px;
   padding-left: 10px;
   background-color: rgba(145, 145, 145, 0.5);
   border-radius: 12px;
