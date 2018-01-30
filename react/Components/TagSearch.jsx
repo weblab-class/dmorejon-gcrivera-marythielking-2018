@@ -13,6 +13,7 @@ class TagSearch extends Component {
     this.state = {
       tags: [],
       addedTags: propTagObjects,
+      userAddedTags: [],
       createdTags: [],
       isNew: null,
     };
@@ -44,6 +45,7 @@ class TagSearch extends Component {
 
   updateTagList(event, tag) {
     const updatedTagList = this.state.addedTags.concat({ name: tag });
+    const updatedUserAddedTagList = this.state.userAddedTags.concat({ name: tag });
     if (this.state.isNew) {
       Services.tag.create(tag);
       const updatedCreatedList = this.state.createdTags.concat({ name: tag });
@@ -52,7 +54,12 @@ class TagSearch extends Component {
     this.props.handleAddTag(updatedTagList, { name: tag });
     this.refs[String(-1) + '/tag'].value = '';
     this.refs[String(-1) + '/tag'].focus();
-    this.setState({ addedTags: updatedTagList, tags: [], isNew: null });
+    this.setState({
+       addedTags: updatedTagList,
+       tags: [],
+       isNew: null,
+       userAddedTags: updatedUserAddedTagList,   
+     });
   }
 
   removeTag(event, tag) {
@@ -65,9 +72,10 @@ class TagSearch extends Component {
       this.setState({ createdTags: createdTags });
     }
     let updatedTagList = this.removeFromArray(this.state.addedTags, tag);
+    let updatedUserAddedTagList = this.removeFromArray(this.state.userAddedTags, tag);
     this.refs[String(-1) + '/tag'].focus();
     this.props.handleRemoveTag(updatedTagList, tag);
-    this.setState({ addedTags: updatedTagList});
+    this.setState({ addedTags: updatedTagList, userAddedTags: updatedUserAddedTagList });
   }
 
   removeFromArray(array, tag) {
@@ -118,10 +126,19 @@ class TagSearch extends Component {
 
   renderAddedTags(addedTags) {
     return addedTags.map((tag, idx) => {
+      const userCreatedTag = this.state.createdTags.some((cTag) => {
+        return cTag.name === tag.name;
+      });
+      const userAddedTag = this.state.userAddedTags.some((uTag) => {
+        return uTag.name === tag.name;
+      });
       return (
         <div key={tag.name} className="list-item-tag">
           {tag.name}
-          <FontAwesome name="times" title="Delete" id="delete-tag-icon" onClick={((e) => this.removeTag(e, tag))}/>
+          {userCreatedTag || userAddedTag ?
+            <FontAwesome name="times" title="Delete" id="delete-tag-icon"
+            onClick={((e) => this.removeTag(e, tag))}/>
+            : ''}
         </div>
       );
     });
