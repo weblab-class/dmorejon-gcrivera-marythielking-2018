@@ -459,23 +459,54 @@ describe('Event API', () => {
           else done();
         });
     });
-  });
 
-  describe('DELETE /event', () => {
-
-    it('Delete a valid event', (done) => {
+    it('Invite a valid user', (done) => {
       request(app)
-        .delete('/event/' + snowballFightID)
+        .put('/event/invite')
+        .send({eventid: snowballFightID, target: user3})
         .expect(200)
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect((res) => {
           assert.equal(res.body.success, true);
+          assert.equal(res.body.content.pending.length, 1);
         })
         .end((err, res) => {
           if (err) done(err);
           else done();
         });
     });
+
+    it('Invite user that is already a part of event', (done) => {
+      request(app)
+        .put('/event/invite')
+        .send({eventid: snowballFightID, target: user2})
+        .expect(404)
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect((res) => {
+          assert.equal(res.body.success, false);
+        })
+        .end((err, res) => {
+          if (err) done(err);
+          else done();
+        });
+    });
+  });
+
+  describe('DELETE /event', () => {
+
+    // it('Delete a valid event', (done) => {
+    //   request(app)
+    //     .delete('/event/' + snowballFightID)
+    //     .expect(200)
+    //     .expect('Content-Type', 'application/json; charset=utf-8')
+    //     .expect((res) => {
+    //       assert.equal(res.body.success, true);
+    //     })
+    //     .end((err, res) => {
+    //       if (err) done(err);
+    //       else done();
+    //     });
+    // });
 
     it('Delete an invalid event', (done) => {
       request(app)

@@ -81,6 +81,23 @@ router.post('/', async (req, res) => {
   }
 });
 
+// PUT /event/invite
+  // Request Body:
+    // eventid
+    // target [user obj, invitee]
+  // Response body:
+    // success: true if user invited to event; false otherwise
+    // err: on error, an error message
+    // event: event object (see schema)
+router.put('/invite', async (req, res) => {
+  try {
+    const newEventData = await event.inviteUser(req.body.eventid, req.body.target, req.user);
+    utils.sendSuccessResponse(res, newEventData);
+  } catch(e) {
+    utils.sendErrorResponse(res, e.errorCode, e.message);
+  }
+});
+
 // PUT /event/:eventid
   // Request Body:
     // event: event object w/ updated information (see above schema)
@@ -109,7 +126,6 @@ router.put('/join/:eventid', async (req, res) => {
     const edditedEvent = await event.joinEvent(req.params.eventid, req.user);
     utils.sendSuccessResponse(res, edditedEvent);
   } catch(e) {
-    console.log(e.message)
     utils.sendErrorResponse(res, e.errorCode, e.message);
   }
 });
@@ -189,6 +205,7 @@ router.put('/delete/tag', async (req, res) => {
     utils.sendErrorResponse(res, e.errorCode, e.message);
   }
 });
+
 
 // DELETE /event/:eventid
   // Response body:

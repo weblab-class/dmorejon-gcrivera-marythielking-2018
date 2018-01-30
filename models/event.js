@@ -168,6 +168,22 @@ const event = ((eventModel) => {
     }
   }
 
+  that.inviteUser = async (eventid, target, user) => {
+    try {
+      const eventData = await eventModel.findOne({_id: eventid,
+                                                  'participants.fbid': {$ne: target.fbid},
+                                                  'pending.fbid': {$ne: target.fbid}});
+      if (!eventData) {throw {message: 'Event does not exist or user is already a part of event.', errorCode: 404}}
+      const eventMember = eventData.participants.some((participant) => {
+        return participant.fbid == user.fbid;
+      });
+      if (!eventMember) {throw {message: 'User does not have permission to invite someone to this event.', errorCode: 403}}
+      return await eventModel.findOneAndUpdate({_id: eventid}, {$push: {pending: target}}, {new: true});
+    } catch(e) {
+      throw e;
+    }
+  }
+
   that.addTag = async (id, name, user) => {
     try {
       if(!name) {throw {message: 'Tag name is required.', errorCode: 400}}

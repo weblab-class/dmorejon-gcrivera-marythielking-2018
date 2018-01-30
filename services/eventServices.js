@@ -130,6 +130,18 @@ export default {
     });
   },
 
+  invite : (eventid, target) => {
+    return request({
+      uri : BASE_URL + `/invite`,
+      method: 'PUT',
+      json : true,
+      body : {
+        eventid,
+        target,
+      }
+    });
+  },
+
   delete : (eventid) => {
     return request({
       uri : BASE_URL + `/${eventid}`,
