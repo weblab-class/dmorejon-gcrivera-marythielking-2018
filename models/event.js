@@ -168,6 +168,32 @@ const event = ((eventModel) => {
     }
   }
 
+  that.addTag = async (id, name, user) => {
+    try {
+      const oldEvent = await eventModel.findOneAndUpdate({_id: id, 'host.fbid': user.fbid},
+                                                                    {$push: {tags: name}});
+      if (!oldEvent) {
+        throw {message: 'Event does not exist.', errorCode: 404}
+      }
+      return;
+    } catch(e) {
+      throw e;
+    }
+  }
+
+  that.deleteTag = async (id, name, user) => {
+    try {
+      const oldEvent = await eventModel.findOneAndUpdate({_id: id, 'host.fbid': user.fbid},
+                                                                    {$pull: {tags: name}});
+      if (!oldEvent) {
+        throw {message: 'Event does not exist.', errorCode: 404}
+      }
+      return;
+    } catch(e) {
+      throw e;
+    }
+  }
+
   that.deleteEvent = async (eventid, user) => {
     try {
       const eventData = await eventModel.findOne({_id: eventid, 'host.fbid': user.fbid});
