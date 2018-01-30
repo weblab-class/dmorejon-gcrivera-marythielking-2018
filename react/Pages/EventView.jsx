@@ -4,8 +4,10 @@ import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
 
 import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
+import TagSearch from '../Components/TagSearch.jsx';
 import eventServices from '../../services/eventServices.js';
 import userServices from '../../services/userServices.js';
+
 
 class EventView extends Component {
   constructor(props){
@@ -15,6 +17,8 @@ class EventView extends Component {
       greenspaceName: '',
       lat: 0,
       lng: 0,
+      tags: [],
+      updatePropTags: true,
     };
 
     this.joinButton = this.joinButton.bind(this);
@@ -28,6 +32,9 @@ class EventView extends Component {
     this.renderParticipants = this.renderParticipants.bind(this);
     this.renderPending = this.renderPending.bind(this);
     this.renderParticipant = this.renderParticipant.bind(this);
+    this.handleAddTag = this.handleAddTag.bind(this);
+    this.handleRemoveTag = this.handleRemoveTag.bind(this);
+    this.renderTagSearch = this.renderTagSearch.bind(this);
   }
 
   componentDidMount() {
@@ -39,11 +46,11 @@ class EventView extends Component {
         this.props.setMapViewFn([this.state.lat, this.state.lng]);
       }
     });
-
     eventServices.info(eventId)
       .then((res) => {
         if (this.refs.component) {
           this.setState(res.content);
+          this.setState({ updatePropTags: false });
         }
       })
       .catch((err) => console.log(err));
@@ -93,6 +100,14 @@ class EventView extends Component {
       .then((res) => {
         this.props.router.goBack();
       });
+  }
+
+  handleAddTag(tags, tag) {
+    eventServices.addTag(this.props.params.eventId, tag.name);
+  }
+
+  handleRemoveTag(tags, tag) {
+    eventServices.deleteTag(this.props.params.eventId, tag.name);
   }
 
   renderTime() {
@@ -198,7 +213,27 @@ class EventView extends Component {
     </div>)
   }
 
-  render(){
+  renderTagSearch() {
+    const { currentUser } = this.props;
+    const { host, tags, updatePropTags } = this.state;
+    if (host && currentUser) {
+      if (host.fbid === currentUser.fbid) {
+        return (
+          <div>
+            <div className= "section-header">Event Tags:</div>
+            <TagSearch
+              handleAddTag={this.handleAddTag}
+              handleRemoveTag={this.handleRemoveTag}
+              propTags={tags}
+              updateState={updatePropTags}
+            />
+         </div>);
+      }
+    }
+    return null;
+  }
+
+  render() {
     const { currentUser, params } = this.props;
     const {
       name,
@@ -206,6 +241,7 @@ class EventView extends Component {
       greenspaceName,
       lat,
       lng,
+      tags,
     } = this.state;
 
     const renderedTime = this.renderTime();
@@ -213,6 +249,7 @@ class EventView extends Component {
     const joinLeaveBtn = this.renderBtn();
     const renderedParticipants = this.renderParticipants();
     const renderedPending = this.renderPending();
+    const renderedTagSearch = this.renderTagSearch();
 
     return (
       <GreenspaceSidebar
@@ -231,6 +268,7 @@ class EventView extends Component {
         {renderedParticipants}
         {renderedPending}
         {joinLeaveBtn}
+        {renderedTagSearch}
       </GreenspaceSidebar>
     );
   }
