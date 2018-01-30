@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
+import omitBy from 'lodash/omitBy';
+import has from 'lodash/has';
 import greenspaceServices from '../../services/greenspaceServices.js';
 
 class LeafletMap extends Component {
@@ -63,10 +65,9 @@ class LeafletMap extends Component {
 
   componentWillReceiveProps(newProps) {
     if (newProps.setMapView) {
-      if (this.props.setMapView === null) {
-        this.setState({ currentGreenspace: newProps.setMapView });
-        this.map.setView(newProps.setMapView);
-      } else if (newProps.setMapView[0] !== this.props.setMapView[0] || newProps.setMapView[1] !== this.props.setMapView[1]) {
+      const propsDiff = omitBy(newProps, (v,k) => { return (this.props[k] === v); });
+      const hasSetMapView = has(propsDiff, 'setMapView');
+      if (hasSetMapView) {
         this.setState({ currentGreenspace: newProps.setMapView });
         this.map.setView(newProps.setMapView);
       }
