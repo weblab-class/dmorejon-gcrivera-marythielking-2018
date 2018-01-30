@@ -124,7 +124,7 @@ class UserView extends Component {
       return (<div className='userview-col'>
         {pendingEvents}
         <h1 className="section-header">Upcoming Events:</h1>
-        <EventList events={events} />
+        <EventList events={events} inUserView={true}/>
       </div>);
     };
   }
