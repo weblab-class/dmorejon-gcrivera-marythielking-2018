@@ -276,15 +276,22 @@ class LeafletMap extends Component {
       this.setState({ icon: locIcon });
       return;
     }
-    if (navigator.geolocation && this.props.location.pathname.startsWith('/loading')) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.setState({ center: [position.coords.latitude, position.coords.longitude] });
-        map.setView(this.state.center);
-        this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
-        L.marker(this.state.center, {icon: locIcon, zIndexOffset: -300}).addTo(map);
-        this.setState({ icon: locIcon });
-        return;
-      });
+    if (this.props.location.pathname.startsWith('/loading')) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.setState({ center: [position.coords.latitude, position.coords.longitude] });
+          map.setView(this.state.center);
+          this.props.router.push(`/map/?loc=${this.state.center[0]},${this.state.center[1]}`);
+          L.marker(this.state.center, {icon: locIcon, zIndexOffset: -300}).addTo(map);
+          this.setState({ icon: locIcon });
+          return;
+        }, (err) => {
+          this.props.router.push(`/map`);
+          return;
+        });
+      } else {
+        this.props.router.push(`/map`);
+      }
     }
   }
 
