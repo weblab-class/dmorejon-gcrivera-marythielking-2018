@@ -112,6 +112,7 @@ class Discover extends Component {
           handleRemoveTag={this.handleRemoveTag}
           propTags={this.state.tags}
           updateState={this.state.updatePropTags}
+          discoverPage={true}
         />
         {dataDiv}
       </Sidebar>
