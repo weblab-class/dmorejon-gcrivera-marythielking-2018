@@ -524,6 +524,9 @@ h1:hover {
   flex-wrap: wrap;
 }
 
+#userview-content > .userview-col:nth-child(odd) {float:left;}
+#userview-content > .userview-col:nth-child(even) {float:right;}
+
 .userview-col {
   min-width: 250px;
   flex-grow: 1;
@@ -858,9 +861,10 @@ h1:hover {
 .greenspace-accept-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .greenspace-name {
   padding-bottom: 5px;
+  text-align: right;
 }
