@@ -159,12 +159,15 @@ class UserView extends Component {
         <div className="event-name">{name}</div>
         <div className="event-date">{date}</div>
       </div>
-      <div className="pending-btns" >
-        <div className="pending-btn" onClick={(e) => this.acceptEvent(e, _id)}>
-          <FontAwesome name="check" />
-        </div>
-        <div className="pending-btn" onClick={(e) => this.declineEvent(e, _id)}>
-          <FontAwesome name="times" />
+      <div className="greenspace-accept-container">
+        <div className="event-date greenspace-name">{greenspace.name}</div>
+        <div className="pending-btns" >
+          <div className="pending-btn" onClick={(e) => this.acceptEvent(e, _id)}>
+            <FontAwesome name="check" />
+          </div>
+          <div className="pending-btn" onClick={(e) => this.declineEvent(e, _id)}>
+            <FontAwesome name="times" />
+          </div>
         </div>
       </div>
     </Link>);
