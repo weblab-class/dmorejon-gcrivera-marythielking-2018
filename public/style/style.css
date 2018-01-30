@@ -228,7 +228,7 @@ h1:hover {
   border-radius: 5px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) and (min-height: 700px) {
   .popup {
     margin: 100px 50px;
     box-shadow: 0px 0 5px 0px #696969;
@@ -675,21 +675,41 @@ h1:hover {
   padding-left: 0px;
 }
 
+#list-items-tag {
+  max-height: 110px;
+}
+
 .list-item-tag {
   display: inline-block;
   margin-right: 10px;
-  margin-top: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 7px;
   padding: 2px;
   padding-right: 6px;
   padding-left: 10px;
   background-color: rgba(145, 145, 145, 0.5);
   border-radius: 12px;
+  cursor: default;
 }
 
 
 #tag-title-createGreenspace {
   font-size: 16px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+#tag-title-discover {
+  margin-bottom: 8px;
+}
+
+#tag-title-createEvent {
+  margin-bottom: 8px;
+}
+
+#tutorial-dots-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #tutorial-container {
@@ -717,6 +737,17 @@ h1:hover {
 .tutorial-gif.show {
   opacity: 1;
   visibility: visible;
+}
+
+#carousel-text {
+  width: 200px;
+}
+
+#carousel-text-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #no-greenspace-text {
