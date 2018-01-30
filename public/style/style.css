@@ -748,17 +748,29 @@ h1:hover {
 }
 
 .zoom-gif {
-  position: relative;
-  top: -100;
-  right: 175;
-  height: 550px;
-  width: 550px;
+  position: fixed;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 200px;
+  height: 100px;
+  margin: auto;
+  margin-top: 100px;
+  max-height: calc(100vh - 120px);
+  max-width: calc(100vw - 20px);
+  width: auto;
+  height: auto;
   z-index: 1000;
   border-radius: 50%;
   -webkit-transition: 0.75s;
   -moz-transition: 0.75s;
   -o-transition: 0.75s;
   transition: 0.75s;
+}
+
+.zoom-gif:hover {
+  cursor: pointer;
 }
 
 .tutorial-gif {
@@ -774,6 +786,10 @@ h1:hover {
   transition: 0.75s;
   opacity: 0;
   visibility: hidden;
+}
+
+.tutorial-gif:hover {
+  cursor: pointer;
 }
 
 .tutorial-gif.show {
