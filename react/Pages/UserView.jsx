@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
-import Promise from 'bluebird';
 import FontAwesome from 'react-fontawesome';
 import ReactStars from 'react-stars';
 
@@ -90,9 +89,7 @@ class UserView extends Component {
   renderReviews() {
     const { reviews } = this.state;
     if (reviews.length === 0) {
-      return (<div className="userview-col">
-        <h1 className="section-header">You haven't written any reviews yet!</h1>
-      </div>);
+      return null;
     } else {
       const renderedReviews = reviews.map((r) => this.renderReview(r));
       return (<div className="userview-col">
@@ -114,15 +111,10 @@ class UserView extends Component {
 
   renderEvents() {
     const { events } = this.state;
-    const pendingEvents = this.renderPending();
     if (events.length === 0) {
-      return (<div className='userview-col'>
-        {pendingEvents}
-        <h1 className="section-header">You aren't a part of any events yet!</h1>
-      </div>);
+      return null;
     } else {
       return (<div className='userview-col'>
-        {pendingEvents}
         <h1 className="section-header">Upcoming Events:</h1>
         <EventList events={events} inUserView={true}/>
       </div>);
@@ -135,7 +127,7 @@ class UserView extends Component {
       return null;
     } else {
       const renderedPending = pending.map((p) => this.renderPendingEvent(p));
-      return (<div>
+      return (<div className="userview-col">
         <h1 className="section-header">Event Invitations:</h1>
         <div className="list-items">{renderedPending}</div>
       </div>)
@@ -176,9 +168,7 @@ class UserView extends Component {
   renderFavorites() {
     const { favorites } = this.state;
     if (favorites.length === 0) {
-      return (<div className="userview-col">
-        <h1 className="section-header">You don't have any favorite greenspaces yet!</h1>
-      </div>);
+      return (null);
     } else {
       const renderedFavorites = favorites.map((f) => this.renderFavorite(f));
       return (<div className="userview-col">
@@ -205,9 +195,30 @@ class UserView extends Component {
       photo,
     } = this.state;
 
-    const renderedReviews = this.renderReviews();
+    const renderedPending = this.renderPending();
     const renderedEvents = this.renderEvents();
     const renderedFavorites = this.renderFavorites();
+    const renderedReviews = this.renderReviews();
+
+    let content;
+    if (renderedPending === null
+        && renderedEvents === null
+        && renderedFavorites === null
+        && renderedReviews === null) {
+      content = (<div>
+        <div id="userview-explore-header">Go explore!</div>
+        <div id="userview-explore-text">
+          If you favorite a greenspace, RSVP to an event, or write a review, it'll appear here!
+        </div>
+      </div>);
+    } else {
+      content = (<div id="userview-content">
+        {renderedPending}
+        {renderedEvents}
+        {renderedFavorites}
+        {renderedReviews}
+      </div>)
+    }
 
     return (
       <div id='userview' ref="component">
@@ -215,11 +226,7 @@ class UserView extends Component {
           <img src={photo} height="55px" className="profile-icon"/>
           <h1 id="userview-name">{currentUser}</h1>
         </div>
-        <div id="userview-content">
-          {renderedEvents}
-          {renderedFavorites}
-          {renderedReviews}
-        </div>
+        { content }
       </div>
     );
   }

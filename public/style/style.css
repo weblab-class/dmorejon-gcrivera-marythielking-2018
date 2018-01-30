@@ -543,6 +543,15 @@ h1:hover {
   padding-bottom: 6;
 }
 
+#userview-explore-header {
+  font-weight: bold;
+  font-size: 32px;
+}
+
+#userview-explore-text {
+  font-size: 20;
+}
+
 #close-btn {
   float: right;
   height: 20px;
