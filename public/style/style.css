@@ -736,6 +736,20 @@ h1:hover {
   margin-bottom: 10px;
 }
 
+.zoom-gif {
+  position: relative;
+  top: -100;
+  right: 175;
+  height: 550px;
+  width: 550px;
+  z-index: 1000;
+  border-radius: 50%;
+  -webkit-transition: 0.75s;
+  -moz-transition: 0.75s;
+  -o-transition: 0.75s;
+  transition: 0.75s;
+}
+
 .tutorial-gif {
   position: absolute;
   top: 0px;
