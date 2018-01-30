@@ -572,14 +572,16 @@ h1:hover {
 }
 
 .discover-div {
-  background-color: #2f83c7;
-  box-shadow: 2px 4px #2f3133 !important;
+  background: #3F86C1;
+  background: radial-gradient(#3f86bf, #367097);
+  box-shadow: 0px 0px 7px 1px #696969 !important;
   border: none !important;
 }
 
 .discover-div:hover {
   cursor: pointer;
-  background-color: #286fa8;
+  background: #367097;
+  background: radial-gradient(#38709c, #306386);
 }
 
 #discover-icon {
