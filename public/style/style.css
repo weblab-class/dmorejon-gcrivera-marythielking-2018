@@ -230,7 +230,7 @@ h1:hover {
 
 @media (min-width: 768px) and (min-height: 700px) {
   .popup {
-    margin: 100px 50px;
+    margin: 50px;
     box-shadow: 0px 0 5px 0px #696969;
   }
   #popup-close-btn { display: none; }
@@ -281,6 +281,11 @@ h1:hover {
 
 .list-item-event:hover {
   background-color: rgba(145, 145, 145, 0.5);
+}
+
+.event-name-container {
+  display: flex;
+  justify-content: space-between;
 }
 
 .event-name {
@@ -573,14 +578,16 @@ h1:hover {
 }
 
 .discover-div {
-  background-color: #2f83c7;
-  box-shadow: 2px 4px #2f3133 !important;
+  background: #3F86C1;
+  background: radial-gradient(#3f86bf, #367097);
+  box-shadow: 0px 0px 7px 1px #696969 !important;
   border: none !important;
 }
 
 .discover-div:hover {
   cursor: pointer;
-  background-color: #286fa8;
+  background: #367097;
+  background: radial-gradient(#38709c, #306386);
 }
 
 #discover-icon {
@@ -647,12 +654,12 @@ h1:hover {
 #delete-tag-icon {
   margin-left: 4px;
   cursor: pointer;
-  color: grey;
+  color: #696969;
 }
 #delete-tag-icon:hover {
   margin-left: 4px;
   cursor: pointer;
-  color: black;
+  color: rgb(79, 79, 79);
 }
 
 .list-item-addedTag {
@@ -751,6 +758,7 @@ h1:hover {
 #carousel-text-container {
   display: flex;
   align-items: center;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -814,4 +822,14 @@ h1:hover {
 .text-container.show {
   opacity: 1;
   visibility: visible;
+}
+
+.greenspace-accept-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.greenspace-name {
+  padding-bottom: 5px;
 }

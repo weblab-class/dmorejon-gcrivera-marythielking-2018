@@ -54,7 +54,7 @@ class Header extends Component {
     } else {
       headerButtons = (
         <div className={btnClass} onClick={() => this.headerClick(`/login`)}>
-          <div className="header-btn-text">Login</div>
+          <div className="header-btn-text">Log In</div>
           <FontAwesome name="sign-in" size="2x" title="Log in"/>
         </div>
       );
