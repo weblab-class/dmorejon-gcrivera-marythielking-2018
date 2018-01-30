@@ -40,6 +40,7 @@ class App extends Component {
       .then((res) => {
         this.setState({newMarker: true});
         this.props.router.push(`/map/${res.content._id}/${window.location.search}`);
+        this.setState({newMarker: false});
       });
   }
 
