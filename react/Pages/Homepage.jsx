@@ -57,6 +57,7 @@ class Homepage extends Component {
 
     let imgs = [];
     let circles = [];
+    let texts = [];
     for (let i = 0; i < gifs.length; i++) {
       if (i === currentGIF) {
         imgs.push(<img src={gifs[i]} key={i} className="tutorial-gif show"></img>);
@@ -65,11 +66,21 @@ class Homepage extends Component {
             <FontAwesome name="circle" id={i}/>
           </div>
         );
+        texts.push(
+          <div className="text-container show" key={i}>
+            {text[i]}
+          </div>
+        );
       } else {
         imgs.push(<img src={gifs[i]} key={i} className="tutorial-gif"></img>);
         circles.push(
           <div className="circle-container" key={i} onClick={this.goToGIF}>
             <FontAwesome name="circle-thin" id={i}/>
+          </div>
+        );
+        texts.push(
+          <div className="text-container" key={i}>
+            {text[i]}
           </div>
         );
       }
@@ -105,7 +116,7 @@ class Homepage extends Component {
                 {imgs}
               </div>
               <div id="carousel-text">
-                {text[currentGIF]}
+                {texts}
               </div>
             </div>
             <div className="carousel-btn" id="carousel-forward" onClick={this.goForward}>
