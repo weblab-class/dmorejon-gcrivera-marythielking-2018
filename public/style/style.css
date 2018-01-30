@@ -653,12 +653,12 @@ h1:hover {
 #delete-tag-icon {
   margin-left: 4px;
   cursor: pointer;
-  color: grey;
+  color: #696969;
 }
 #delete-tag-icon:hover {
   margin-left: 4px;
   cursor: pointer;
-  color: black;
+  color: rgb(79, 79, 79);
 }
 
 .list-item-addedTag {
