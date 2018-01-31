@@ -164,22 +164,22 @@ class EventView extends Component {
       if (userPending.length > 0) {
         return (<div>
           <div id="add-event" onClick={this.acceptButton}>
-            <FontAwesome name="calendar-plus-o" size="2x" id="calendar-icon" />
+            <FontAwesome name="calendar-plus-o" size="lg" id="calendar-icon" />
             <div id="add-event-text">Accept Invitation</div>
           </div>
           <div id="add-event" onClick={this.declineButton}>
-            <FontAwesome name="calendar-minus-o" size="2x" id="calendar-icon" />
+            <FontAwesome name="calendar-minus-o" size="lg" id="calendar-icon" />
             <div id="add-event-text">Decline Invitation</div>
           </div>
         </div>);
       } else if (userParticipant.length === 0) {
         return (<div id="add-event" onClick={this.joinButton}>
-          <FontAwesome name="calendar-plus-o" size="2x" id="calendar-icon" />
+          <FontAwesome name="calendar-plus-o" size="lg" id="calendar-icon" />
           <div id="add-event-text">Join This Event</div>
         </div>);
       } else if (userParticipant.length > 0 && currentUser.fbid !== host.fbid) {
         return (<div id="add-event" onClick={this.leaveButton}>
-          <FontAwesome name="calendar-minus-o" size="2x" id="calendar-icon" />
+          <FontAwesome name="calendar-minus-o" size="lg" id="calendar-icon" />
           <div id="add-event-text">Leave This Event</div>
         </div>);
       }
@@ -265,6 +265,10 @@ class EventView extends Component {
       if (isParticipant) {
         if (showUserSearch) {
           return (<div id="usersearch-eventview">
+            <div id="add-event" className="active" onClick={() => this.setState({ showUserSearch: false })}>
+              <FontAwesome name="user-plus" size="lg" id="calendar-icon" />
+              <div id="add-event-text">Done Inviting</div>
+            </div>
             <UserSearch
               handleUser={this.handleUser}
               currentUser={this.props.currentUser}
@@ -275,8 +279,9 @@ class EventView extends Component {
           </div>);
         } else {
           return (
-            <div id="add-user-btn" onClick={() => this.setState({ showUserSearch: true })}>
-              <FontAwesome name="user-plus" size="lg" />
+            <div id="add-event" onClick={() => this.setState({ showUserSearch: true })}>
+              <FontAwesome name="user-plus" size="lg" id="calendar-icon" />
+              <div id="add-event-text">Invite Users</div>
             </div>
           );
         }

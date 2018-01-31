@@ -299,6 +299,10 @@ h1:hover {
   color: #4f4f4f;
 }
 
+.event-greenspace {
+  text-align: right;
+}
+
 .list-item-pending {
   display: flex;
   align-items: center;
@@ -436,19 +440,24 @@ h1:hover {
   padding: 5px 5px;
 }
 
-#add-event:hover {
+#add-event:hover,
+#add-event.active {
   background-color: rgba(88, 155, 57, 0.5);
   border-radius: 5px;
   cursor: pointer;
 }
 
+#add-event.active {
+  border: 1px solid black;
+}
+
+#add-event.active:hover {
+  background-color: rgba(78, 140, 50, 0.5);
+}
+
 #add-event-icon {
   margin-right: 10px;
   margin-bottom: -5px;
-}
-
-#add-event-text {
-  font-size: 20px;
 }
 
 #calendar-icon {
