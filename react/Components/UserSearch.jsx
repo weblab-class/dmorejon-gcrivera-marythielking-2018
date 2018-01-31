@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Services from '../../services';
 import ArrowKeysReact from 'arrow-keys-react';
 import FontAwesome from 'react-fontawesome';
+import PropTypes from 'prop-types';
 
 class UserSearch extends Component {
   constructor(props){
@@ -11,6 +12,7 @@ class UserSearch extends Component {
       users: [],
       participants: [],
       update: false,
+      pending: props.pending,
     };
 
     ArrowKeysReact.config({
@@ -57,6 +59,10 @@ class UserSearch extends Component {
           let matches = this.state.participants.filter((participant) => {
             return participant.fbid === user.fbid;
           });
+          const moreMatches = this.state.pending.filter((pender) => {
+            return pender.fbid === user.fbid
+          });
+          matches = matches.concat(moreMatches);
           return !(matches.length > 0) && user.fbid !== currentUser.fbid;
         });
       }
@@ -66,7 +72,9 @@ class UserSearch extends Component {
 
   updateParticipants(event, user) {
     const updatedParticipants = this.state.participants.concat(user);
+    const updatedPending = this.state.pending.concat(user);
     this.props.handleParticipants(updatedParticipants);
+    this.props.handleUser(user);
     this.refs[String(-1)].value = '';
     this.refs[String(-1)].focus();
     this.setState({ participants: updatedParticipants, users: [] });
@@ -102,13 +110,19 @@ class UserSearch extends Component {
   }
 
   renderParticipants(participants) {
+    let checkOrTrash = null;
+    if (this.props.isEventView) {
+      checkOrTrash = <FontAwesome name="check" title="Invited" id="check-participant-icon"/>;
+    } else {
+      checkOrTrash = <FontAwesome name="trash" title="Delete" id="delete-participant-icon" onClick={((e) => this.deleteParticipant(e, user))}/>;
+    }
     return participants.map((user) => {
       return (
         <div key={user.fbid} className="list-item-participant">
           <img src={user.photo} height="30px" className="profile-icon"/>
           {user.displayname}
-          <FontAwesome name="trash" title="Delete" id="delete-participant-icon" onClick={((e) => this.deleteParticipant(e, user))}/>
-        </div>
+          {checkOrTrash}
+          </div>
       );
     });
   }
@@ -158,4 +172,13 @@ class UserSearch extends Component {
   }
 }
 
+UserSearch.propTypes = {
+  pending: PropTypes.arrayOf(PropTypes.object),
+  isEventView: PropTypes.bool,
+}
+
+UserSearch.defaultProps = {
+  pending: [],
+  isEventView: false,
+}
 export default UserSearch;
