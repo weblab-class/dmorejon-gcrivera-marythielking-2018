@@ -21,6 +21,7 @@ class EventView extends Component {
       lng: 0,
       tags: [],
       updatePropTags: true,
+      showUserSearch: false,
     };
 
     this.joinButton = this.joinButton.bind(this);
@@ -37,6 +38,7 @@ class EventView extends Component {
     this.handleAddTag = this.handleAddTag.bind(this);
     this.handleRemoveTag = this.handleRemoveTag.bind(this);
     this.renderTags = this.renderTags.bind(this);
+    this.renderAddUserBtn = this.renderAddUserBtn.bind(this);
   }
 
   componentDidMount() {
@@ -103,6 +105,7 @@ class EventView extends Component {
         this.props.router.goBack();
       });
   }
+
 
   handleAddTag(tags, tag) {
     eventServices.addTag(this.props.params.eventId, tag.name);
@@ -240,8 +243,23 @@ class EventView extends Component {
         )
       }
     }
-
   }
+
+  renderAddUserBtn() {
+    if(this.state.showUserSearch){
+      <div id="userSearch-eventview">
+        <UserSearch
+          handleParticipants={this.handleParticipants}
+          currentUser={this.props.currentUser}
+        /></div>
+
+    } else {
+      return (
+      <div id="add-User-Btn" onClick={this.setState({ showUserSearch: true })}>
+        <FontAwesome name="user-plus" size="lg" />
+      </div>);
+    }
+}
 
   render() {
     const { currentUser, params } = this.props;
@@ -260,6 +278,7 @@ class EventView extends Component {
     const renderedParticipants = this.renderParticipants();
     const renderedPending = this.renderPending();
     const renderedTags = this.renderTags();
+    const renderedAddUser = this.renderAddUserBtn();
 
     return (
       <GreenspaceSidebar

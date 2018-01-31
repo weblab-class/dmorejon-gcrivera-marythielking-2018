@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
+import ImageZoom from 'react-medium-image-zoom';
 
 import PopUp from '../Components/PopUp.jsx';
 
@@ -21,13 +22,14 @@ class Homepage extends Component {
         "Personalize your discover page with tags to find new natural areas around you!"
       ],
       currentGIF: 0,
-      zoomed: 'tutorial-gif show',
+      zoomed: false,
     }
 
     this.goBack = this.goBack.bind(this);
     this.goForward = this.goForward.bind(this);
     this.goToGIF = this.goToGIF.bind(this);
     this.handleZoom = this.handleZoom.bind(this);
+    this.handleUnzoom = this.handleUnzoom.bind(this);
   }
 
   goBack() {
@@ -51,11 +53,11 @@ class Homepage extends Component {
   }
 
   handleZoom() {
-    if (this.state.zoomed !== 'zoom-gif') {
-      this.setState({ zoomed: 'zoom-gif'});
-    } else {
-      this.setState({ zoomed: 'tutorial-gif show' });
-    }
+    this.setState({ zoomed: true });
+  }
+
+  handleUnzoom() {
+    this.setState({ zoomed: false });
   }
 
   render(){
@@ -72,13 +74,24 @@ class Homepage extends Component {
     let texts = [];
     for (let i = 0; i < gifs.length; i++) {
       if (i === currentGIF) {
-        imgs.push(<img ref={currentGIF}
-                        src={gifs[i]}
-                        key={i}
-                        className={zoomed}
-                        onClick={this.handleZoom}
-                  >
-                  </img>);
+        imgs.push(
+          <ImageZoom
+            key={i}
+            image={{
+              src: gifs[i],
+              className: 'tutorial-gif show',
+            }}
+            zoomImage={{
+              src: gifs[i],
+              className: 'zoom-gif'
+            }}
+            defaultStyles={{
+              overlay: { opacity: '0' },
+            }}
+            onZoom={this.handleZoom}
+            onUnzoom={this.handleUnzoom}
+          />
+        );
         circles.push(
           <div className="circle-container" key={i} onClick={this.goToGIF}>
             <FontAwesome name="circle" id={i}/>
@@ -118,7 +131,7 @@ class Homepage extends Component {
     }
 
     return (
-      <PopUp setMapViewOnly={this.props.setMapViewOnly}>
+      <PopUp setMapViewOnly={this.props.setMapViewOnly} canClickOut={!zoomed}>
         <h1 style={{"marginBottom": "10px", "marginTop": "10px"}}>Welcome to Greenspace!</h1>
         <div id="tutorial-dots-container">
           <div id="tutorial-container">
