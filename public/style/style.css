@@ -447,6 +447,14 @@ h1:hover {
   cursor: pointer;
 }
 
+#add-event.active {
+  border: 1px solid black;
+}
+
+#add-event.active:hover {
+  background-color: rgba(78, 140, 50, 0.5);
+}
+
 #add-event-icon {
   margin-right: 10px;
   margin-bottom: -5px;
