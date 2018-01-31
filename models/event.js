@@ -158,9 +158,9 @@ const event = ((eventModel) => {
 
   that.joinEvent = async (eventid, user) => {
     try {
-      const inPending = eventModel.findOne({'pending': user});
+      const inPending = await eventModel.findOne({_id: eventid, 'pending.fbid': user.fbid});
       if (inPending) {
-        await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {pending: user}});
+        await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {pending: {fbid: user.fbid}}});
       }
       const editedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$push: {participants: user}}, {new: true});
       if (!editedEvent) {throw {message: 'Event does not exist.', errorCode: 404}}
@@ -176,7 +176,7 @@ const event = ((eventModel) => {
       if (!eventData) {throw {message: 'Event does not exist.', errorCode: 404}}
       if (target.fbid === eventData.host.fbid) {throw {message: 'Host cannot leave event.', errorCode: 400}}
       if (user.fbid === target.fbid || user.fbid === eventData.host.fbid) {
-        return await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {participants: target}}, {new: true});
+        return await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {participants: {fbid: target.fbid}}}, {new: true});
       } else {
         throw {message: 'User does not have permission to remove specified user from event.', errorCode: 403};
       }
@@ -187,7 +187,7 @@ const event = ((eventModel) => {
 
   that.acceptEvent = async (eventid, user) => {
     try {
-      await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {pending: user}});
+      await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {pending: {fbid: user.fbid}}});
       const editedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$push: {participants: user}}, {new: true});
       if (!editedEvent) {throw {message: 'Event or user not found.', errorCode: 404}}
       return editedEvent;
@@ -198,7 +198,7 @@ const event = ((eventModel) => {
 
   that.declineEvent = async (eventid, user) => {
     try {
-      const editedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {pending: user}}, {new: true});
+      const editedEvent = await eventModel.findOneAndUpdate({_id: eventid}, {$pull: {pending: {fbid: user.fbid}}}, {new: true});
       if (!editedEvent) {throw {message: 'Event or user not found.', errorCode: 404}}
       return editedEvent;
     } catch(e) {
