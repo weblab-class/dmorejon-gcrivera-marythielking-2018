@@ -299,6 +299,10 @@ h1:hover {
   color: #4f4f4f;
 }
 
+.event-greenspace {
+  text-align: right;
+}
+
 .list-item-pending {
   display: flex;
   align-items: center;

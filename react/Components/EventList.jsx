@@ -19,7 +19,7 @@ class EventList extends Component {
     let greenspaceName;
     if (this.props.inUserView) {
       greenspaceName = (
-        <div className="event-date">{greenspace.name}</div>
+        <div className="event-date event-greenspace">{greenspace.name}</div>
       );
     }
 
