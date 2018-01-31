@@ -140,11 +140,11 @@ class UserSearch extends Component {
 
     return (
       <div>
-        <div>Invite Participants:</div>
+        <div>Invite Users:</div>
         <div className="list-items" id="list-items-participant">{renderedParticipants}</div>
         <div className="form" {...ArrowKeysReact.events} tabIndex="-1">
           <input className='form-input' id="-1"
-            placeholder='add participants'
+            placeholder='add users'
             onChange={this.updateFormVal}
             onKeyPress={this.createKeyPress}
             ref="-1"
