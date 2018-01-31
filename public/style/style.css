@@ -463,6 +463,15 @@ h1:hover {
   color: #4f4f4f;
 }
 
+#add-user-btn {
+  color: #696969;
+}
+
+#add-user-btn:hover {
+  color: #4f4f4f;
+  cursor: pointer;
+}
+
 .delete-btn {
   cursor: pointer;
 }

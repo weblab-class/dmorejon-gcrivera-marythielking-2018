@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
 import FontAwesome from 'react-fontawesome';
+import find from 'lodash/find';
 
 import GreenspaceSidebar from '../Components/GreenspaceSidebar.jsx';
 import TagSearch from '../Components/TagSearch.jsx';
 import TagDisplay from '../Components/TagDisplay.jsx';
+import UserSearch from '../Components/UserSearch.jsx';
 
 import eventServices from '../../services/eventServices.js';
 import userServices from '../../services/userServices.js';
@@ -38,6 +40,7 @@ class EventView extends Component {
     this.handleAddTag = this.handleAddTag.bind(this);
     this.handleRemoveTag = this.handleRemoveTag.bind(this);
     this.renderTags = this.renderTags.bind(this);
+    this.handleUser = this.handleUser.bind(this);
     this.renderAddUserBtn = this.renderAddUserBtn.bind(this);
   }
 
@@ -105,7 +108,6 @@ class EventView extends Component {
         this.props.router.goBack();
       });
   }
-
 
   handleAddTag(tags, tag) {
     eventServices.addTag(this.props.params.eventId, tag.name);
@@ -198,7 +200,7 @@ class EventView extends Component {
   renderPending() {
     const { currentUser } = this.props;
     const { pending, host } = this.state;
-    if (!pending) { return null; }
+    if (!pending || pending.length === 0) { return null; }
     if (host && currentUser) {
       if (host.fbid === currentUser.fbid) {
         const pendingList = pending.map((p) => this.renderParticipant(p));
@@ -245,21 +247,34 @@ class EventView extends Component {
     }
   }
 
-  renderAddUserBtn() {
-    if(this.state.showUserSearch){
-      <div id="userSearch-eventview">
-        <UserSearch
-          handleParticipants={this.handleParticipants}
-          currentUser={this.props.currentUser}
-        /></div>
+  handleUser(user) {
+    console.log(user);
+  }
 
-    } else {
-      return (
-      <div id="add-User-Btn" onClick={this.setState({ showUserSearch: true })}>
-        <FontAwesome name="user-plus" size="lg" />
-      </div>);
+  renderAddUserBtn() {
+    const { currentUser } = this.props;
+    const { participants, showUserSearch } = this.state;
+    if (participants && currentUser) {
+      const isParticipant = find(participants, (p) => { return (p.fbid === currentUser.fbid); });
+      if (isParticipant) {
+        if (showUserSearch) {
+          return (<div id="usersearch-eventview">
+            <UserSearch
+              handleUser={this.handleUser}
+              currentUser={this.props.currentUser}
+            />
+          </div>);
+        } else {
+          return (
+            <div id="add-user-btn" onClick={() => this.setState({ showUserSearch: true })}>
+              <FontAwesome name="user-plus" size="lg" />
+            </div>
+          );
+        }
+      }
     }
-}
+    return null;
+  }
 
   render() {
     const { currentUser, params } = this.props;
@@ -297,6 +312,7 @@ class EventView extends Component {
         {renderedParticipants}
         {renderedPending}
         {joinLeaveBtn}
+        {renderedAddUser}
         {renderedTags}
       </GreenspaceSidebar>
     );
