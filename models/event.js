@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const schedule = require('node-schedule');
+const userModel = require('./user').userModel;
 
 const userSchema = mongoose.Schema({
   fbid: {type: Number, required: true},
@@ -23,6 +25,42 @@ let eventModel = mongoose.model('Event', mongoose.Schema({
   pending: {type: [{type: userSchema, unique: true}], default: []},
   tags: {type: [{type: String}], default: []},
 }));
+
+schedule.scheduleJob('0 0 * * *', async () => { // minute (0), hour (0), runs every night @ midnight
+  try {
+    const allEvents = await eventModel.find();
+    if (allEvents.length == 0) {
+      console.log("No events to update...");
+      return;
+    }
+    await Promise.all(allEvents.map(async (val) => {
+      // update host profile pic
+      let updatedHost;
+      const host = await userModel.findOne({fbid: val.host.fbid});
+      if (host.photo !== val.host.photo) {updatedHost = host}
+      else {updatedHost = val.host}
+      // update pending users
+      const updatedPending = await Promise.all(val.pending.map(async (user) => {
+        const updatedUser = await userModel.findOne({fbid: user.fbid});
+        if (user.photo !== updatedUser.photo) {return updatedUser}
+        return user;
+      }));
+      // update participants
+      const updatedParticipants = await Promise.all(val.participants.map(async (user) => {
+        const updatedUser = await userModel.findOne({fbid: user.fbid});
+        if (user.photo !== updatedUser.photo) {return updatedUser}
+        return user;
+      }));
+      // update event
+      await eventModel.findOneAndUpdate({_id: val._id}, {host: updatedHost,
+                                                          pending: updatedPending,
+                                                          participants: updatedParticipants});
+      return;
+    }));
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 const event = ((eventModel) => {
   let that = {};
