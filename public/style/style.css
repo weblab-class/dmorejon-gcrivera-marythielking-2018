@@ -344,6 +344,15 @@ h1:hover {
   background-color: rgba(183, 183, 183, 0.5);
 }
 
+.list-item-participant-pic {
+  margin-right: 10px;
+}
+
+.list-item-participant-pic-text {
+  display: flex;
+  align-items: center;
+}
+
 #list-items-participant {
   max-height: 105px;
   overflow-y: scroll;
@@ -486,8 +495,11 @@ h1:hover {
 }
 
 #delete-participant-icon {
-  margin-left: 75px;
   cursor: pointer;
+}
+
+#check-participant-icon {
+  color: #759e6d;
 }
 
 #explore-btn {

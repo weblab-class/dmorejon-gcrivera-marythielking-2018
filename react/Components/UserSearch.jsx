@@ -110,17 +110,22 @@ class UserSearch extends Component {
   }
 
   renderParticipants(participants) {
-    let checkOrTrash = null;
-    if (this.props.isEventView) {
-      checkOrTrash = <FontAwesome name="check" title="Invited" id="check-participant-icon"/>;
-    } else {
-      checkOrTrash = <FontAwesome name="trash" title="Delete" id="delete-participant-icon" onClick={((e) => this.deleteParticipant(e, user))}/>;
-    }
     return participants.map((user) => {
+      if (this.props.host && this.props.host.fbid == this.props.currentUser.fbid && this.props.isEventView) {
+        return null;
+      }
+      let checkOrTrash = null;
+      if (this.props.isEventView) {
+        checkOrTrash = <FontAwesome name="check" title="Invited" id="check-participant-icon"/>;
+      } else {
+        checkOrTrash = <FontAwesome name="trash" title="Delete" id="delete-participant-icon" onClick={((e) => this.deleteParticipant(e, user))}/>;
+      }
       return (
         <div key={user.fbid} className="list-item-participant">
-          <img src={user.photo} height="30px" className="profile-icon"/>
-          {user.displayname}
+          <div className="list-item-participant-pic-text">
+            <img src={user.photo} height="30px" className="profile-icon list-item-participant-pic"/>
+            {user.displayname}
+          </div>
           {checkOrTrash}
           </div>
       );
@@ -154,7 +159,7 @@ class UserSearch extends Component {
 
     return (
       <div>
-        <div>Invite Users:</div>
+        {this.props.isEventView ? null : (<div>Invite Users:</div>)}
         <div className="list-items" id="list-items-participant">{renderedParticipants}</div>
         <div className="form" {...ArrowKeysReact.events} tabIndex="-1">
           <input className='form-input' id="-1"
@@ -175,10 +180,16 @@ class UserSearch extends Component {
 UserSearch.propTypes = {
   pending: PropTypes.arrayOf(PropTypes.object),
   isEventView: PropTypes.bool,
+  handleParticipants: PropTypes.func,
+  handleUser: PropTypes.func,
+  host: PropTypes.object,
 }
 
 UserSearch.defaultProps = {
   pending: [],
   isEventView: false,
+  handleParticipants: () => {},
+  handleUser: () => {},
+  host: undefined,
 }
 export default UserSearch;

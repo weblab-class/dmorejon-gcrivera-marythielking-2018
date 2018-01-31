@@ -249,10 +249,9 @@ class EventView extends Component {
 
   handleUser(user) {
     const { eventId } = this.props.params;
-    console.log(user);
     eventServices.invite(eventId, user)
       .then(() => {
-        this.state.pending.concat(user);
+        this.setState({ pending: this.state.pending.concat(user) }) ;
       });
   }
 
@@ -275,6 +274,7 @@ class EventView extends Component {
               handleParticipants={()=>{}}
               pending={this.state.pending}
               isEventView={true}
+              host={this.state.host}
             />
           </div>);
         } else {
